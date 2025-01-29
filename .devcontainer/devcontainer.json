@@ -8,7 +8,7 @@
     ],
     "settings": {
         "latex-workshop.latex.autoBuild.run": "onSave",
-        "latex-workshop.latex.outDir": "./out"
+        "latex-workshop.latex.outDir": "./outs"
     },
     "mounts": [
         "source=${localWorkspaceFolder}/documents,target=/documents,type=bind"
