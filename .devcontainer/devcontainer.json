@@ -2,7 +2,7 @@
     "name": "LaTeX Dev Container",
     "dockerFile": "../Dockerfile",
     "context": "..",
-    "workspaceFolder": "/documents",
+    "workspaceFolder": "/workspace",
     "extensions": [
         "James-Yu.latex-workshop"
     ],
@@ -11,6 +11,6 @@
         "latex-workshop.latex.outDir": "./out"
     },
     "mounts": [
-        "source=${localWorkspaceFolder}/documents,target=/documents,type=bind"
+        "source=${localWorkspaceFolder}/,target=/workspace,type=bind,consistency=cached"
     ]
 }

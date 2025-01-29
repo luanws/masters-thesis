@@ -1,1 +1,2 @@
-/documents/out
+/documents/out/*
+!/documents/out/main.pdf
