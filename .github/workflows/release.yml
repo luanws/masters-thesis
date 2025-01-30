@@ -40,8 +40,9 @@ jobs:
     - name: Set email body
       id: set_email_body
       run: |
-        if [[ "${{ github.event.head_commit.message }}" =~ #[0-9]+ ]]; then
-          pr_number=$(echo "${{ github.event.head_commit.message }}" | grep -o '#[0-9]\+' | tr -d '#')
+        commit_message=$(echo "${{ github.event.head_commit.message }}" | tr -d '\n')
+        if [[ "$commit_message" =~ #[0-9]+ ]]; then
+          pr_number=$(echo "$commit_message" | grep -o '#[0-9]\+' | tr -d '#')
           echo "body=Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf\nLink das modificações: https://github.com/no-code-luanws/masters-thesis/pull/${pr_number}/files" >> $GITHUB_ENV
         else
           echo "body=Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf" >> $GITHUB_ENV
