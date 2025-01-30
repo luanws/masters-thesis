@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: 'Dissertação atualizada'
         body: |
-          Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf
+          Uma nova versão da dissertação está disponível para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf
           Link das modificações da versão: ${{ github.event.head_commit.url }}
         to: luan.w.silveira@gmail.com
         from: 'luanws-no-reply'
