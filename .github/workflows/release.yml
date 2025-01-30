@@ -37,17 +37,6 @@ jobs:
         asset_name: Dissertação.pdf
         asset_content_type: application/pdf
 
-    - name: Set email body
-      id: set_email_body
-      run: |
-        commit_message=$(echo "${{ github.event.head_commit.message }}")
-        if [[ "$commit_message" =~ #[0-9]+ ]]; then
-          pr_number=$(echo "$commit_message" | grep -oP '#\K[0-9]+')
-          echo "body=Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf\nLink das modificações: https://github.com/no-code-luanws/masters-thesis/pull/${pr_number}/files" >> $GITHUB_ENV
-        else
-          echo "body=Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf" >> $GITHUB_ENV
-        fi
-
     - name: Send email notification
       uses: dawidd6/action-send-mail@v3
       with:
@@ -56,6 +45,6 @@ jobs:
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: 'Dissertação atualizada'
+        body: 'Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf'
         to: luan.w.silveira@gmail.com
         from: 'luanws-no-reply'
-        body: ${{ env.body }}
