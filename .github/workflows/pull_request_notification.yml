@@ -19,7 +19,7 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: 'Revisão de dissertação'
         body: |
-          Uma nova versão da dissertação está pendente de aprovação. Você pode visualizá-la através do link: ${{ github.event.pull_request.html_url }}
+          Uma nova versão da dissertação está pendente de aprovação. Você pode visualizá-la através do link: ${{ github.event.pull_request.html_url }}/files
         to: luan.w.silveira@gmail.com
         from: 'luanws-no-reply'
 
