@@ -2,22 +2,37 @@ name: Pull Request Notification
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, closed]
 
 jobs:
   send_email:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Send email notification
+    - name: Send email notification for opened PR
+      if: github.event.action == 'opened'
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
         server_port: 465
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: 'Nova versão da dissertação'
+        subject: 'Revisão de dissertação'
         body: |
           Uma nova versão da dissertação está pendente de aprovação. Você pode visualizá-la através do link: ${{ github.event.pull_request.html_url }}
+        to: luan.w.silveira@gmail.com
+        from: 'luanws-no-reply'
+
+    - name: Send email notification for merged PR
+      if: github.event.action == 'closed' && github.event.pull_request.merged == true
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: 'Dissertação atualizada'
+        body: |
+           Uma nova versão da dissertação está disponível para download. Você pode baixá-la através do link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf
         to: luan.w.silveira@gmail.com
         from: 'luanws-no-reply'

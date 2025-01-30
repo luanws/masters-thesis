@@ -36,17 +36,3 @@ jobs:
         asset_path: documents/out/main.pdf
         asset_name: Dissertação.pdf
         asset_content_type: application/pdf
-
-    - name: Send email notification
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: 'Dissertação atualizada'
-        body: |
-          Uma nova versão da dissertação está disponível para download. Você pode baixá-la através do link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf
-          Link das modificações da versão: ${{ github.event.head_commit.url }}
-        to: luan.w.silveira@gmail.com
-        from: 'luanws-no-reply'
