@@ -34,5 +34,26 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: documents/out/main.pdf
-        asset_name: main.pdf
+        asset_name: Dissertação.pdf
         asset_content_type: application/pdf
+
+    - name: Set email body
+      id: set_email_body
+      run: |
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          echo "body=Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf\nLink do Pull Request: ${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
+        else
+          echo "body=Uma nova versão da dissertação está pronta para download. Você pode baixá-la através do seguinte link: https://github.com/no-code-luanws/masters-thesis/releases/download/v${{ github.run_number }}/Dissertacao.pdf" >> $GITHUB_ENV
+        fi
+
+    - name: Send email notification
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: 'Dissertação atualizada'
+        to: luan.w.silveira@gmail.com
+        from: 'luanws-no-reply'
+        body: ${{ env.body }}
