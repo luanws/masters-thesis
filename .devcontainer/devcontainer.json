@@ -1,0 +1,16 @@
+{
+    "name": "LaTeX Dev Container",
+    "dockerFile": "../Dockerfile",
+    "context": "..",
+    "workspaceFolder": "/workspace",
+    "extensions": [
+        "James-Yu.latex-workshop"
+    ],
+    "settings": {
+        "latex-workshop.latex.autoBuild.run": "onSave",
+        "latex-workshop.latex.outDir": "./out"
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder}/,target=/workspace,type=bind,consistency=cached"
+    ]
+}
