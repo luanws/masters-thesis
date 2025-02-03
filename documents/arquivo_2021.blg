@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2022)
+This is BibTeX, Version 0.99d (TeX Live 2024)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: arquivo_2021.aux
 The style file: abntex2-alf.bst
@@ -22,44 +22,44 @@ Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 | Em caso de dúvidas ou problemas com este estilo procure |
 | http://www.abntex.net.br/                               |
 +---------------------------------------------------------+
-You've used 27 entries,
+You've used 29 entries,
             6714 wiz_defined-function locations,
-            1354 strings with 12882 characters,
-and the built_in function-call counts, 20173 in all, are:
-= -- 1995
+            1356 strings with 12920 characters,
+and the built_in function-call counts, 30520 in all, are:
+= -- 4094
 > -- 381
-< -- 252
-+ -- 421
+< -- 485
++ -- 656
 - -- 121
-* -- 1262
-:= -- 2583
+* -- 1518
+:= -- 3092
 add.period$ -- 87
-call.type$ -- 30
-change.case$ -- 177
+call.type$ -- 32
+change.case$ -- 183
 chr.to.int$ -- 46
 cite$ -- 18
-duplicate$ -- 1427
-empty$ -- 1550
+duplicate$ -- 3485
+empty$ -- 1628
 format.name$ -- 556
-if$ -- 4637
-int.to.chr$ -- 8
+if$ -- 6846
+int.to.chr$ -- 10
 int.to.str$ -- 3
-missing$ -- 406
+missing$ -- 426
 newline$ -- 92
 num.names$ -- 85
-pop$ -- 416
+pop$ -- 460
 preamble$ -- 1
-purify$ -- 88
+purify$ -- 94
 quote$ -- 0
-skip$ -- 1778
+skip$ -- 3892
 stack$ -- 1
-substring$ -- 751
-swap$ -- 546
-text.length$ -- 16
+substring$ -- 989
+swap$ -- 774
+text.length$ -- 21
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 11
 warning$ -- 0
-while$ -- 120
+while$ -- 125
 width$ -- 0
 write$ -- 308
