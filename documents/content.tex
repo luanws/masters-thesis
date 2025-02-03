@@ -1,48 +1,274 @@
-\maketitle
+\chapter{Introdução}
+\par Insira aqui a introdução!!!
 
-\newpage
+\lipsum[1-5]
 
-\section{Proposta}
 
-O presente estudo tem como objetivo desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em isoladores. Para isso, serão estabelecidas métricas para avaliar a eficácia dos processamentos de imagem, considerando aspectos como acurácia e tempo de processamento. Além disso, serão construídos modelos de redes neurais para avaliar o desempenho dos processamentos, podendo abranger tarefas como classificação, detecção e regressão. No decorrer do estudo, serão construídos modelos de redes neurais voltados para a avaliação do desempenho das técnicas de processamento de imagem, sem a intenção de definir um modelo ideal.
 
-Também será analisado o impacto da escolha do modelo de rede neural no desempenho do processamento, visto que diferentes modelos podem gerar resultados distintos para um mesmo processamento. A influência do dataset na eficácia do processamento será outro aspecto a ser investigado, considerando possíveis variações nos resultados devido ao uso de diferentes conjuntos de dados. Para aprimorar os processamentos de imagem, será desenvolvida uma metodologia que permita a combinação de diferentes processamentos unitários (processamentos de imagem que realizam uma única operação). Além disso, será criado um método de ajuste automático de parâmetros das técnicas de processamento de imagem, com o intuito de otimizar seus resultados sem exigir extensa intervenção manual.
+\chapter{Algumas notas sobre bibliografia}
 
-A metodologia proposta será desenvolvida dentro de um conjunto de restrições previamente estabelecidas, garantindo um escopo bem delimitado e viável dentro do período de realização da dissertação. Primeiramente, o estudo será restrito à detecção e classificação de falhas em isoladores elétricos, não abrangendo outros componentes elétricos. O uso de imagens previamente adquiridas será uma diretriz, de modo que apenas imagens já disponíveis ou capturadas por métodos convencionais serão utilizadas, sem o desenvolvimento de novas técnicas de aquisição de imagens. Além disso, a metodologia será aplicada exclusivamente a técnicas de processamento de imagem já conhecidas, sem a criação de novos algoritmos de base.
 
-Os modelos de redes neurais desenvolvidos terão o propósito único de avaliar o impacto das redes sobre os processamentos de imagem, sem a intenção de definir um modelo definitivo para diagnóstico industrial. A análise será conduzida utilizando conjuntos de dados já existentes ou obtidos por métodos convencionais, sem a necessidade de criar um novo dataset específico para o estudo. A otimização contemplada estará limitada ao ajuste de parâmetros das técnicas existentes, não incluindo o desenvolvimento de novas abordagens baseadas em inteligência artificial para otimização dos processamentos. Por fim, toda a avaliação será realizada em ambiente controlado, sem a realização de testes em ambientes industriais reais.
+\par O arquivo \textit{referencias.bib} é o nome padrão das referências para este modelo. Para alterá-lo modifique o argumento entre chaves na definição de bibliografia.
 
-A Figura \ref{fig:proposta} ilustra o diagrama da proposta de metodologia.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{img/proposta.png}
-    \caption{Diagrama da proposta de metodologia}
-    \label{fig:proposta}
-\end{figure}
+   \section{Modelos de citação}
+      \par No arquivo modelo de referências, também existem alguns exemplos de diferentes classes de citações. Todas elas podem ser usadas com o \textit{$\backslash$cite$\{$label$\}$} ou \textit{$\backslash$citeonline$\{$label$\}$}, dependendo da forma de citação\footnote{Este é um teste de nota de rodapé}.
 
-\subsection{Objetivo geral}
+	\par Além disso, pode-se incluir obras na bibliografia que nortearam o trabalho mesmo que elas não apareçam diretamente no texto, utilizando o comando \textit{$\backslash$nocite$\{$label$\}$}. Além disso, pode-se citar vários trabalhos em conjunto, por exemplo:
+	
+	\begin{center}\rule{0.5\textwidth}{1pt}\\$\backslash cite\{label1,label2,label3,...\}$\end{center}
 
-O objetivo geral deste estudo é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em isoladores.
+	\begin{verbatim}
+	Os ventos do norte não movem moinhos \cite{tcc:mintegui2014, 
+	diss:anabor2004, tese:anabor2008, livro:halliday28ed, 
+	livro:fedorova:v1, site:amsglo:fog}.
+	\end{verbatim}
+	    
+	\par Os ventos do norte\footnote{Este é um teste de nota de rodapé} não movem moinhos \cite{tcc:mintegui2014,diss:anabor2004,tese:anabor2008,livro:halliday28ed,livro:fedorova:v1,site:amsglo:fog}.
+        
+        \begin{center}\rule{0.5\textwidth}{1pt}\\$\backslash citeonline\{label1,label2,label3,...\}$\end{center}
+        
+	\begin{verbatim}
+	Segundo \citeonline{cap:livro:djuric1994, livro:aris1989, 
+	livro:cotton1989, cap:livro:wyngaard1981, livro:fedorova:v1, 
+	artigo:fujita1981,puhalesBLT2010,artigo:janjic2002,
+	cbmet:anabor2012,site:wrfhome}, os ventos do norte não movem moinhos.
+	\end{verbatim}
+            
+        \par Segundo \citeonline{cap:livro:djuric1994, livro:aris1989, livro:cotton1989, cap:livro:wyngaard1981, livro:fedorova:v1, artigo:fujita1981,puhalesBLT2010,artigo:janjic2002,cbmet:anabor2012,site:wrfhome}, os ventos\footnote{Este é um teste de nota de rodapé} do norte não movem moinhos.
+        \begin{center}\rule{0.5\textwidth}{1pt}\end{center}   
+         \par OBS: Trabalhos com mais de três autores aparecerão com a abreviatura ``et al'' no corpo do texto, porém todos os nomes da bibliografia (norma da UFSM que é definida nas opões do abntcite nas definições do arquivo). 
+  
+  \subsection{O comando \textit{apud}}
 
-\subsection{Objetivos específicos}
+  \par A citação \textit{apud} ocorre quando você cita algum autor através de outra obra, sem ter consultado-a propriamente. Neste caso a citação é feita da seguinte forma:
+  \begin{center}
+  \rule{0.5\textwidth}{1pt}\\
+  $\backslash apud\{material\_citado\_no\_material\_lido\}\{material\_lido\}$ \\
+  \end{center}
+\begin{verbatim}
+Sobre a circulação geral da atmosfera pode-se dizer que os ventos do norte
+não movem moinhos \apud{apud:richardson1922}{livro:monin:v1}.
+\end{verbatim}
+  
+  Sobre a circulação geral da atmosfera pode-se dizer que os ventos do nortenão movem moinhos \apud{apud:richardson1922}{livro:monin:v1}.
+\begin{center}\rule{0.5\textwidth}{1pt}\end{center}  
+  \par Nesse caso, na bibliografia só constará a obra consultada e não aquele referenciada pela obra. Para que isso ocorra naturalmente, a obra consultada deve ser incluída normalmente no arquivo referencias.bib enquanto a obra referenciada indiretamente deve ser incluída com a opção \textit{@hidden}, conforme o modelo de referências\footnote{Isto é um teste de nota de rodapé}.
 
-Para alcançar esse objetivo, foram definidos os seguintes objetivos específicos:
+      \subsubsection{\textit{Apud on line}}
 
-\begin{itemize}
-    \item Estabelecer métricas para avaliar a eficácia dos processamentos de imagem, considerando aspectos como acurácia e tempo de processamento.
-    \item Determinar o tipo de modelo de redes neurais ideal para avaliar o desempenho dos processamentos, podendo abranger classificação, detecção e regressão.
-    \item Construir modelos de redes neurais destinados à avaliação do desempenho das técnicas de processamento de imagem, sem o intuito de encontrar um modelo definitivo.
-    \item Analisar o impacto da escolha do modelo de rede neural no desempenho do processamento, considerando que diferentes modelos podem gerar diferentes resultados para um mesmo processamento.
-    \item Avaliar a influência do dataset na eficácia do processamento, considerando possíveis variações nos resultados devido à utilização de diferentes conjuntos de dados.
-    \item Desenvolver uma metodologia para o aprimoramento dos processamentos de imagem por meio da combinação de diferentes abordagens unitárias.
-    \item Criar um método de ajuste automático de parâmetros dos processamentos de imagem, visando otimizar seus resultados sem a necessidade de intervenção manual extensa.
-\end{itemize}
+      
+      \par O \textit{apudonline} se aplica da mesma maneira que o \textit{apud} descrito anteriormente. O termo \textit{on line} é alusivo ao \textit{$\backslash$citeonline$\{$label$\}$} definido no abntex. Nesse caso a citação é feita da seguinte forma:
+      \begin{center}
+      \rule{0.5\textwidth}{1pt}
+            $\backslash apudonline\{material\_citado\_no\_material\_lido\}\{material\_lido\}$ \\
+	    \end{center}
 
-\section{Justificativa}
+ \begin{verbatim}
+Segundo \apudonline{apud:richardson1922}{livro:monin:v1}, os ventos do
+norte não movem moinhos.
+\end{verbatim}
 
-A crescente demanda por sistemas automatizados de inspeção de isoladores evidencia a necessidade de técnicas avançadas de processamento de imagem para a detecção precoce de falhas. Conforme demonstrado por Gonzalez e Woods \cite{Gonzalez2008}, a análise digital de imagens permite extrair características relevantes para identificar anomalias em componentes elétricos, possibilitando diagnósticos mais precisos. Ademais, o emprego de redes neurais tem se destacado na resolução de problemas complexos de classificação e detecção, conforme ressaltado por LeCun et al. \cite{LeCun2015} e Krizhevsky et al. \cite{Krizhevsky2012}, contribuindo para a robustez dos sistemas de inspeção.
+            Segundo \apudonline{apud:richardson1922}{livro:monin:v1}, os ventos do norte não movem moinhos.
 
-Estudos recentes apontam que a combinação de diferentes técnicas de processamento de imagem, aliada ao ajuste automático de parâmetros, pode resultar em melhorias significativas no desempenho dos sistemas de diagnóstico \cite{Li2019}. Assim, a proposta deste trabalho visa desenvolver uma metodologia que integre esses avanços, buscando não apenas aprimorar a acurácia e a eficiência dos processamentos, mas também possibilitar uma análise comparativa que leve em conta a influência de diferentes modelos e datasets.
+\subsubsection{Citação longa}
+	
+	\begin{quoting}[rightmargin=0cm,leftmargin=4cm]
+		\begin{singlespace}
+			{\footnotesize
+				\noindent Texto da citação sem ser identado e com recuo de 4cm, fonte tamanho 10 e espaçamento simples.  \lipsum[2] Termine com ponto antes da citação.  \cite{man:MDTUFSM2015}.
+			}
+		\end{singlespace}
+	\end{quoting}
 
-Dessa forma, esta dissertação justifica-se pela necessidade de inovar na abordagem de detecção e classificação de falhas em isoladores, promovendo ganhos práticos para a segurança e manutenção das redes elétricas, e contribuindo para a evolução do estado da arte em processamento de imagem e aprendizado de máquina.
+       \paragraph{Teste de seção quinária}
+       
+       \par Texto texto texto.
+       
+       
+         \chapter{Tabelas, figuras, quadros, ilustrações e gráficos}
+         
+         \par Na MDT da UFSM há uma clara diferença entre tabelas e quadros, quanto a sua apresentação. Aqui, para inserir tabelas usa-se o ambiente tradicionalmente definido \textit{table}. A partir deste modelo simples:
+        
+         \begin{verbatim}
+		\begin{table}[ht]
+		\centering
+		\caption{Modelo de tabela para MDT-UFSM.}
+		\begin{tabular}{ c c c }
+		\hline
+		Abacate & Banana & Canela \\
+		\hline
+		21 & 34 & 56 \\
+		-3 & 245 & 23 \\
+		-25 & -0,57 & 2 \\
+                \hline
+                 \end{tabular}
+		\fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+		\end{table}
+	  \end{verbatim}
+         
+         \noindent resulta:
+         
+         \begin{table}[ht]
+         \centering
+         \caption{Modelo de tabela para MDT-UFSM.}
+         \begin{tabular}{ c c c }
+         \hline
+         Abacate & Banana & Canela \\
+         \hline
+         21 & 34 & 56 \\
+         -3 & 245 & 23 \\
+         -25 & -0,57 & 2 \\
+         \hline
+         \end{tabular}
+          \fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+         \end{table}
+         
+         \par Note que, adicionalmente, foi definido um comando novo: ``fonte''. Ele serve para indicar a fonte da tabela quando necessário, mas também pode ser usado em outros ambientes.
+         
+         \par Para inserir quadros foi criado um novo ambiente: ``quadro''. O ambiente ``quadro'' deve ser usado de forma semelhante a tabela, como o ambiente tabular. Contudo, neste caso, as linhas verticais e horizontais estão sempre presentes. Um exemplo simples é o seguinte: 
+         
+         
+         \begin{verbatim}
+	    \begin{quadro}
+   	    \caption{Modelo de quadro para MTD-UFSM.}
+	    \centering
+	    \begin{tabular}{| c |c |c }
+	    \hline
+	    Abacate & Banana & Canela \\
+	    \hline
+	    21 & 34 & 56 \\
+	    \hline
+	    -3 & 245 & 23 \\
+	    \hline
+	    -25 & -0,57 & 2 \\
+	    \hline
+	    \end{tabular}
+	    \fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+	    \end{quadro}
+         \end{verbatim}
+         
+         \noindent resultando:
+         
+	    \begin{quadro}
+	    \caption{Modelo de quadro para MTD-UFSM.}
+	    \centering
+	    \begin{tabular}{| c |c |c |}
+	    \hline
+	    Abacate & Banana & Canela \\
+	    \hline
+	    21 & 34 & 56 \\
+	    \hline
+	    -3 & 245 & 23 \\
+	    \hline
+	    -25 & -0,57 & 2 \\
+	    \hline
+	    \end{tabular}
+    	    \fonte{Adaptado de \citeonline{livro:halliday28ed}.}
+	    \end{quadro}
+	    
+	    
+         \noindent Assim como para as tabelas, já está definida uma lista de quadros. Além disso, o comando ``fonte'' também pode ser usado aqui se necessário. Vale lembrar que, na MDT-UFSM, as legendas para figuras, tabelas, quadros, ilustrações e gráficos devem ser inseridas no topo da(o) mesma(o). A fonte sempre embaixo.
+         
+         \par As figuras devem ser inseridas com o ambiente padrão: \textit{figure}. Veja um exemplo simples:
+         
+         \begin{verbatim}
+	    \begin{figure}[ht]
+		\caption{\label{exepretex}Sequência dos elementros pré-testuais da MDT-UFSM.}
+		\centering
+		\includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+		\fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+	    \end{figure}
+         \end{verbatim}
+         
+         \begin{figure}[ht]
+     	    \caption{\label{exepretex}Sequência dos elementros pré-testuais da MDT-UFSM.}
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+            \fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+         \end{figure}
+        
+	\par Para inserir ilustrações e gráficos, foram criados novos ambientes: ``ilustracao'' e ``grafico''. Estes ambientes são semelhantes ao ambiente ``figure'', porém geram sua própria lista. A seguir, exemplos da utilização nos novos ambientes.
+	
+	\begin{verbatim}
+	    \begin{ilustracao}[ht]
+		\caption{\label{exepretex1}Sequência dos elementros pré-testuais da MDT-UFSM}
+                \centering
+		\includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+		\fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+	    \end{ilustracao}
+         \end{verbatim}
+         
+         \begin{ilustracao}[ht]
+     	    \caption{\label{exepretex1}Sequência dos elementros pré-testuais da MDT-UFSM.}
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{figuras/pretextuais.png}
+            \fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+         \end{ilustracao}
+	
+         
+	\begin{verbatim}
+	    \begin{grafico}[ht]
+		\centering
+		\includegraphics[width=0.6\textwidth]{figuras/estrutura_com.pdf}
+		\caption{\label{exepretex3} Um exemplo de utilização do ambiente ``grafico''.}
+		\fonte{Próprio autor.}
+	    \end{grafico}
+         \end{verbatim}
+         
+	    \begin{grafico}[ht]
+	\caption{\label{exepretex3}Um exemplo de utilização do ambiente ``grafico''.}
+             \centering
+		\includegraphics[width=0.6\textwidth]{figuras/estrutura_com.pdf}
+		\fonte{Próprio autor.}
+	    \end{grafico}
+         
+\chapter{Conclusão}
+
+	\par Conclusão do trabalho.
+	\lipsum[1-5]
+
+
+	
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % FIM DAS PAGINAS TEXTUAIS % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+% % % % % % % % % % % % % BIBLIOGRAFIA  % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+
+\startbibliography % comando para formatar na MDT UFSM
+\bibliography{referencias}
+
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+% % % % % % % % % % % % % APENDICES % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+\apendice %%%% TEXTOS A PARIR DESTE PONTO SERAO CONSIDERADOS APENDICES
+
+\chapter{Demonstração de algo}
+        \par Algo como apêndice.  
+         \lipsum[2-10]
+
+          
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+% % % % % % % % % % % % % % % ANEXOS  % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 	
+        \anexo    %%%% TEXTOS A PARIR DESTE PONTO SERAO CONSIDERADOS ANEXOS
+        
+\chapter{Algo interessante que alguém fez}
+         \par Algo como anexo.
+         \lipsum[2-10]
+                  
+        \begin{grafico}[ht]
+     	    \caption{\label{exepretex2}Orientações para a lombada do trabalho.}
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{figuras/lombada.png}
+            \fonte{Adaptado de \citeonline{man:MDTUFSM2015}.}
+         \end{grafico}         
+         
+         \lipsum[2-10]
