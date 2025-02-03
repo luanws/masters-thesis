@@ -6,5 +6,3 @@ RUN tlmgr update --self && \
     apt-get install -y inotify-tools
 
 WORKDIR /documents
-
-CMD ["sh", "-c", "while inotifywait -e close_write main.tex; do latexmk -pdf main.tex; done"]
