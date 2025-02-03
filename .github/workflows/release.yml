@@ -16,6 +16,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Build PDF using Docker
+      run: |
+        docker build -t pdf-builder .
+        docker run --rm -v ${{ github.workspace }}:/workspace pdf-builder /workspace/compile.sh
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -33,6 +38,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: documents/out/main.pdf
+        asset_path: /workspace/documents/out/main.pdf
         asset_name: Dissertação.pdf
         asset_content_type: application/pdf
