@@ -1,6 +1,4 @@
-\maketitle
-
-\newpage
+\chapter{Introdução}
 
 \section{Proposta}
 
@@ -21,11 +19,11 @@ A Figura \ref{fig:proposta} ilustra o diagrama da proposta de metodologia.
     \label{fig:proposta}
 \end{figure}
 
-\subsection{Objetivo geral}
+\section{Objetivo geral}
 
 O objetivo geral deste estudo é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em isoladores.
 
-\subsection{Objetivos específicos}
+\section{Objetivos específicos}
 
 Para alcançar esse objetivo, foram definidos os seguintes objetivos específicos:
 
@@ -38,3 +36,92 @@ Para alcançar esse objetivo, foram definidos os seguintes objetivos específico
     \item Desenvolver uma metodologia para o aprimoramento dos processamentos de imagem por meio da combinação de diferentes abordagens unitárias.
     \item Criar um método de ajuste automático de parâmetros dos processamentos de imagem, visando otimizar seus resultados sem a necessidade de intervenção manual extensa.
 \end{itemize}
+
+\section{Justificativa}
+
+A crescente demanda por sistemas automatizados de inspeção de isoladores evidencia a necessidade de técnicas avançadas de processamento de imagem para a detecção precoce de falhas. Conforme demonstrado por Gonzalez e Woods \cite{Gonzalez2008}, a análise digital de imagens permite extrair características relevantes para identificar anomalias em componentes elétricos, possibilitando diagnósticos mais precisos. Ademais, o emprego de redes neurais tem se destacado na resolução de problemas complexos de classificação e detecção, conforme ressaltado por LeCun et al. \cite{LeCun2015} e Krizhevsky et al. \cite{Krizhevsky2012}, contribuindo para a robustez dos sistemas de inspeção.
+
+Estudos recentes apontam que a combinação de diferentes técnicas de processamento de imagem, aliada ao ajuste automático de parâmetros, pode resultar em melhorias significativas no desempenho dos sistemas de diagnóstico \cite{Li2019}. Assim, a proposta deste trabalho visa desenvolver uma metodologia que integre esses avanços, buscando não apenas aprimorar a acurácia e a eficiência dos processamentos, mas também possibilitar uma análise comparativa que leve em conta a influência de diferentes modelos e datasets.
+
+Dessa forma, esta dissertação justifica-se pela necessidade de inovar na abordagem de detecção e classificação de falhas em isoladores, promovendo ganhos práticos para a segurança e manutenção das redes elétricas, e contribuindo para a evolução do estado da arte em processamento de imagem e aprendizado de máquina.
+
+\section{Cronograma}
+
+A seguir, apresenta-se a estrutura das etapas e subetapas que compõem o desenvolvimento deste trabalho. A lista a seguir organiza os principais tópicos a serem abordados ao longo da pesquisa, detalhando desde a introdução até a conclusão, incluindo as metodologias, a revisão bibliográfica, a implementação dos modelos e a análise dos resultados.
+
+\begin{itemize}
+    \item \textbf{1. Introdução}
+    \begin{itemize}
+        \item Justificativa com apresentação do problema e relevância
+        \item Objetivos gerais e específicos
+        \item Metodologia geral adotada
+        \item Estrutura da dissertação
+    \end{itemize}
+    
+    \item \textbf{2. Revisão Bibliográfica}
+    \begin{itemize}
+        \item Processamento de imagens
+        \item Redes neurais para avaliação de processamentos de imagem
+        \item Métricas para análise de desempenho (acurácia, tempo, etc.)
+        \item Influência de datasets na performance dos modelos
+        \item Métodos de ajuste de parâmetros e combinação de processamentos
+    \end{itemize}
+
+    \item \textbf{3. Metodologia}
+    \begin{itemize}
+        \item Definição das métricas para avaliar eficácia dos processamentos
+        \item Escolha do tipo de modelo de rede neural (classificação, detecção, regressão, etc.)
+        \item Seleção dos datasets para avaliação
+        \item Metodologia para combinação de processamentos unitários
+        \item Implementação de um método de ajuste automático de parâmetros
+    \end{itemize}
+
+    \item \textbf{4. Implementação dos Modelos}
+    \begin{itemize}
+        \item Construção de redes neurais para avaliação dos processamentos
+        \item Testes com diferentes arquiteturas e análise de variações nos resultados
+    \end{itemize}
+
+    \item \textbf{5. Análise de Resultados}
+    \begin{itemize}
+        \item Impacto dos modelos no desempenho dos processamentos
+        \item Influência dos datasets nos resultados
+        \item Comparação entre diferentes estratégias de processamento
+    \end{itemize}
+
+    \item \textbf{6. Conclusão}
+    \begin{itemize}
+        \item Síntese dos resultados obtidos
+        \item Limitações e desafios encontrados
+        \item Sugestões para pesquisas futuras
+    \end{itemize}
+\end{itemize}
+
+A seguir, é apresentado um cronograma de atividades para garantir a organização e a execução das tarefas.
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{Etapa} & \textbf{Fev} & \textbf{Mar} & \textbf{Abr} & \textbf{Mai} & \textbf{Jun} & \textbf{Jul} & \textbf{Ago} & \textbf{Set} & \textbf{Out} & \textbf{Nov} & \textbf{Dez} \\
+        \hline
+        \textbf{1. Introdução} & \checkmark &  &  &  &  &  &  &  &  &  &  \\
+        \hline
+        \textbf{2. Revisão Bibliográfica} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  &  &  &  \\
+        \hline
+        \textbf{3. Metodologia} &  & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark &  &  &  &  \\
+        \hline
+        \textbf{4. Implementação dos Modelos} &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
+        \hline
+        \textbf{5. Análise de Resultados} &  &  &  &  &  & \checkmark & \checkmark & \checkmark & \checkmark &  &  \\
+        \hline
+        \textbf{6. Conclusão e Redação Final} &  &  &  &  &  &  &  & \checkmark & \checkmark & \checkmark &  \\
+        \hline
+        \textbf{7. Defender} &  &  &  &  &  &  &  &  &  &  & \checkmark \\
+        \hline
+    \end{tabular}}
+    \caption{Cronograma de Atividades}
+    \label{tab:cronograma}
+\end{table}
