@@ -1,0 +1,17 @@
+---
+config:
+  theme: mc
+  look: classic
+  layout: dagre
+---
+flowchart TD
+    A(["Início da metodologia de processamento de imagens"]) --> B["Desenvolver processamentos"]
+    B --> C["Ajustar parâmetros dos processamentos"]
+    C --> D["Combinar processamentos"]
+    D --> E{"Métricas satisfatórias?"}
+    E -- Sim --> F["Selecionar melhores processamentos"]
+    F -- Sim --> I(["Fim da metodologia de processamento de imagens"])
+    E -- Não --> H{"Muitas tentativas?"}
+    H -- Sim --> n1["Descartar processamento"]
+    H -- Não --> C
+    n1 --> B
