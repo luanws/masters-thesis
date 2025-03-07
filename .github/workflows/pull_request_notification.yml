@@ -12,6 +12,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Copy PDF file
+      run: cp documents/out/main.pdf documents/out/Dissertação.pdf
+
     - name: Send email notification for opened PR
       if: github.event.action == 'opened'
       uses: dawidd6/action-send-mail@v3
@@ -37,6 +40,6 @@ jobs:
         subject: 'Dissertação atualizada'
         body: |
           Uma nova versão da dissertação está disponível em anexo.
-        to: luan.w.silveira@gmail.com
+        to: luan.w.silveira@gmail.com,luan.silveira@acad.ufsm.br
         from: 'luanws-no-reply'
-        attachments: documents/out/main.pdf
+        attachments: documents/out/Dissertação.pdf
