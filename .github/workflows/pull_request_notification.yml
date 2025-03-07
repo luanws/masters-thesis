@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Send email notification for opened PR
       if: github.event.action == 'opened'
       uses: dawidd6/action-send-mail@v3
@@ -33,6 +36,7 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: 'Dissertação atualizada'
         body: |
-           Uma nova versão da dissertação está disponível. Você pode baixá-la através do link: https://github.com/luanws/masters-thesis/releases/latest/download/Dissertacao.pdf
+          Uma nova versão da dissertação está disponível em anexo.
         to: luan.w.silveira@gmail.com
         from: 'luanws-no-reply'
+        attachments: documents/out/main.pdf
