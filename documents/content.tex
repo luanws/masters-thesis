@@ -2,11 +2,11 @@
 
 \section{Proposta}
 
-O presente estudo tem como objetivo desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em isoladores. Para isso, serão estabelecidas métricas para avaliar a eficácia dos processamentos de imagem, considerando aspectos como acurácia e tempo de processamento. Além disso, serão construídos modelos de redes neurais para avaliar o desempenho dos processamentos, podendo abranger tarefas como classificação, detecção e regressão. No decorrer do estudo, serão construídos modelos de redes neurais voltados para a avaliação do desempenho das técnicas de processamento de imagem, sem a intenção de definir um modelo ideal.
+O presente estudo tem como objetivo desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em cadeias de isoladores. Para isso, serão estabelecidas métricas para avaliar a eficácia dos processamentos de imagem, considerando aspectos como acurácia e tempo de processamento. Além disso, serão construídos modelos de redes neurais para avaliar o desempenho dos processamentos, podendo abranger tarefas como classificação, detecção e regressão. No decorrer do estudo, serão construídos modelos de redes neurais voltados para a avaliação do desempenho das técnicas de processamento de imagem, sem a intenção de definir um modelo ideal.
 
 Também será analisado o impacto da escolha do modelo de rede neural no desempenho do processamento, visto que diferentes modelos podem gerar resultados distintos para um mesmo processamento. A influência do dataset na eficácia do processamento será outro aspecto a ser investigado, considerando possíveis variações nos resultados devido ao uso de diferentes conjuntos de dados. Para aprimorar os processamentos de imagem, será desenvolvida uma metodologia que permita a combinação de diferentes processamentos unitários (processamentos de imagem que realizam uma única operação). Além disso, será criado um método de ajuste automático de parâmetros das técnicas de processamento de imagem, com o intuito de otimizar seus resultados sem exigir extensa intervenção manual.
 
-A metodologia proposta será desenvolvida dentro de um conjunto de restrições previamente estabelecidas, garantindo um escopo bem delimitado e viável dentro do período de realização da dissertação. Primeiramente, o estudo será restrito à detecção e classificação de falhas em isoladores elétricos, não abrangendo outros componentes elétricos. O uso de imagens previamente adquiridas será uma diretriz, de modo que apenas imagens já disponíveis ou capturadas por métodos convencionais serão utilizadas, sem o desenvolvimento de novas técnicas de aquisição de imagens. Além disso, a metodologia será aplicada exclusivamente a técnicas de processamento de imagem já conhecidas, sem a criação de novos algoritmos de base.
+A metodologia proposta será desenvolvida dentro de um conjunto de restrições previamente estabelecidas, garantindo um escopo bem delimitado e viável dentro do período de realização da dissertação. Primeiramente, o estudo será restrito à detecção e classificação de falhas em cadeias de isoladores elétricos, não abrangendo outros componentes elétricos. O uso de imagens previamente adquiridas será uma diretriz, de modo que apenas imagens já disponíveis ou capturadas por métodos convencionais serão utilizadas, sem o desenvolvimento de novas técnicas de aquisição de imagens. Além disso, a metodologia será aplicada exclusivamente a técnicas de processamento de imagem já conhecidas, sem a criação de novos algoritmos de base.
 
 Os modelos de redes neurais desenvolvidos terão o propósito único de avaliar o impacto das redes sobre os processamentos de imagem, sem a intenção de definir um modelo definitivo para diagnóstico industrial. A análise será conduzida utilizando conjuntos de dados já existentes ou obtidos por métodos convencionais, sem a necessidade de criar um novo dataset específico para o estudo. A otimização contemplada estará limitada ao ajuste de parâmetros das técnicas existentes, não incluindo o desenvolvimento de novas abordagens baseadas em inteligência artificial para otimização dos processamentos. Por fim, toda a avaliação será realizada em ambiente controlado, sem a realização de testes em ambientes industriais reais.
 
@@ -21,7 +21,7 @@ A Figura \ref{fig:proposta} ilustra o diagrama da proposta de metodologia.
 
 \section{Objetivo geral}
 
-O objetivo geral deste estudo é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em isoladores.
+O objetivo geral deste estudo é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em cadeias de isoladores.
 
 \section{Objetivos específicos}
 
@@ -39,11 +39,11 @@ Para alcançar esse objetivo, foram definidos os seguintes objetivos específico
 
 \section{Justificativa}
 
-A crescente demanda por sistemas automatizados de inspeção de isoladores evidencia a necessidade de técnicas avançadas de processamento de imagem para a detecção precoce de falhas. Conforme demonstrado por Gonzalez e Woods \cite{Gonzalez2008}, a análise digital de imagens permite extrair características relevantes para identificar anomalias em componentes elétricos, possibilitando diagnósticos mais precisos. Ademais, o emprego de redes neurais tem se destacado na resolução de problemas complexos de classificação e detecção, conforme ressaltado por LeCun et al. \cite{LeCun2015} e Krizhevsky et al. \cite{Krizhevsky2012}, contribuindo para a robustez dos sistemas de inspeção.
+A crescente demanda por sistemas automatizados de inspeção de cadeias de isoladores evidencia a necessidade de técnicas avançadas de processamento de imagem para a detecção precoce de falhas. Conforme demonstrado por Gonzalez e Woods \cite{Gonzalez2008}, a análise digital de imagens permite extrair características relevantes para identificar anomalias em componentes elétricos, possibilitando diagnósticos mais precisos. Ademais, o emprego de redes neurais tem se destacado na resolução de problemas complexos de classificação e detecção, conforme ressaltado por LeCun et al. \cite{LeCun2015} e Krizhevsky et al. \cite{Krizhevsky2012}, contribuindo para a robustez dos sistemas de inspeção.
 
 Estudos recentes apontam que a combinação de diferentes técnicas de processamento de imagem, aliada ao ajuste automático de parâmetros, pode resultar em melhorias significativas no desempenho dos sistemas de diagnóstico \cite{Li2019}. Assim, a proposta deste trabalho visa desenvolver uma metodologia que integre esses avanços, buscando não apenas aprimorar a acurácia e a eficiência dos processamentos, mas também possibilitar uma análise comparativa que leve em conta a influência de diferentes modelos e datasets.
 
-Dessa forma, esta dissertação justifica-se pela necessidade de inovar na abordagem de detecção e classificação de falhas em isoladores, promovendo ganhos práticos para a segurança e manutenção das redes elétricas, e contribuindo para a evolução do estado da arte em processamento de imagem e aprendizado de máquina.
+Dessa forma, esta dissertação justifica-se pela necessidade de inovar na abordagem de detecção e classificação de falhas em cadeias de isoladores, promovendo ganhos práticos para a segurança e manutenção das redes elétricas, e contribuindo para a evolução do estado da arte em processamento de imagem e aprendizado de máquina.
 
 \section{Cronograma}
 
@@ -82,7 +82,7 @@ A seguir, apresenta-se a estrutura das etapas e subetapas que compõem o desenvo
         \item Testes com diferentes arquiteturas e análise de variações nos resultados
     \end{itemize}
 
-    \item \textbf{5. Análise de Resultados}
+    \item \textbf{5. Coleta e Análise de Resultados}
     \begin{itemize}
         \item Impacto dos modelos no desempenho dos processamentos
         \item Influência dos datasets nos resultados
@@ -115,7 +115,7 @@ A seguir, é apresentado um cronograma de atividades para garantir a organizaç�
         \hline
         \textbf{4. Implementação dos Modelos} &  &  &  &  &  & \checkmark & \checkmark &  &  &  &  \\
         \hline
-        \textbf{5. Análise de Resultados} &  &  &  &  &  & \checkmark & \checkmark & \checkmark & \checkmark &  &  \\
+        \textbf{5. Coleta e Análise de Resultados} &  &  &  &  &  & \checkmark & \checkmark & \checkmark & \checkmark &  &  \\
         \hline
         \textbf{6. Conclusão e Redação Final} &  &  &  &  &  &  &  & \checkmark & \checkmark & \checkmark &  \\
         \hline
@@ -176,7 +176,7 @@ Nesta seção, será detalhada a construção dos modelos de redes neurais utili
 \section{Testes com Diferentes Arquiteturas e Análise de Variações nos Resultados}
 Serão apresentados os testes realizados com diferentes arquiteturas de redes neurais e a análise das variações nos resultados obtidos.
 
-\chapter{Análise de Resultados}
+\chapter{Coleta e Análise de Resultados}
 \section{Impacto dos Modelos no Desempenho dos Processamentos}
 Será analisado o impacto dos diferentes modelos de redes neurais no desempenho dos processamentos de imagem.
 
