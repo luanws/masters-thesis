@@ -1,0 +1,88 @@
+\chapter{Trabalhos relacionados}
+
+\section{Estudo 1: Análise Sustentável da Detecção de Falhas em Isoladores Baseada em Otimização Visual Refinada}
+\begin{itemize}
+    \item \textbf{Resumo e Introdução:} Este estudo, publicado em \textit{Sustainability} em 2023, aborda o papel crítico dos isoladores em linhas de transmissão aéreas, que são suscetíveis a fatores ambientais como clima e temperatura, levando a falhas que ameaçam a segurança da transmissão de energia. A inspeção manual tradicional é pouco confiável devido ao grande volume de dados e fundos complexos, o que levou ao uso de uma rede neural convolucional de atenção regressiva (RA-CNN) para otimização. O artigo visa melhorar a acurácia da detecção de falhas por meio da extração de características em múltiplas escalas e operações recursivas.
+    \item \textbf{Metodologia:} O processo experimental envolve uma rede em cascata de três níveis de convolução, cada nível incluindo classificação e amostragem regional, com imagens pré-processadas para 224$\times$224 pixels. O módulo de classificação utiliza redes neurais totalmente convolucionais com fatores de expansão em núcleos de convolução para capturar campos de informação maiores e um novo método de amostragem ascendente para reduzir parâmetros. O algoritmo de Otimização por Enxame de Partículas (PSO) otimiza o processo, com equações específicas para o movimento das partículas, e etiquetas VGG-PSO são usadas para a classificação final via \textit{softmax}. A Tabela ilustra o processo comparando as acurácias.
+    \item \textbf{Resultados:} A extração de regiões em múltiplos níveis abrange a estrutura do objeto e a geografia local, com os segundo e terceiro níveis alcançando 81,5\% e 80,8\% de acurácia, respectivamente. A configuração RA-CNN (1+2+3) atinge 85,3\%, melhorando 12,2\% em relação ao FCAN (74,9\%) e 11,4\% em relação ao MG-CNN (75,6\%). Experimentos de ablação mostram FCAN com 48,3\% de mAP e 5,3 FPS, MG-CNN com 51,2\% de mAP e 4,6 FPS, enquanto RA-CNN (1+2+3) alcança 58,6\% de mAP e 25,4 FPS, indicando capacidade em tempo real. As Tabelas 2 e 3 detalham essas comparações, e as Figuras 7-9 visualizam os resultados.
+    \item \textbf{Relevância para a Dissertação:} O estudo aborda a comparação de modelos de redes neurais (RA-CNN vs. FCAN e MG-CNN), avalia a influência do conjunto de dados por meio da extração em múltiplos níveis e propõe uma metodologia de otimização (PSO), alinhando-se aos seus objetivos de estabelecer métricas, analisar o impacto do modelo e desenvolver métodos de ajuste de parâmetros. O foco em acurácia e velocidade de processamento também apoia seu objetivo de considerar o tempo de processamento.
+\end{itemize}
+
+\begin{table}[h]
+    \label{tab:comparacao_de_metricas_do_estudo_1}
+    \centering
+    \caption{Comparação de métricas do Estudo 1}
+    \begin{tabular}{lccc}
+        \hline
+        \textbf{Métrica} & \textbf{RA-CNN (1+2+3)} & \textbf{FCAN} & \textbf{MG-CNN} \\
+        \hline
+        Acurácia (\%) & 85,3 & 74,9 & 75,6 \\
+        mAP (\%) & 58,6 & 48,3 & 51,2 \\
+        FPS & 25,4 & 5,3 & 4,6 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Referência:} WANG, L.; WAN, H.; HUANG, D.; LIU, J.; TANG, X.; GAN, L. Análise Sustentável da Detecção de Falhas em Isoladores Baseada em Otimização Visual Refinada. \textit{Sustainability}, v. 15, n. 4, p. 3456, 2023. DOI: \href{https://doi.org/10.3390/su15043456}{10.3390/su15043456}.
+
+\section{Estudo 2: Detecção de Falhas em Isoladores em Imagens Aéreas de Linhas de Transmissão de Alta Voltagem Baseada em Modelo de Aprendizado Profundo}
+\begin{itemize}
+    \item \textbf{Resumo e Introdução:} Publicado em \textit{Appl. Sci.} em 2021, este estudo foca na detecção de falhas em isoladores em imagens aéreas, crucial para a inspeção de linhas de transmissão de alta voltagem. Dado a complexidade dos fundos, os autores propõem um modelo YOLO modificado, CSPD-YOLO, baseado no YOLO-v3 e na Rede Parcial de Estágio Cruzado, para aprimorar a reutilização e propagação de características. Um novo conjunto de dados, 'InSF-detection', foi criado com 1.331 imagens e 2.104 falhas para treinar e testar o modelo.
+    \item \textbf{Metodologia:} A metodologia inclui o processamento de dados, criando o conjunto de dados 'InSF-detection' com 809 imagens de treinamento e 522 de teste, rotuladas usando Label-Image e redimensionadas para 416$\times$416 pixels, disponível em \href{https://github.com/InsulatorData/InsulatorDataSet}{GitHub}. O modelo CSPD-YOLO usa blocos Cross Stage Partial Dense (CSPD) com Darknet-53 para extração de características, uma rede de pirâmide de características para detecção em múltiplas escalas (camadas de características grande 256$\times$52$\times$52, média 512$\times$26$\times$26, pequena 1024$\times$13$\times$13) e uma função de perda aprimorada usando Interseção Completa sobre União (CIoU). Caixas de ancoragem foram agrupadas usando k-means++, alcançando uma IoU média de 89,13\%.
+    \item \textbf{Resultados:} Os experimentos foram realizados em um PC com Windows 10, CPU Intel i9-9900K, 32 GB de RAM, GPU NVIDIA GeForce GTX 3080, usando CUDA 11.1 e cuDNN 8.0.5. O CSPD-YOLO alcançou uma precisão média (AP) de 98,18\%, precisão (P) de 99\%, \textit{recall} (R) de 98\%, F1-score de 99\% e tempo de processamento de 0,011 segundos, superando o YOLO-v3 (AP 93,31\%, tempo 0,01 s), um modelo da literatura (AP 95,07\%, tempo 0,011 s) e o YOLO-v4 (AP 96,38\%, tempo 0,01 s). A análise qualitativa mostrou eficácia em cenas diversas (rios, vegetação, torres de energia, oclusão).
+    \item \textbf{Relevância para a Dissertação:} Este estudo é relevante, pois compara diferentes modelos de redes neurais (CSPD-YOLO vs. YOLO-v3, YOLO-v4), avalia a influência do conjunto de dados por meio da criação do 'InSF-detection' e propõe uma metodologia para melhorar a acurácia da detecção, alinhando-se aos seus objetivos de determinar modelos ideais, analisar seu impacto e desenvolver abordagens combinadas. O foco no tempo de processamento também apoia sua métrica de tempo de processamento.
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Comparação de métricas do Estudo 2}
+    \begin{tabular}{lccccc}
+        \hline
+        \textbf{Modelo} & \textbf{AP (\%)} & \textbf{Precisão (\%)} & \textbf{Recall (\%)} & \textbf{F1-Score (\%)} & \textbf{Tempo (s)} \\
+        \hline
+        CSPD-YOLO & 98,18 & 99 & 98 & 99 & 0,011 \\
+        YOLO-v3 & 93,31 & 94 & 94 & 94 & 0,010 \\
+        YOLO-v4 & 96,38 & 98 & 95 & 97 & 0,010 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Referência:} LIU, C.; WU, Y.; LIU, J.; SUN, Z.; XU, H. Detecção de Falhas em Isoladores em Imagens Aéreas de Linhas de Transmissão de Alta Voltagem Baseada em Modelo de Aprendizado Profundo. \textit{Appl. Sci.}, v. 11, n. 10, p. 4647, 2021. DOI: \href{https://doi.org/10.3390/app11104647}{10.3390/app11104647}.
+
+\section{Estudo 3: Detecção de Defeitos em Isoladores por Imagem Baseada em Processamento Morfológico e Aprendizado Profundo}
+\begin{itemize}
+    \item \textbf{Resumo e Introdução:} Publicado em \textit{Energies} em 2022, este estudo aborda a detecção de defeitos em isoladores, enfatizando a ameaça de falhas às operações das linhas de transmissão. Propõe um método combinando aprendizado profundo (Faster RCNN) e processamento morfológico, visando localizar isoladores, segmentar imagens para remover fundos e detectar defeitos usando um modelo matemático em imagens binárias. O estudo compara o desempenho com algoritmos comuns, destacando melhorias na acurácia.
+    \item \textbf{Metodologia:} A metodologia usa Faster RCNN com Rede de Proposta de Região (RPN) para geração mais rápida de regiões candidatas, empregando ResNet-152 (50 blocos residuais, entrada 7$\times$7$\times$64, saída camada FC) para extração de características. A segmentação de imagens envolve agrupamento de pixels com pesos $\omega_1=0,5$, $\omega_2=0,7$, $\omega_3=1,5$, determinados a partir de 50 imagens de isoladores de vidro. A transformação de forma inclui detecção de ângulo de inclinação, rotação e separação de isoladores lado a lado usando ajuste por mínimos quadrados. A detecção de defeitos usa janelas deslizantes, com o lado longo igual ao lado curto da imagem-alvo, lado curto igual à largura da tampa do isolador, passo 1/3 do lado curto, marcando janelas $<40\%$ como defeitos e $>80\%$ para contar tampas.
+    \item \textbf{Resultados:} O Faster RCNN alcança AP = 0,9175 e \textit{Recall} = 0,98, superando Res101 (AP 0,9119), Res50 (AP 0,9088), VGG16 (AP 0,9113), YOLOv3 (AP 0,9119) e LBP+SVM (AP 0,8012). A acurácia na detecção de defeitos é 0,98, com resultados específicos por níveis de voltagem: 35kV (100\%), 110kV (98\% para 1·7, 1·8; 94\% para 2·8), 220kV (98\% para 1·13, 96\% para 1·15, 92\% para 2·16). Testes de ruído mostram isoladores curtos (35kV, 110kV) com 0,98 de acurácia sem ruído, $v=0,005$, $v=0,01$, e isoladores longos (220kV, 550kV) com 0,94 (sem ruído, $v=0,005$) e 0,90 ($v=0,01$). Comparado a outros métodos, alcança 0,98 de acurácia vs. 0,91, 0,96 e 0,83.
+    \item \textbf{Relevância para a Dissertação:} Este estudo é relevante, pois combina processamento de imagem (morfológico) com aprendizado profundo (Faster RCNN), comparando modelos e mostrando a influência do conjunto de dados por meio de testes de voltagem e ruído, alinhando-se aos seus objetivos de estabelecer métricas (acurácia, \textit{recall}), determinar modelos ideais e desenvolver metodologias combinadas. Também apoia seu objetivo de analisar o impacto do conjunto de dados por meio de condições variadas.
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Comparação de métricas do Estudo 3}
+    \begin{tabular}{lccc}
+        \hline
+        \textbf{Modelo} & \textbf{AP} & \textbf{Recall} & \textbf{Acurácia (Detecção de Defeitos)} \\
+        \hline
+        Método Proposto & 0,9175 & 0,98 & 0,98 \\
+        Res101 & 0,9119 & - & - \\
+        YOLOv3 & 0,9119 & - & - \\
+        LBP+SVM & 0,8012 & - & - \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+\textbf{Referência:} ZHANG, Z.; HUANG, S.; LI, Y.; LI, H.; HAO, H. Detecção de Defeitos em Isoladores por Imagem Baseada em Processamento Morfológico e Aprendizado Profundo. \textit{Energies}, v. 15, n. 7, p. 2465, 2022. DOI: \href{https://doi.org/10.3390/en15072465}{10.3390/en15072465}.
+
+\section{Discussão e Implicações}
+Esses estudos abordam coletivamente os objetivos da dissertação ao fornecer metodologias para comparar e combinar técnicas de processamento de imagem, avaliar modelos de redes neurais (RA-CNN, CSPD-YOLO, Faster RCNN) e analisar a influência do conjunto de dados. As altas acurácias (até 98,18\%) e comparações detalhadas sugerem que metodologia pode aproveitar essas abordagens para estabelecer métricas como acurácia e tempo de processamento, determinar modelos ideais por meio de análise de desempenho e desenvolver ajustes automáticos de parâmetros, como visto nas otimizações PSO e CIoU. A criação de conjuntos de dados como 'InSF-detection' também destaca a necessidade de avaliação do conjunto de dados, um aspecto-chave do trabalho.
+
+% \section{Citações Chave}
+% \begin{itemize}
+%     \item \href{https://doi.org/10.3390/su15043456}{Análise Sustentável da Detecção de Falhas em Isoladores Baseada em Otimização Visual Refinada}
+%     \item \href{https://doi.org/10.3390/app11104647}{Detecção de Falhas em Isoladores em Imagens Aéreas de Linhas de Transmissão de Alta Voltagem Baseada em Modelo de Aprendizado Profundo}
+%     \item \href{https://doi.org/10.3390/en15072465}{Detecção de Defeitos em Isoladores por Imagem Baseada em Processamento Morfológico e Aprendizado Profundo}
+%     \item \href{https://github.com/InsulatorData/InsulatorDataSet}{Repositório GitHub para InsulatorDataSet}
+% \end{itemize}
+
