@@ -7,7 +7,6 @@
         "James-Yu.latex-workshop"
     ],
     "settings": {
-        "latex-workshop.latex.autoBuild.run": "onSave",
         "latex-workshop.latex.outDir": "./out"
     },
     "mounts": [
