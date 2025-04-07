@@ -12,13 +12,21 @@ O processo de segmentação realizado no trabalho é apresentado na Figura \ref{
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:segmentacao_zhang2022}Segmentação de isoladores \cite{zhang2022}.}
+    \caption{\label{fig:segmentacao_zhang2022}Segmentação de isoladores}
     \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/segmentacao_zhang2022.png}
     \fonte{\citeonline{zhang2022}.}
 \end{figure}
 
 \section{Comparando redes neurais convolucionais e técnicas de pré- processamento para classificação de células HEp-2 em imagens de imunofluorescência}
 A pesquisa avalia seis estratégias de pré-processamento e cinco arquiteturas de CNNs de última geração para classificar células HEp-2 em imagens de imunofluorescência, uma tarefa crítica em diagnósticos médicos. Métodos como aumento de dados (rotações, espelhamentos), ajuste fino e otimização de hiperparâmetros foram testados em conjunto com arquiteturas como Inception-V3 e ResNet. Surpreendentemente, o melhor desempenho, com 98,28\% de precisão, foi alcançado ao treinar o modelo Inception-V3 do zero, utilizando apenas aumento de dados sem pré-processamento adicional. A conclusão sugere que, para esse tipo de imagem, técnicas tradicionais de pré-processamento podem ser menos impactantes quando o aumento de dados é bem implementado, desafiando a necessidade de etapas complexas de preparação. A contribuição do estudo está em mostrar que, em cenários específicos como imagens médicas de imunofluorescência, estratégias simples podem superar abordagens mais elaboradas, oferecendo uma alternativa eficiente para aplicações práticas em classificação \cite{rodrigues2020comparing}.
+A Figura \ref{fig:preprocessing_rodrigues2020comparing} apresenta os métodos e combinações de pré-processamentos utilizados no trabalho.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:preprocessing_rodrigues2020comparing}Etapas do método proposto}
+    \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/preprocessing_rodrigues2020comparing.png}
+    \fonte{\citeonline{rodrigues2020comparing}.}
+\end{figure}
 
 \section{Efeitos do pré-processamento de imagens histopatológicas em redes neurais convolucionais}
 O artigo analisa como diferentes níveis de pré-processamento afetam a classificação de imagens histopatológicas por CNNs, dividindo os dados em quatro categorias: imagens originais, pré-processadas normalmente (com redução de ruído e aprimoramento de células), outras pré-processadas normalmente e excessivamente pré-processadas (com operações morfológicas adicionais). Os experimentos revelam que o pré-processamento normal melhora a precisão ao remover ruídos de fundo e realçar características celulares, mas o excesso de processamento não agrega valor e pode até degradar o desempenho ao eliminar informações úteis. A conclusão enfatiza a importância de um equilíbrio no pré-processamento, recomendando ajustes moderados para maximizar a eficácia das CNNs em imagens histopatológicas. A contribuição do trabalho é fornecer uma análise comparativa detalhada que orienta pesquisadores e profissionais na escolha de técnicas de pré-processamento, evitando exageros que comprometam a qualidade dos dados em aplicações médicas \cite{ozturk2018histopathological}.
