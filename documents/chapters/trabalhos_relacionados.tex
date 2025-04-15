@@ -7,10 +7,26 @@ O primeiro estudo aborda a detecção de falhas em isoladores em linhas de trans
 O segundo estudo foca na detecção de falhas em isoladores por meio de imagens aéreas, utilizando um modelo YOLO modificado, denominado CSPD-YOLO, baseado no YOLO-v3 e na Rede Parcial de Estágio Cruzado. A pesquisa envolve a criação do conjunto de dados 'InSF-detection', composto por 1.331 imagens e 2.104 falhas rotuladas. O modelo CSPD-YOLO se destaca por uma alta acurácia (AP = 98,18\%) e eficiência no processamento (0,011 s), superando modelos tradicionais como YOLO-v3 e YOLO-v4. A análise qualitativa indica que o método é eficaz mesmo em cenários complexos, como presença de rios, vegetação e torres de energia. \cite{liu2021}
 
 \section{Detecção de Defeitos em Isoladores por Imagem Baseada em Processamento Morfológico e Aprendizado Profundo}
-O terceiro estudo propõe um método híbrido para detecção de defeitos em isoladores, combinando aprendizado profundo (Faster RCNN) com processamento morfológico. A segmentação das imagens utiliza técnicas de transformação de forma para identificação e separação de isoladores, enquanto a detecção de falhas é realizada por um modelo matemático aplicado a imagens binárias. O Faster RCNN alcança AP = 0,9175 e \textit{recall} = 0,98, superando abordagens baseadas em ResNet, YOLO e LBP+SVM. Além disso, a análise de desempenho em diferentes níveis de voltagem e condições de ruído demonstra a robustez do modelo. \cite{zhang2022}
+O terceiro estudo propõe um método híbrido para detecção de defeitos em isoladores, combinando aprendizado profundo (Faster RCNN) com processamento morfológico. A segmentação das imagens utiliza técnicas de transformação de forma para identificação e separação de isoladores, enquanto a detecção de falhas é realizada por um modelo matemático aplicado a imagens binárias. O Faster RCNN alcança AP = 0,9175 e \textit{recall} = 0,98, superando abordagens baseadas em ResNet, YOLO e LBP+SVM. Além disso, a análise de desempenho em diferentes níveis de voltagem e condições de ruído demonstra a robustez do modelo \cite{zhang2022}.
+O processo de segmentação realizado no trabalho é apresentado na Figura \ref{fig:segmentacao_zhang2022}.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:segmentacao_zhang2022}Segmentação de isoladores}
+    \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/segmentacao_zhang2022.png}
+    \fonte{\citeonline{zhang2022}.}
+\end{figure}
 
 \section{Comparando redes neurais convolucionais e técnicas de pré- processamento para classificação de células HEp-2 em imagens de imunofluorescência}
 A pesquisa avalia seis estratégias de pré-processamento e cinco arquiteturas de CNNs de última geração para classificar células HEp-2 em imagens de imunofluorescência, uma tarefa crítica em diagnósticos médicos. Métodos como aumento de dados (rotações, espelhamentos), ajuste fino e otimização de hiperparâmetros foram testados em conjunto com arquiteturas como Inception-V3 e ResNet. Surpreendentemente, o melhor desempenho, com 98,28\% de precisão, foi alcançado ao treinar o modelo Inception-V3 do zero, utilizando apenas aumento de dados sem pré-processamento adicional. A conclusão sugere que, para esse tipo de imagem, técnicas tradicionais de pré-processamento podem ser menos impactantes quando o aumento de dados é bem implementado, desafiando a necessidade de etapas complexas de preparação. A contribuição do estudo está em mostrar que, em cenários específicos como imagens médicas de imunofluorescência, estratégias simples podem superar abordagens mais elaboradas, oferecendo uma alternativa eficiente para aplicações práticas em classificação \cite{rodrigues2020comparing}.
+A Figura \ref{fig:preprocessing_rodrigues2020comparing} apresenta os métodos e combinações de pré-processamentos utilizados no trabalho.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:preprocessing_rodrigues2020comparing}Etapas do método proposto}
+    \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/preprocessing_rodrigues2020comparing.png}
+    \fonte{\citeonline{rodrigues2020comparing}.}
+\end{figure}
 
 \section{Efeitos do pré-processamento de imagens histopatológicas em redes neurais convolucionais}
 O artigo analisa como diferentes níveis de pré-processamento afetam a classificação de imagens histopatológicas por CNNs, dividindo os dados em quatro categorias: imagens originais, pré-processadas normalmente (com redução de ruído e aprimoramento de células), outras pré-processadas normalmente e excessivamente pré-processadas (com operações morfológicas adicionais). Os experimentos revelam que o pré-processamento normal melhora a precisão ao remover ruídos de fundo e realçar características celulares, mas o excesso de processamento não agrega valor e pode até degradar o desempenho ao eliminar informações úteis. A conclusão enfatiza a importância de um equilíbrio no pré-processamento, recomendando ajustes moderados para maximizar a eficácia das CNNs em imagens histopatológicas. A contribuição do trabalho é fornecer uma análise comparativa detalhada que orienta pesquisadores e profissionais na escolha de técnicas de pré-processamento, evitando exageros que comprometam a qualidade dos dados em aplicações médicas \cite{ozturk2018histopathological}.
@@ -28,13 +44,9 @@ Por outro lado, \citeonline{ozturk2018histopathological} investigam diferentes a
 
 Os trabalhos analisados demonstram a importância do pré-processamento na análise de imagens, mas também indicam que determinadas abordagens podem comprometer o desempenho da CNN. Em especial, \citeonline{rodrigues2020comparing} evidenciam que a eliminação de ruídos e artefatos pode não ser sempre benéfica. Além disso, \citeonline{Salvi2021} reforçam que técnicas de segmentação e normalização podem aprimorar a análise quando aplicadas corretamente. No entanto, nenhum dos estudos analisados aborda a metodologia específica proposta nesta dissertação, o que destaca sua inovação e potencial contribuição para a área.
 
-\section{Inovação da Metodologia Proposta}
-
-A metodologia apresentada neste trabalho se diferencia dos estudos revisados ao introduzir um novo enfoque que não foi explorado anteriormente. Enquanto os trabalhos existentes se concentram em construção de modelos de redes neurais e utilização de técnicas tradicionais de pré-processamento e normalização, a metodologia deste trabalho propõe a criação de um método para determinar os processamentos mais eficientes das imagens, além de um método de otimização dos parâmetros de processamento.
-
 \section{Tabela Comparativa dos Trabalhos}
 
-A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de diferentes estudos sobre pré-processamento de imagens e seu impacto nos modelos de classificação de imagens. Os estudos variam desde melhorias no desempenho até riscos de sobre-processamento, destacando a falta de consenso e a necessidade de novas abordagens, como a proposta neste trabalho.
+A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de diferentes estudos sobre pré-processamento de imagens e seu impacto nos modelos de classificação de imagens. Os estudos variam desde melhorias no desempenho até riscos de sobre-processamento, destacando a falta de consenso e a necessidade de novas abordagens. A metodologia proposta neste trabalho busca preencher essa lacuna ao introduzir um método inovador para determinar os processamentos mais eficientes e otimizar os parâmetros de processamento, oferecendo uma solução mais robusta e adaptável para análise de imagens.
 
 \begin{table}[h]
 \centering
@@ -53,7 +65,7 @@ A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de
 \hline
 \citeonline{wang2023} & Sem impacto significativo \\
 \hline
-\citeonline{zhang2022} & Melhorou desempenho do modelo \\
+\citeonline{zhang2022} & Melhorou o desempenho do modelo \\
 \hline
 \end{tabular}
 }
@@ -62,3 +74,8 @@ A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de
 \end{table}
 
 A análise desses estudos reforça a lacuna existente na literatura e a necessidade de uma nova abordagem, como a metodologia proposta nesta dissertação.
+A proposta de um método para determinar os processamentos mais eficientes e otimizar os parâmetros de processamento representa uma contribuição significativa para a área de análise de imagens. Através da combinação de técnicas de pré-processamento adaptativo e otimização de parâmetros, o trabalho busca não apenas melhorar o desempenho dos modelos de aprendizado profundo, mas também oferecer uma solução prática e eficiente para cenários complexos. Essa abordagem pode impactar positivamente diversas áreas, como diagnóstico médico, inspeção industrial e análise de imagens aéreas, ao proporcionar resultados mais precisos e confiáveis. Além disso, a metodologia proposta pode servir como base para futuras pesquisas e aplicações em diferentes contextos, ampliando as possibilidades de utilização das redes neurais em tarefas desafiadoras de classificação e detecção de objetos em imagens.
+
+\section{Considerações finais do capítulo}
+
+A metodologia apresentada neste trabalho se diferencia dos estudos revisados ao introduzir um novo enfoque que não foi explorado anteriormente. Enquanto os trabalhos existentes se concentram em construção de modelos de redes neurais e utilização de técnicas tradicionais de pré-processamento e normalização, a metodologia deste trabalho propõe a criação de um método para determinar os processamentos mais eficientes das imagens, além de um método de otimização dos parâmetros de processamento. Além disso, a pesquisa busca integrar novas abordagens que possam aprimorar a análise de dados em contextos variados, contribuindo para a evolução das técnicas de aprendizado profundo. A implementação dessas novas abordagens poderá oferecer insights valiosos para futuras investigações e aplicações práticas.
