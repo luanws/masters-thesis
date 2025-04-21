@@ -10,6 +10,16 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Fix Line Endings",
+            "type": "shell",
+            "command": "sed -i 's/\\r$//' compile.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": []
         }
     ]
 }
