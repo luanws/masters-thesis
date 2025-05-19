@@ -346,3 +346,30 @@ A precisão mede a proporção de verdadeiros positivos entre todas as previsõe
 Para tarefas de detecção de objetos, como identificar defeitos em imagens de UAVs, a métrica mAP é padrão, calculando a precisão média para cada classe e tomando a média geral. Em \citeonline{zheng2022improved}, o modelo YOLOv7 foi avaliado no conjunto Insulator-Defect Detection, utilizando mAP para medir a precisão na detecção de quebras e flashovers, com resultados superiores em comparação com modelos anteriores. A AUC-ROC, que avalia a capacidade do modelo de distinguir entre classes em diferentes limiares, também é relevante, especialmente em classificações binárias (falha vs. não falha). Em \citeonline{alam2025robust}, a AUC-ROC foi reportada como 1,0 para classificações binárias, indicando excelente separação entre classes, mas valores menores (e.g., 0,94 para algumas classes) foram observados em classificações multi-label, refletindo a complexidade de datasets desbalanceados.
 
 Outras métricas, como a matriz de confusão, fornecem uma visão detalhada dos erros do modelo, permitindo calcular taxas de falsos positivos e negativos. Em \citeonline{alam2025robust}, matrizes de confusão foram usadas para avaliar o desempenho do modelo ensemble em classificações binárias e multi-label, complementando as métricas de precisão e recall. Para aplicações em tempo real, como inspeções de UAVs, métricas adicionais, como tempo de inferência e complexidade computacional, também são consideradas, especialmente em modelos como YOLOv5 e YOLOv7, que priorizam eficiência \cite{peng2023edf}. A escolha das métricas deve, portanto, alinhar-se com os objetivos da aplicação, priorizando recall para segurança e mAP para detecção precisa de objetos em imagens.
+
+A Tabela~\ref{tab:metricas_avaliacao_modelos} apresenta um resumo das principais métricas utilizadas para avaliar o desempenho de modelos em tarefas de detecção de falhas em linhas de transmissão, destacando suas características e aplicações.
+
+\begin{table}[H]
+\centering
+\caption{Principais métricas de avaliação de desempenho de modelos}
+\label{tab:metricas_avaliacao_modelos}
+\begin{tabular}{|p{4.5cm}|p{10cm}|}
+\hline
+\textbf{Métrica} & \textbf{Descrição} \\
+\hline
+Acurácia & Proporção de previsões corretas em relação ao total de amostras. Pode ser enganosa em conjuntos desbalanceados. \\
+\hline
+Precisão & Proporção de verdadeiros positivos entre todas as previsões positivas. Mede a confiabilidade das detecções. \\
+\hline
+Recall (Sensibilidade) & Proporção de verdadeiros positivos entre todas as amostras positivas reais. Mede a capacidade de encontrar todos os casos positivos. \\
+\hline
+F1-score & Média harmônica entre precisão e recall. Útil para avaliar o desempenho em cenários desbalanceados. \\
+\hline
+mAP (mean Average Precision) & Média das precisões médias para cada classe. Padrão em tarefas de detecção de objetos. \\
+\hline
+AUC-ROC & Área sob a curva ROC. Mede a capacidade do modelo de distinguir entre classes em diferentes limiares. \\
+\hline
+Matriz de Confusão & Tabela que mostra as previsões corretas e incorretas, detalhando verdadeiros/falsos positivos e negativos. \\
+\hline
+\end{tabular}
+\end{table}
