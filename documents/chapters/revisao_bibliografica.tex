@@ -122,6 +122,8 @@ A super-resolução aumenta a resolução de imagens, gerando versões de alta q
 
 O processamento de imagens é uma etapa crucial para garantir a eficácia dos modelos de aprendizado profundo aplicados ao Sistema Elétrico de Potência (SEP). As técnicas discutidas, como normalização, redimensionamento, aumento de dados e redução de ruído, podem ser fundamentais para preparar as imagens antes de serem alimentadas em redes neurais. Essas abordagens não apenas melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições. A escolha adequada dessas técnicas pode impactar significativamente o desempenho dos modelos na detecção e classificação de falhas em equipamentos de linhas de transmissão.
 
+Dando continuidade, para que as técnicas de processamento de imagens sejam efetivamente aplicadas, é fundamental compreender os fundamentos das redes neurais, que são as principais ferramentas para análise e classificação dessas imagens. A próxima seção aborda os conceitos essenciais sobre redes neurais.
+
 \section{Redes Neurais}
 Uma rede neural artificial é formada por um grande número de neurônios para funcionar corretamente, mas para compreender o funcionamento de uma rede neural, deve-se definir o modelo de um único neurônio artificial. Esse modelo é apresentado na Figura~\ref{fig:neuronio}.
 
@@ -323,6 +325,8 @@ Já a Entropia Cruzada Categórica é utilizada em classificação multiclasse c
 
 Otimizadores são algoritmos que ajustam os pesos da rede neural com base no gradiente da função de custo. Eles influenciam diretamente a velocidade e a qualidade da convergência \cite{ruder2016overview}. Entre os principais otimizadores, destaca-se o Gradiente Descendente, que é a forma mais simples de otimização, mas pode ser lenta e sensível à escolha da taxa de aprendizado. O Gradiente Descendente Estocástico (SGD) atualiza os pesos a cada amostra, adicionando ruído estocástico que pode ajudar a escapar de mínimos locais. O Momentum acrescenta uma fração do gradiente anterior ao atual, acelerando a convergência e suavizando oscilações. O RMSProp ajusta a taxa de aprendizado para cada parâmetro com base na média móvel dos gradientes quadrados \cite{tieleman2012lecture}. Por fim, o Adam combina Momentum e RMSProp, sendo amplamente utilizado por sua eficiência e robustez \cite{kingma2014adam}.
 
+Compreendidos os principais conceitos sobre redes neurais, é importante discutir o papel dos conjuntos de dados (datasets), que são essenciais para o treinamento e avaliação desses modelos. A próxima seção aborda os desafios e técnicas relacionados aos datasets utilizados em tarefas de detecção de falhas.
+
 \section{Datasets}
 
 % Definindo datasets e sua importância
@@ -374,7 +378,9 @@ Desbalanceamento & Perda Focal & Modifica a perda para focar em exemplos difíce
 \hline
 \end{tabular}
 \end{table}
-    
+
+Após a análise das principais estratégias para lidar com escassez e desbalanceamento de dados, é fundamental compreender como avaliar o desempenho dos modelos desenvolvidos. A seguir, são apresentadas as principais métricas de avaliação utilizadas em tarefas de detecção de falhas em linhas de transmissão.
+
 \section{Métricas de Avaliação de Desempenho de Modelos}
 
 Na detecção de falhas em cadeias de isoladores e equipamentos de linhas de transmissão, a escolha das métricas de avaliação é fundamental para garantir a eficácia e confiabilidade dos modelos de redes neurais. Métricas comumente utilizadas incluem acurácia, precisão, recall, F1-score, área sob a curva ROC (AUC-ROC) e, para tarefas de detecção de objetos, a média da precisão média (mAP). A acurácia, definida como a proporção de previsões corretas em relação ao total, pode ser enganosa em datasets desbalanceados, onde a classe de falhas (e.g., quebras ou flashovers) é significativamente menos representada que a classe de isoladores saudáveis. Por exemplo, em um dataset com 95\% de amostras saudáveis, um modelo que sempre prevê "saudável" alcançará alta acurácia, mas falhará em detectar falhas, comprometendo a segurança do sistema \cite{he2009learning}. Em \citeonline{alam2025robust}, os autores reportaram uma acurácia de 99,96\% para um modelo ensemble RF-LSTM Tuned KNN, mas complementaram a avaliação com precisão, recall e F1-score para abordar o desbalanceamento, garantindo uma análise mais robusta do desempenho em classes minoritárias.
@@ -384,6 +390,8 @@ A precisão mede a proporção de verdadeiros positivos entre todas as previsõe
 Para tarefas de detecção de objetos, como identificar defeitos em imagens de UAVs, a métrica mAP é padrão, calculando a precisão média para cada classe e tomando a média geral. Em \citeonline{zheng2022improved}, o modelo YOLOv7 foi avaliado no conjunto Insulator-Defect Detection, utilizando mAP para medir a precisão na detecção de quebras e flashovers, com resultados superiores em comparação com modelos anteriores. A AUC-ROC, que avalia a capacidade do modelo de distinguir entre classes em diferentes limiares, também é relevante, especialmente em classificações binárias (falha vs. não falha). Em \citeonline{alam2025robust}, a AUC-ROC foi reportada como 1,0 para classificações binárias, indicando excelente separação entre classes, mas valores menores (e.g., 0,94 para algumas classes) foram observados em classificações multi-label, refletindo a complexidade de datasets desbalanceados.
 
 Outras métricas, como a matriz de confusão, fornecem uma visão detalhada dos erros do modelo, permitindo calcular taxas de falsos positivos e negativos. Em \citeonline{alam2025robust}, matrizes de confusão foram usadas para avaliar o desempenho do modelo ensemble em classificações binárias e multi-label, complementando as métricas de precisão e recall. Para aplicações em tempo real, como inspeções de UAVs, métricas adicionais, como tempo de inferência e complexidade computacional, também são consideradas, especialmente em modelos como YOLOv5 e YOLOv7, que priorizam eficiência \cite{peng2023edf}. A escolha das métricas deve, portanto, alinhar-se com os objetivos da aplicação, priorizando recall para segurança e mAP para detecção precisa de objetos em imagens.
+
+Por fim, compreender as métricas de avaliação é essencial para interpretar corretamente os resultados obtidos com diferentes modelos e técnicas de processamento de imagens. A próxima etapa do trabalho irá detalhar a metodologia proposta para aprimoramento dos processamentos e avaliação dos modelos.
 
 A Tabela~\ref{tab:metricas_avaliacao_modelos} apresenta um resumo das principais métricas utilizadas para avaliar o desempenho de modelos em tarefas de detecção de falhas em linhas de transmissão, destacando suas características e aplicações.
 
