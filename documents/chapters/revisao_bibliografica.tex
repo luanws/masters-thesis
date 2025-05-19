@@ -136,10 +136,26 @@ Os passos para a obtenção da saída de um neurônio artificial são:
 
 \begin{enumerate}
     \item O modelo recebe um número $m$ de entradas $x_1, x_2, ..., x_m$;
-    \item Cada uma dessas entradas é multiplicada por um peso: $x_1w_1, x_2w_2, ..., x_mw_m$;
-    \item Somam-se as entradas multiplicadas pelos seus respectivos pesos: $\sum_{n=1}^{m} w_n x_n$;
-    \item Adiciona-se o bias: $b + \sum_{n=1}^{m} w_n x_n$;
-    \item O resultado passa por uma função de ativação: $\varphi \left( b + \sum_{n=1}^{m} w_n x_n \right)$.
+    \item Cada uma dessas entradas é multiplicada por um peso, conforme a Equação~\ref{eq:entrada_peso}:
+    \begin{equation}
+        x_i w_i, \quad \text{para } i = 1, 2, ..., m
+        \label{eq:entrada_peso}
+    \end{equation}
+    \item Somam-se as entradas multiplicadas pelos seus respectivos pesos, conforme a Equação~\ref{eq:soma_pesos}:
+    \begin{equation}
+        \sum_{n=1}^{m} w_n x_n
+        \label{eq:soma_pesos}
+    \end{equation}
+    \item Adiciona-se o bias, conforme a Equação~\ref{eq:bias}:
+    \begin{equation}
+        b + \sum_{n=1}^{m} w_n x_n
+        \label{eq:bias}
+    \end{equation}
+    \item O resultado passa por uma função de ativação, conforme a Equação~\ref{eq:ativacao}:
+    \begin{equation}
+        \varphi \left( b + \sum_{n=1}^{m} w_n x_n \right)
+        \label{eq:ativacao}
+    \end{equation}
 \end{enumerate}
 
 Seguidos os passos, a equação de saída de um neurônio artificial é descrita pela Equação~\ref{eq:neuronio}.
@@ -157,7 +173,12 @@ Existem diversos tipos de redes neurais que se distinguem tanto em termos de seu
 
 \subsubsection{Perceptron (P), Feed Forward Network (FFN)}
 
-FFNs são o tipo mais básico de rede neural, em que a informação flui linearmente até a saída e cada neurônio realiza uma operação matemática linear do tipo $wx + b$, sendo $x$ o valor de entrada, $w$ o peso e $b$ o bias do neurônio. O resultado passa por uma função de ativação e em seguida é enviado para a próxima camada. As redes neurais do tipo FFN (exemplo mostrado através da Figura \ref{fig:ffn}) possuem conexões em apenas um único sentido, geralmente limitadas a 5 camadas \cite{alex2020}.
+FFNs são o tipo mais básico de rede neural, em que a informação flui linearmente até a saída e cada neurônio realiza uma operação matemática linear do tipo apresentado na Equação~\ref{eq:wx_b}. Sendo $x$ o valor de entrada, $w$ o peso e $b$ o bias do neurônio. O resultado passa por uma função de ativação e em seguida é enviado para a próxima camada. As redes neurais do tipo FFN (exemplo mostrado através da Figura \ref{fig:ffn}) possuem conexões em apenas um único sentido, geralmente limitadas a 5 camadas \cite{alex2020}.
+
+\begin{equation}
+    wx + b
+    \label{eq:wx_b}
+\end{equation}
 
 \begin{figure}[H]
     \centering
@@ -201,13 +222,30 @@ As funções de ativação introduzem não-linearidade nas redes neurais, permit
 A seguir, são apresentadas as três principais funções de ativação:
 
 \subsubsection{ReLU (Rectified Linear Unit)}
-Representada por $f(x) = \max(0, x)$, a ReLU é amplamente utilizada em camadas ocultas. Sua principal vantagem é a eficiência computacional e a aceleração da convergência do gradiente. Contudo, pode causar o problema dos neurônios mortos (Dying ReLU), quando valores negativos resultam sempre em zero \cite{agarap2018deep}.
+Representada pela Equação~\ref{eq:relu}, a ReLU é amplamente utilizada em camadas ocultas. Sua principal vantagem é a eficiência computacional e a aceleração da convergência do gradiente. Contudo, pode causar o problema dos neurônios mortos (Dying ReLU), quando valores negativos resultam sempre em zero \cite{agarap2018deep}.
+
+\begin{equation}
+    f(x) = \max(0, x)
+    \label{eq:relu}
+\end{equation}
 
 \subsubsection{Sigmoid}
-Definida por $f(x) = \frac{1}{1 + e^{-x}}$, transforma a entrada em um valor entre 0 e 1, sendo útil para problemas de classificação binária. Apesar de ser diferenciável e fornecer gradientes suaves, sofre com o problema do gradiente pequeno para valores extremos, o que dificulta o aprendizado \cite{langer2020approximating}.
+
+Definida pela Equação~\ref{eq:sigmoid}, transforma a entrada em um valor entre 0 e 1, sendo útil para problemas de classificação binária. Apesar de ser diferenciável e fornecer gradientes suaves, sofre com o problema do gradiente pequeno para valores extremos, o que dificulta o aprendizado \cite{langer2020approximating}.
+
+\begin{equation}
+    f(x) = \frac{1}{1 + e^{-x}}
+    \label{eq:sigmoid}
+\end{equation}
 
 \subsubsection{Softmax}
-A função Softmax é dada por $f(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}$ e é utilizada na camada de saída para classificação multiclasse. Ela converte os valores em uma distribuição de probabilidades, acentuando a classe de maior valor \cite{gao2017properties}.
+A função Softmax é apresentada na Equação~\ref{eq:softmax} e é utilizada na camada de saída para classificação multiclasse. Ela converte os valores em uma distribuição de probabilidades, acentuando a classe de maior valor \cite{gao2017properties}.
+
+
+\begin{equation}
+    f(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}
+    \label{eq:softmax}
+\end{equation}
 
 \subsubsection{Regras gerais para escolha de funções de ativação}
 
