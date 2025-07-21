@@ -23,6 +23,18 @@ O processo de segmentação realizado no trabalho é apresentado na Figura \ref{
     \fonte{\citeonline{zhang2022}.}
 \end{figure}
 
+\section{Detecção Melhorada de Defeitos em Isoladores Utilizando YOLOv7}
+O estudo de \citeonline{zheng2022improved} aborda a detecção de defeitos em isoladores utilizando um modelo YOLOv7 modificado por meio de diversas otimizações em sua arquitetura e processo de treinamento. O trabalho foca na detecção de defeitos em imagens com fundos complexos, utilizando um conjunto de dados com 1600 imagens para o experimento.
+
+A abordagem proposta não utiliza aprendizado por transferência, mas sim melhorias diretas no modelo. As principais modificações incluem:
+\begin{itemize}
+    \item O uso do algoritmo \textbf{K-means++} para gerar caixas de âncora (\textit{anchor boxes}) mais adequadas aos alvos.
+    \item A adição dos módulos \textbf{Coordinate Attention (CoordAtt)} e \textbf{HorBlock} para aprimorar a extração de características e focar em informações relevantes.
+    \item A implementação da função de perda \textbf{SIoU} para acelerar a convergência do modelo e da \textbf{focal loss} para lidar com o desbalanceamento entre amostras positivas e negativas.
+\end{itemize}
+
+Os resultados demonstram que o modelo melhorado é eficaz na detecção de defeitos pequenos, como \textit{flashovers} por poluição, alcançando uma precisão média (mAP) de 93,8\%. Este desempenho supera o modelo YOLOv7 original, bem como outras abordagens como Faster R-CNN e YOLOv5s.
+
 \section{Comparando redes neurais convolucionais e técnicas de pré- processamento para classificação de células HEp-2 em imagens de imunofluorescência}
 A pesquisa avalia seis estratégias de pré-processamento e cinco arquiteturas de CNNs de última geração para classificar células HEp-2 em imagens de imunofluorescência, uma tarefa crítica em diagnósticos médicos. Métodos como aumento de dados (rotações, espelhamentos), ajuste fino e otimização de hiperparâmetros foram testados em conjunto com arquiteturas como Inception-V3 e ResNet. Surpreendentemente, o melhor desempenho, com 98,28\% de precisão, foi alcançado ao treinar o modelo Inception-V3 do zero, utilizando apenas aumento de dados sem pré-processamento adicional. A conclusão sugere que, para esse tipo de imagem, técnicas tradicionais de pré-processamento podem ser menos impactantes quando o aumento de dados é bem implementado, desafiando a necessidade de etapas complexas de preparação. A contribuição do estudo está em mostrar que, em cenários específicos como imagens médicas de imunofluorescência, estratégias simples podem superar abordagens mais elaboradas, oferecendo uma alternativa eficiente para aplicações práticas em classificação \cite{rodrigues2020comparing}.
 A Figura \ref{fig:preprocessing_rodrigues2020comparing} apresenta os métodos e combinações de pré-processamentos utilizados no trabalho.
@@ -72,6 +84,10 @@ A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de
 \citeonline{wang2023} & Sem impacto significativo \\
 \hline
 \citeonline{zhang2022} & Melhorou o desempenho do modelo \\
+\hline
+\citeonline{zheng2022improved} & Aumento de dados e aprendizado por transferência melhoraram detecção \\
+\hline
+\citeonline{zou2024bolt} & Aprendizado por transferência eficaz para defeitos em parafusos \\
 \hline
 \end{tabular}
 }
