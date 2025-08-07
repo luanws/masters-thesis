@@ -1,5 +1,11 @@
 \chapter{Trabalhos relacionados}
 
+A utilização de ferramentas de inteligência artificial para diagnósticos em equipamentos tem se destacado como uma solução promissora no contexto da manutenção preventiva, especialmente diante do aumento da complexidade dos sistemas industriais e da necessidade de maior confiabilidade operacional \cite{Salvi2021}. O avanço tecnológico e a crescente disponibilidade de dados impulsionaram o desenvolvimento de métodos automatizados, tornando o diagnóstico mais eficiente e preciso.
+
+No setor elétrico, particularmente no sistema elétrico de potência, essas soluções têm ganhado relevância devido à criticidade dos ativos e ao impacto direto na continuidade do fornecimento de energia. A detecção precoce de falhas em componentes como isoladores, transformadores e linhas de transmissão é fundamental para evitar interrupções e reduzir custos de manutenção \cite{wang2023}. O uso de inteligência artificial permite analisar grandes volumes de dados e identificar padrões complexos, superando limitações das abordagens tradicionais.
+
+Diante desse cenário, diversos pesquisadores têm buscado aprimorar os métodos de diagnóstico automatizado, propondo novas técnicas e avaliando o impacto de diferentes estratégias de processamento de imagens e aprendizado profundo. As próximas seções apresentam uma revisão dos principais trabalhos relacionados, com o objetivo de contextualizar a importância do tema e caracterizar o estado da arte na área.
+
 \section{Análise Sustentável da Detecção de Falhas em Isoladores Baseada em Otimização Visual Refinada}
 O primeiro estudo aborda a detecção de falhas em isoladores em linhas de transmissão aéreas, destacando a vulnerabilidade desses componentes a fatores ambientais. A inspeção manual é ineficaz devido ao alto volume de dados e à complexidade dos fundos das imagens, levando à aplicação da rede neural convolucional de atenção regressiva (RA-CNN). O método proposto melhora a acurácia da detecção ao empregar extração de características em múltiplas escalas e operações recursivas, com otimização pelo algoritmo de Enxame de Partículas (PSO). Os resultados indicam que a RA-CNN (1+2+3) atinge 85,3\% de acurácia, superando os modelos FCAN e MG-CNN. Além disso, a abordagem proposta demonstra maior eficiência em tempo real, atingindo 25,4 FPS. \cite{wang2023}
 
@@ -16,6 +22,18 @@ O processo de segmentação realizado no trabalho é apresentado na Figura \ref{
     \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/segmentacao_zhang2022.png}
     \fonte{\citeonline{zhang2022}.}
 \end{figure}
+
+\section{Detecção Melhorada de Defeitos em Isoladores Utilizando YOLOv7}
+O estudo de \citeonline{zheng2022improved} aborda a detecção de defeitos em isoladores utilizando um modelo YOLOv7 modificado por meio de diversas otimizações em sua arquitetura e processo de treinamento. O trabalho foca na detecção de defeitos em imagens com fundos complexos, utilizando um conjunto de dados com 1600 imagens para o experimento.
+
+A abordagem proposta não utiliza aprendizado por transferência, mas sim melhorias diretas no modelo. As principais modificações incluem:
+\begin{itemize}
+    \item O uso do algoritmo \textbf{K-means++} para gerar caixas de âncora (\textit{anchor boxes}) mais adequadas aos alvos.
+    \item A adição dos módulos \textbf{Coordinate Attention (CoordAtt)} e \textbf{HorBlock} para aprimorar a extração de características e focar em informações relevantes.
+    \item A implementação da função de perda \textbf{SIoU} para acelerar a convergência do modelo e da \textbf{focal loss} para lidar com o desbalanceamento entre amostras positivas e negativas.
+\end{itemize}
+
+Os resultados demonstram que o modelo melhorado é eficaz na detecção de defeitos pequenos, como \textit{flashovers} por poluição, alcançando uma precisão média (mAP) de 93,8\%. Este desempenho supera o modelo YOLOv7 original, bem como outras abordagens como Faster R-CNN e YOLOv5s.
 
 \section{Comparando redes neurais convolucionais e técnicas de pré- processamento para classificação de células HEp-2 em imagens de imunofluorescência}
 A pesquisa avalia seis estratégias de pré-processamento e cinco arquiteturas de CNNs de última geração para classificar células HEp-2 em imagens de imunofluorescência, uma tarefa crítica em diagnósticos médicos. Métodos como aumento de dados (rotações, espelhamentos), ajuste fino e otimização de hiperparâmetros foram testados em conjunto com arquiteturas como Inception-V3 e ResNet. Surpreendentemente, o melhor desempenho, com 98,28\% de precisão, foi alcançado ao treinar o modelo Inception-V3 do zero, utilizando apenas aumento de dados sem pré-processamento adicional. A conclusão sugere que, para esse tipo de imagem, técnicas tradicionais de pré-processamento podem ser menos impactantes quando o aumento de dados é bem implementado, desafiando a necessidade de etapas complexas de preparação. A contribuição do estudo está em mostrar que, em cenários específicos como imagens médicas de imunofluorescência, estratégias simples podem superar abordagens mais elaboradas, oferecendo uma alternativa eficiente para aplicações práticas em classificação \cite{rodrigues2020comparing}.
@@ -66,6 +84,10 @@ A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de
 \citeonline{wang2023} & Sem impacto significativo \\
 \hline
 \citeonline{zhang2022} & Melhorou o desempenho do modelo \\
+\hline
+\citeonline{zheng2022improved} & Aumento de dados e aprendizado por transferência melhoraram detecção \\
+\hline
+\citeonline{zou2024bolt} & Aprendizado por transferência eficaz para defeitos em parafusos \\
 \hline
 \end{tabular}
 }
