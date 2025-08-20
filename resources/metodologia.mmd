@@ -1,0 +1,60 @@
+flowchart TD
+
+    %% INÍCIO
+    Start([Início]) --> DefMetrics[Definir métricas: acurácia, F1-score, tempo]
+
+    %% Seleção e validação do dataset
+    subgraph Seleção e validação do dataset
+        DefMetrics --> SelData[Selecionar dataset com imagens rotuladas]
+        SelData --> ValidData{Dataset está balanceado?}
+        ValidData -- Não --> AdjustData[Aplicar filtros e balanceamento]
+        ValidData -- Sim --> Preproc
+        AdjustData --> Preproc
+    end
+
+    %% Pré-processamento
+    subgraph Pré-processamento
+        Preproc[Aplicar técnicas básicas: normalização, recorte, ruído]
+        Preproc --> Aug[Aplicar data augmentation]
+        Aug --> CombProc{Combinar técnicas?}
+        CombProc -- Sim --> Combine[Gerar pipeline de técnicas combinadas]
+        CombProc -- Não --> SkipComb[Usar técnicas isoladas]
+    end
+
+    Combine --> AutoParams
+    SkipComb --> AutoParams
+
+    %% Ajuste de parâmetros
+    subgraph Ajuste de parâmetros
+        AutoParams[Otimizar parâmetros com busca automática]
+    end
+
+    %% Escolha e construção do modelo
+    subgraph Escolha e construção do modelo
+        AutoParams --> ModelSel[Selecionar modelo: CNN, ResNet, YOLO]
+        ModelSel --> TaskSel{Tipo de tarefa}
+
+        TaskSel -- Classificação --> BuildClass[Montar modelo de classificação]
+        TaskSel -- Detecção --> BuildDetect[Montar modelo de detecção]
+        TaskSel -- Regressão --> BuildReg[Montar modelo de regressão]
+    end
+
+    %% Treinamento
+    subgraph Treinamento
+        BuildClass --> Train
+        BuildDetect --> Train
+        BuildReg --> Train
+        Train[Treinar modelo com dados processados]
+    end
+
+    %% Avaliação e ajustes
+    subgraph Avaliação e ajustes
+        Train --> Eval[Avaliar com as métricas definidas]
+        Eval --> GoodPerf{Desempenho satisfatório?}
+
+        GoodPerf -- Não --> Tweak[Ajustar processamentos e modelo]
+        Tweak --> Preproc
+
+        GoodPerf -- Sim --> Compare[Comparar diferentes modelos e técnicas]
+        Compare --> Conclude([Conclusões e recomendações])
+    end

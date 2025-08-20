@@ -1,0 +1,8 @@
+flowchart TD
+    Start(["Início"]) --> Dataset["Seleção e validação do dataset"]
+    Dataset --> Preproc["Pré-processamento"]
+    Preproc --> Params["Ajuste de parâmetros"]
+    Params --> Model["Escolha e construção do modelo"]
+    Model --> Train["Treinamento"]
+    Train --> Eval["Avaliação e ajustes"] & Dataset
+    Eval --> Conclude(["Conclusões e recomendações"])

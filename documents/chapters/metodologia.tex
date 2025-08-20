@@ -10,6 +10,15 @@ A metodologia delineada neste estudo tem como propósito fundamental o desenvolv
     \fonte{Autor.}
 \end{figure}
 
+O fluxograma completo apresentado na Figura \ref{fig:fluxograma_metodologia} fornece uma visão macro de todas as etapas envolvidas na metodologia. Para facilitar a compreensão do fluxo e das inter-relações entre as fases, a Figura \ref{fig:fluxograma_geral} apresenta o fluxograma geral, que integra todos os fluxogramas menores das etapas subsequentes.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_geral}Fluxograma geral da metodologia, integrando todas as etapas principais}
+    \includegraphics[width=0.5\textwidth]{img/metodologia - geral.png}
+    \fonte{Autor.}
+\end{figure}
+
 O fluxograma da metodologia, apresentado na Figura \ref{fig:fluxograma_metodologia}, revela uma arquitetura robusta e pensada para a otimização de processamentos de imagens. Um dos pilares desta estrutura é a natureza iterativa do processo, evidenciada pelos ciclos de "Avaliação e ajustes" que retroalimentam as fases de "Pré-processamento" e "Escolha e construção do modelo". Essa recursividade é crucial, pois permite um refinamento contínuo das técnicas e parâmetros, adaptando-se aos resultados obtidos a cada iteração. A organização em módulos distintos, como "Seleção e validação do dataset", "Pré-processamento", "Ajuste de parâmetros", "Escolha e construção do modelo", "Treinamento" e "Avaliação e ajustes", é outra característica positiva, facilitando a depuração e o aprimoramento localizado de cada componente da metodologia. Essa modularidade assegura que, em caso de falhas ou resultados subótimos, a origem do problema possa ser isolada e corrigida eficientemente, sem comprometer a integridade do sistema como um todo.
 
 A seguir, cada uma das principais fases do processo será detalhada em seções específicas, abordando desde a definição das métricas e preparação dos dados até as estratégias de aprimoramento e avaliação final dos resultados.
@@ -25,7 +34,14 @@ A dificuldade inerente a esta etapa é, em geral, baixa, confinando-se principal
 
 \section{Seleção e Validação do Dataset}
 
-Esta seção detalha o processo de seleção, validação e preparação dos dados que servirão como base para todo o desenvolvimento da metodologia.
+Esta seção detalha o processo de seleção, validação e preparação dos dados que servirão como base para todo o desenvolvimento da metodologia. O fluxograma específico desta etapa é apresentado na Figura \ref{fig:fluxograma_selecao_dataset}, permitindo visualizar de forma clara o caminho percorrido desde a definição das métricas até o balanceamento dos dados.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_selecao_dataset}Fluxograma da etapa de seleção e validação do dataset}
+    \includegraphics[width=0.6\textwidth]{img/metodologia - 1 - seleção e validação do dataset.png}
+    \fonte{Autor.}
+\end{figure}
 
 \subsection{Definir métricas: acurácia, F1-score, tempo}
 O bloco "Definir métricas: acurácia, F1-score, tempo" é fundamental para estabelecer os critérios objetivos de avaliação que irão nortear todo o processo de otimização da metodologia. A expectativa é que, nesta fase inicial, sejam claramente especificadas as métricas que serão utilizadas para medir o sucesso das diferentes combinações de técnicas de processamento de imagem e arquiteturas de modelos. A definição prévia dessas métricas é crucial porque elas servirão como bússola para todas as decisões subsequentes, desde a seleção de técnicas de pré-processamento até a escolha final dos modelos mais eficazes.
@@ -57,7 +73,14 @@ A dificuldade de execução pode ser de média a alta, dependendo do grau de des
 
 \section{Pré-processamento}
 
-Esta seção detalha as etapas de processamento de imagens que visam otimizar os dados de entrada para maximizar o desempenho dos modelos de rede neural.
+Esta seção detalha as etapas de processamento de imagens que visam otimizar os dados de entrada para maximizar o desempenho dos modelos de rede neural. O fluxograma da Figura \ref{fig:fluxograma_preprocessamento} ilustra as decisões e operações realizadas nesta fase.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_preprocessamento}Fluxograma da etapa de pré-processamento}
+    \includegraphics[width=0.85\textwidth]{img/metodologia - 2 - pré-processamento.png}
+    \fonte{Autor.}
+\end{figure}
 
 \subsection{Aplicar técnicas básicas: normalização, recorte, ruído}
 O bloco "Aplicar técnicas básicas: normalização, recorte, ruído" é uma fase fundamental onde as imagens são submetidas a processamentos essenciais para maximizar a eficácia dos modelos de rede neural. A expectativa é que esta etapa envolva a aplicação de técnicas fundamentais como a normalização (padronização dos valores de pixels para escalas como [0,1] ou Z-score) \cite{Sharma2024}, o redimensionamento e recorte (ajustando imagens para as dimensões de entrada do modelo e extraindo regiões de interesse) \cite{Sharma2024}, e a redução de ruído (eliminando interferências com filtros como mediana ou filtros gaussianos) \cite{Sharma2024}.
@@ -96,7 +119,14 @@ A dificuldade de execução é baixa, sendo uma abordagem mais direta. A avalia�
 
 \section{Ajuste de Parâmetros}
 
-Esta seção detalha o processo de otimização automática dos parâmetros das técnicas de processamento de imagem.
+Esta seção detalha o processo de otimização automática dos parâmetros das técnicas de processamento de imagem. O fluxograma da Figura \ref{fig:fluxograma_ajuste_parametros} apresenta o fluxo de etapa única de ajuste automático dos parâmetros.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_ajuste_parametros}Fluxograma da etapa de ajuste de parâmetros}
+    \includegraphics[width=0.5\textwidth]{img/metodologia - 3 - ajustes de parâmetros.png}
+    \fonte{Autor.}
+\end{figure}
 
 \subsection{Otimizar parâmetros com busca automática}
 O bloco "Otimizar parâmetros com busca automática" representa um avanço significativo na eficiência da metodologia, substituindo a tediosa e muitas vezes inviável otimização manual. A expectativa é que, nesta fase, algoritmos de otimização automatizada sejam empregados para encontrar os valores ideais para os parâmetros das técnicas de processamento de imagem que estão sendo testadas. Isso pode incluir, por exemplo, a intensidade de um filtro de desfoque, o limiar de um ajuste de contraste, os parâmetros de técnicas de redução de ruído, ou os fatores de data augmentation.
@@ -109,7 +139,14 @@ A avaliação do sucesso é diretamente quantitativa: a melhoria mensurável nas
 
 \section{Escolha e Construção do Modelo}
 
-Esta seção detalha o processo de seleção e configuração das arquiteturas de redes neurais que serão utilizadas para avaliar a eficácia das técnicas de processamento de imagem.
+Esta seção detalha o processo de seleção e configuração das arquiteturas de redes neurais que serão utilizadas para avaliar a eficácia das técnicas de processamento de imagem. O fluxograma da Figura \ref{fig:fluxograma_escolha_modelo} ilustra as decisões envolvidas na escolha e montagem do modelo.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_escolha_modelo}Fluxograma da etapa de escolha e construção do modelo}
+    \includegraphics[width=1\textwidth]{img/metodologia - 4 - escolha e construção do modelo.png}
+    \fonte{Autor.}
+\end{figure}
 
 \subsection{Selecionar modelo: CNN, ResNet, YOLO}
 O bloco "Selecionar modelo: CNN, ResNet, YOLO" representa um ponto estratégico na metodologia onde é definida a arquitetura de rede neural que será utilizada para avaliar o impacto das técnicas de processamento de imagem. A expectativa é que esta seleção seja baseada na natureza específica da tarefa (classificação, detecção, ou regressão) e nas características do problema de detecção de falhas em isoladores.
@@ -148,7 +185,14 @@ A dificuldade de execução é média, similar à classificação mas com consid
 
 \section{Treinamento}
 
-Esta seção detalha o processo de treinamento dos modelos de rede neural utilizando os dados processados.
+Esta seção detalha o processo de treinamento dos modelos de rede neural utilizando os dados processados. O fluxograma da Figura \ref{fig:fluxograma_treinamento} apresenta o fluxo de atividades desta etapa.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_treinamento}Fluxograma da etapa de treinamento}
+    \includegraphics[width=0.85\textwidth]{img/metodologia - 5 - treinamento.png}
+    \fonte{Autor.}
+\end{figure}
 
 \subsection{Treinar modelo com dados processados}
 O bloco "Treinar modelo com dados processados" é o cerne do aprendizado e da adaptação do sistema. A expectativa é que, nesta fase, a arquitetura da rede neural previamente selecionada e configurada seja treinada utilizando os dados que passaram pelas etapas de processamento de imagem otimizadas. O propósito central é que o modelo aprenda a identificar e classificar as falhas nas imagens de isoladores, ajustando seus pesos e parâmetros de forma a minimizar a função de custo e otimizar as métricas de desempenho previamente definidas.
@@ -163,7 +207,14 @@ A diminuição progressiva da função de custo durante o treinamento e, crucial
 
 \section{Avaliação e Ajustes}
 
-Esta seção detalha o processo de avaliação dos resultados obtidos e os mecanismos de ajuste que permitem a melhoria iterativa da metodologia.
+Esta seção detalha o processo de avaliação dos resultados obtidos e os mecanismos de ajuste que permitem a melhoria iterativa da metodologia. O fluxograma da Figura \ref{fig:fluxograma_avaliacao} ilustra o ciclo de avaliação e ajustes.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_avaliacao}Fluxograma da etapa de avaliação e ajustes}
+    \includegraphics[width=0.85\textwidth]{img/metodologia - 6 - avaliação.png}
+    \fonte{Autor.}
+\end{figure}
 
 \subsection{Avaliar com as métricas definidas}
 O bloco "Avaliar com as métricas definidas" é a etapa de quantificação objetiva do desempenho do sistema utilizando as métricas estabelecidas no início da metodologia: acurácia, F1-score e tempo de processamento. A expectativa é que, nesta fase, sejam calculadas e analisadas criticamente essas métricas robustas, que oferecem uma visão multifacetada da performance do modelo treinado.
