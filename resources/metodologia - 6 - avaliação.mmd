@@ -1,6 +1,6 @@
 flowchart TD
-    Train --> Eval[Avaliar com as métricas definidas]
+    Train[Treinamento] --> Eval[Avaliar com as métricas definidas]
     Eval --> GoodPerf{Desempenho satisfatório?}
     GoodPerf -- Não --> Tweak[Ajustar processamentos e modelo]
-    Tweak --> Preproc
+    Tweak --> Preproc[Pré-processamento]
     GoodPerf -- Sim --> Compare[Comparar diferentes modelos e técnicas]
