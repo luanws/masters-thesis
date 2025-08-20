@@ -1,0 +1,5 @@
+flowchart TD
+    ModelSel[Selecionar modelo: CNN, ResNet, YOLO] --> TaskSel{Tipo de tarefa}
+    TaskSel -- Classificação --> BuildClass[Montar modelo de classificação]
+    TaskSel -- Detecção --> BuildDetect[Montar modelo de detecção]
+    TaskSel -- Regressão --> BuildReg[Montar modelo de regressão]

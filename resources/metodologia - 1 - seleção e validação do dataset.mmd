@@ -1,0 +1,6 @@
+flowchart TD
+    DefMetrics[Definir métricas: acurácia, F1-score, tempo] --> SelData[Selecionar dataset com imagens rotuladas]
+    SelData --> ValidData{Dataset está balanceado?}
+    ValidData -- Não --> AdjustData[Aplicar filtros e balanceamento]
+    ValidData -- Sim --> EndSel
+    AdjustData --> EndSel[Dataset pronto]

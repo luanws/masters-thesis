@@ -1,0 +1,5 @@
+flowchart TD
+    Preproc[Aplicar técnicas básicas: normalização, recorte, ruído] --> Aug[Aplicar data augmentation]
+    Aug --> CombProc{Combinar técnicas?}
+    CombProc -- Sim --> Combine[Gerar pipeline de técnicas combinadas]
+    CombProc -- Não --> SkipComb[Usar técnicas isoladas]
