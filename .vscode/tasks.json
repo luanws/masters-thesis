@@ -2,22 +2,37 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Compile LaTeX",
-            "type": "shell",
-            "command": "./compile.sh",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "label": "Build Docker Image",
+            "type": "process",
+            "command": "docker",
+            "args": [
+                "build",
+                "-t",
+                "masters-latex",
+                "."
+            ],
             "problemMatcher": []
         },
         {
-            "label": "Fix Line Endings",
-            "type": "shell",
-            "command": "sed -i 's/\\r$//' compile.sh",
+            "label": "Compile LaTeX",
+            "type": "process",
+            "dependsOn": "Build Docker Image",
+            "command": "docker",
+            "args": [
+                "run",
+                "--rm",
+                "-v",
+                "${workspaceFolder}:/workspace",
+                "-w",
+                "/workspace",
+                "masters-latex",
+                "sh",
+                "-c",
+                "sed -i 's/\\r$//' compile.sh && sh ./compile.sh"
+            ],
             "group": {
                 "kind": "build",
-                "isDefault": false
+                "isDefault": true
             },
             "problemMatcher": []
         }
