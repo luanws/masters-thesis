@@ -12,7 +12,7 @@ Nesta fase do estudo, realiza-se uma análise detalhada sobre a otimização de 
 O conjunto de dados utilizado foi o DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), o qual consiste em imagens de isoladores de linhas de transmissão. Este acervo inclui anotações automáticas para detecção de objetos, totalizando 779 imagens brutas processadas. Após etapas de pré-processamento e redimensionamento para uma resolução fixa de $640 \times 640$ pixels, as imagens foram particionadas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é principalmente projetado para tarefas de detecção e classificação de defeitos estruturais em isoladores, demonstrando grande aptidão para o contexto de manutenção preditiva em infraestrutura elétrica.
 
 \subsubsection{Estratégia de Pré-Processamento}
-A técnica de pré-processamento selecionada foi intitulada \textit{ContrastEnhancement}, que recorre à biblioteca PIL (\textit{Python Imaging Library}) para retificar os níveis de contraste das amostras visuais. O método incide sobre o realce de contraste da imagem valendo-se da função \texttt{ImageEnhance.Contrast.enhance(factor)}, na qual a variável \texttt{factor} governa a intensidade da transformação. Valores de \texttt{factor} menores que 1,0 atenuam o contraste, ao passo que frações superiores a 1,0 resultam em intensificação. O hiperparâmetro otimizado foi, de forma exclusiva, o \texttt{factor}, estipulado no domínio dos números em ponto flutuante na faixa abarcada entre 0,5 e 3,0.
+A técnica de pré-processamento selecionada foi intitulada \textit{ContrastEnhancement}, que recorre à biblioteca PIL (\textit{Python Imaging Library}) para retificar os níveis de contraste das amostras visuais. O método incide sobre o realce de contraste da imagem valendo-se da função \texttt{ImageEnhance.Contrast.enhance(factor)}, na qual a variável \texttt{factor} governa a intensidade da transformação. Valores de \texttt{factor} menores que 1,0 atenuam o contraste, ao passo que frações superiores a 1,0 resultam em intensificação. O hiperparâmetro otimizado foi, de forma exclusiva, o \texttt{factor}, estipulado no domínio dos números em ponto flutuante na faixa abarcada entre 0,5 e 1,611.
 
 \subsubsection{Modelo de Aprendizado de Máquina}
 A estratégia de avaliação baseou-se um algoritmo simples de Rede Neural Convolucional (CNN), implementado sob o \textit{framework} TensorFlow/Keras. O projeto estrutural adotado abrange:
@@ -27,7 +27,7 @@ A estratégia de avaliação baseou-se um algoritmo simples de Rede Neural Convo
 Durante a compilação optou-se pelo otimizador Adam, atrelado a uma função objetivo de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}) com monitoramento de desempenho provido pela acurácia. O fluxo de treinamento limitou-se a 5 épocas globais. A avaliação do modelo culminou em inferências sobre o subconjunto de testes extraindo-se as métricas: acurácia, precisão, \textit{recall} e \textit{F1-score}.
 
 \subsubsection{Estratégia de Otimização Paramétrica}
-A arquitetura de otimização fundamentou-se no paradigma de Busca em Grade (\textit{Grid Search}), técnica exaustiva que avalia valores uniformemente graduados correspondentes ao hiperparâmetro de interesse. Assinalaram-se 5 instâncias distintas para o \texttt{factor}: 0,5, 1,125, 1,75, 2,375 e 3,0, espaçadas iterativamente valendo-se da função \texttt{numpy.linspace}.
+A arquitetura de otimização fundamentou-se no paradigma de Busca em Grade (\textit{Grid Search}), técnica exaustiva que avalia valores uniformemente graduados correspondentes ao hiperparâmetro de interesse. Assinalaram-se 5 instâncias distintas para o \texttt{factor}: 0,5, 0,778, 1,056, 1,333 e 1,611, espaçadas iterativamente valendo-se da função \texttt{numpy.linspace}.
 
 Para cada valor adotado do respectivo \texttt{factor}, o fluxo executou os seguintes passos:
 \begin{enumerate}
@@ -41,7 +41,7 @@ Para cada valor adotado do respectivo \texttt{factor}, o fluxo executou os segui
 
 A busca em grade consolida-se através da literatura como um método de eleição para o dimensionamento prático de parâmetros visando o ótimo absoluto perante discretização de instâncias curtas. A operacionalidade atrela-se a princípios fundamentais:
 \begin{itemize}
-    \item \textbf{Espaço de Busca:} A busca foi realizada de forma uniforme, testando valores entre 0,5 e 3,0 em 5 etapas.
+    \item \textbf{Espaço de Busca:} A busca foi realizada de forma uniforme, testando valores entre 0,5 e 1,611 em 5 etapas.
     \item \textbf{Custo Computacional:} Embora a busca em grade possa apresentar ineficiências em cenários com múltiplas variáveis a serem otimizadas, no presente caso, em que há apenas uma variável, tal limitação não se configura como um obstáculo significativo.
     \item \textbf{Atratividade Determinística:} Essa abordagem oferece alta reprodutibilidade científica ao contrário de métodos heurísticos como o \textit{Random Search} ou modelos estocásticos em buscas bayesianas.
 \end{itemize}
@@ -58,11 +58,11 @@ O ciclo de otimização contemplou satisfatoriamente as 5 métricas submetidas a
         \hline
         \textbf{Fator (\texttt{factor})} & \textbf{Acurácia} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\
         \hline
-        0,500   & 0,0000   & 0,0000   & 0,0000 & 0,0000 \\
-        1,125   & 0,0000   & 0,0000   & 0,0000 & 0,0000 \\
-        1,750   & 0,0000   & 0,0000   & 0,0000 & 0,0000 \\
-        2,375   & 0,8333   & 0,6944   & 0,8333 & 0,7576 \\
-        3,000   & 0,0000   & 0,0000   & 0,0000 & 0,0000 \\
+        0,5     & 0,767    & 0,588    & 0,767  & 0,665 \\
+        0,778   & 0,833    & 0,694    & 0,833  & 0,758 \\
+        1,056   & 0,800    & 0,640    & 0,800  & 0,711 \\
+        1,333   & 0,900    & 0,810    & 0,900  & 0,853 \\
+        1,611   & 0,833    & 0,694    & 0,833  & 0,758 \\
         \hline
     \end{tabular}
     \fonte{Autor.}
@@ -70,18 +70,18 @@ O ciclo de otimização contemplou satisfatoriamente as 5 métricas submetidas a
 
 \indent Mediante minucioso escrutínio dos eventos computados, atestam-se os pertinentes achados analíticos:
 \begin{itemize}
-    \item \textbf{Otimização Exponencial e Singular:} O marco otimizado recai sobre o fator aproximado de 2,375, onde obtiveram-se índices altamente significativos: 83,33\% de acurácia, 69,44\% de precisão e uma pontuação \textit{F1-score} alocada em 75,76\%. Este evento infere que um acréscimo de contraste moderadamente acentuado maximizou a discernibilidade morfológica do arcabouço convolucional de filtros em prol de detecção das características relevantes ao diagnóstico do problema.
-    \item \textbf{Ineficácia em Vértices Complementares:} Notarizou-se a derrocada dos treinamentos remanescentes (de fatores 0,5 a 1,75 e 3,0), com zeramento em massa no progresso dos \textit{scores} de eficiência preditiva, possivelmente acarretados pela inviabilização morfológica da imagem perante deficiência nas taxas luminosas do \textit{input}, parada prematura da rede em minimização do gradiente ou estouro em vazamento nas matrizes visuais de contorno por supressão de textura.
-    \item \textbf{Comportamento Não-Linear Intenso:} A volatilidade dos saltos transcreve o elevado patamar da sensibilidade da CNN não correspondendo fielmente com aproximações lineares. Em imediações promissoras como 1,75 as métricas declinaram integralmente indicando limites de operação sensíveis à transformação extrema inserida pelo filtro logarítmico na textura dos elementos constituintes da rede.
+    \item \textbf{Otimização Consistente:} O marco otimizado recai sobre o fator de 1,333, onde obtiveram-se índices altamente significativos: 90,0\% de acurácia, 81,0\% de precisão e uma pontuação \textit{F1-score} alocada em 85,3\%. Este evento infere que um acréscimo de contraste moderado maximizou a discernibilidade morfológica do arcabouço convolucional de filtros em prol de detecção das características relevantes ao diagnóstico do problema.
+    \item \textbf{Estabilidade nos Vértices Adjacentes:} Diferentemente de cenários com degradação extrema, notou-se que os fatores adjacentes (0,778 e 1,611) mantiveram um desempenho sólido, com acurácia de 83,3\% e \textit{F1-score} em torno de 75,8\%. Isso aponta para uma relativa robustez do modelo em relação a pequenas variações de contraste ao redor do ponto ótimo.
+    \item \textbf{Comportamento Côncavo Observável:} A variação do desempenho em relação ao fator de contraste descreve um comportamento característico de pico, onde reduções exageradas no contraste (fator de 0,5) afetam consideravelmente a capacidade preditiva, resultando nas métricas mais baixas observadas no experimento, como acurácia de 76,7\%.
 \end{itemize}
 
 Cita-se que o consolidado das medições extraídas foi resguardado visando a reprodutibilidade na trilha \texttt{optimization\_factor\_results.json}.
 
 \subsection{Síntese da Etapa e Encaminhamentos}
 
-As validações empíricas reiteram enfaticamente o papel expressivo da varredura sistemática adotada perfeitamente amoldada ao aperfeiçoamento prévio dos módulos convolucionais. O preditor fixou o \texttt{factor} ótimo estimado como sendo 2,375, com proveitos notáveis na detecção base sobre o DRNPW, assinalados no expressivo valor de aderência quantificado (83,33\% acurácia).
+As validações empíricas reiteram enfaticamente o papel expressivo da varredura sistemática adotada perfeitamente amoldada ao aperfeiçoamento prévio dos módulos convolucionais. O preditor fixou o \texttt{factor} ótimo estimado como sendo 1,333, com proveitos notáveis na detecção base sobre o DRNPW, assinalados no expressivo valor de aderência quantificado (90,0\% acurácia).
 
-Frente às discrepâncias contíguas colhidas onde os índices de \textit{score} desfaleceram sob constrições agudas de contraste visual, sinaliza-se expressamente recomendações iminentes focadas nas rodadas sequenciais englobando:
+Frente às variações colhidas onde os índices de \textit{score} oscilaram sob constrições ou acréscimos contínuos de contraste visual, sinaliza-se expressamente recomendações iminentes focadas nas rodadas sequenciais englobando:
 \begin{itemize}
     \item Verificação de processos autônomos por exploração bayesiana viabilizando eficiências dimensionais mais abrangentes a hiperparâmetros diversificados.
     \item Expansão amostral adensada que viabilize \textit{trials} de refinação granular em torno da região favorável já mapeada no fator de contraste, isolando picos globais exatos.
