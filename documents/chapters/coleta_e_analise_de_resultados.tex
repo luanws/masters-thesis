@@ -89,49 +89,32 @@ Frente às variações colhidas onde os índices de \textit{score} oscilaram sob
     \item Desdobrar destas simulações elementares as diretrizes vitais à validação robusta para implantações sob vigilância \textit{in loco} em infraestrutura isolante de usinas elétricas convencionais.
 \end{itemize}
 
-\section{Otimização de Parâmetros de Pré-Processamento em Visão Computacional: Busca Aleatória}
+\section{Avaliação de Busca Aleatória na Otimização de Parâmetros}
 
-\subsection{Introdução}
+Em complemento à análise anterior, conduziu-se uma investigação empírica empregando a configuração de busca aleatória (\textit{random search}). O objetivo consistiu em determinar o valor ótimo do fator de realce de contraste que maximizasse o poder preditivo da Rede Neural Convolucional (CNN), processando diferentes instâncias geradas de forma randômica num intervalo contínuo definido empiricamente. A avaliação manteve a utilização do conjunto de dados DRNPW.
 
-Este relatório apresenta um estudo atualizado sobre a otimização de parâmetros de pré-processamento em um \textit{pipeline} de aprendizado de máquina aplicado a tarefas de visão computacional. O objetivo consistiu em determinar, por meio de uma configuração experimental de busca aleatória (\textit{random search}), o valor ótimo do fator de realce de contraste de imagens que fosse capaz de maximizar o poder preditivo e o nível de aprendizado de uma Rede Neural Convolucional (CNN) em processos de classificação. As avaliações processaram diferentes instâncias geradas de forma randômica para este parâmetro num intervalo definido empiricamente. Todo o estudo foi conduzido sobre o conjunto de dados DRNPW, correspondente a um catálogo de imagens de isoladores operantes em linhas de transmissão.
+\subsection{Ajustes Metodológicos}
 
-\subsection{Metodologia}
+A experimentação preservou as características fundamentais da abordagem sistemática de grade, englobando o redimensionamento das matrizes de imagem para $640 \times 640$ pixels, o método de transformação global \textit{ContrastEnhancement} modelado pelo hiperparâmetro \texttt{factor}, bem como a mesma arquitetura de aprendizado supervisionada.
 
-\subsubsection{Conjunto de Dados}
+\subsubsection{Estratégia de Otimização Estocástica}
 
-O conjunto fotográfico referenciado na experimentação foi o DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), constituído de imagens reais de isoladores instalados na infraestrutura de transmissão elétrica. Esta base de dados contempla arquivos rotulados, direcionados para a posterior extração, identificação ou classificação de objetos de interesse estrutural. Visando o suporte uniforme à arquitetura de rede neural, as matrizes de imagem sofreram redimensionamento de escala na etapa de carregamento com alvos fixados à dimensão de $640 \times 640$ pixels.
+Em contraponto às simulações espaçadas linearmente vistas no rigor das progressões estáticas da busca em grade, este plano investigativo recorreu à estratégia de busca aleatória. A dinâmica teórica deste mecanismo repousa na constituição prévia do contínuo delimitado inferior e superiormente (0,5 a 3,0), prosseguindo à seleção amostral independente de coordenadas unificadas numa distribuição randômica. Foram estipuladas 10 tentativas avaliativas (\textit{trials}) independentes na simulação parametrizadora.
 
-\subsubsection{Pré-Processamento}
+\subsection{Apoio Teórico do Método de Busca Estocástica}
 
-Para o processo de transformação liminar, estabeleceu-se o método de alteração espacial global \textit{ContrastEnhancement}, cuja responsabilidade primária recai sobre o recálculo do balanceamento relacional de luminosidade nas amostras fotográficas da base. Essa técnica modela sistematicamente o contraste tendo como pivô escalar o parâmetro formal \texttt{factor}. A mecânica desta propriedade postula que instâncias inferiores a 1,0 operam uma compressão da distinção natural (amortizando limiares intermédios em áreas claras e escuras), em contraste ao passo crescente a partir de 1,0, focado em intensificar agressivamente as quebras limiares das bordas ou variações do sujeito em tela. Para englobar ambas dinâmicas de modo amplo estatisticamente, formulou-se na modelagem experimental desta rotina a progressão de 0,5 a 3,0 no caráter paramétrico de otimização estocástica.
-
-\subsubsection{Modelo de Aprendizado de Máquina}
-
-A abordagem investigativa principal fundamentou-se em uma arquitetura supervisionada de Rede Neural Convolucional (CNN), amplamente documentada para a exploração categórica e hierárquica na área computacional visual. O fluxo consistiu no rebatimento regular das informações provindas já em enquadramento de matriz tridimensional de $640 \times 640$ dispostas pelo estágio de transformação de contraste da fase preliminar. O modelo finalizou o escopo de seus subciclos de atualização ao concluir os ensaios formatados com um tempo interno ajustado em 5 épocas, focados inteiramente em decair a perda e aumentar a sensibilidade à generalização no lote representativo de prova (validação).
-
-\subsubsection{Estratégia de Otimização}
-
-Em contraponto às simulações espaçadas linearmente vistas no rigor das progressões estáticas, o plano investigativo de base recorreu à estratégia de busca aleatória (\textit{random search}). A dinâmica teórica deste mecanismo repousa na constituição prévia do contínuo delimitado inferiormente e superiormente (0,5 a 3,0), prosseguindo à seleção amostral independente das coordenadas baseadas numa distribuição randomizada unificada. Foram estipuladas exatas 10 tentativas avaliativas (\textit{trials}) independentes na simulação parametrizadora central. 
-
-\subsection{Teoria do Método Escolhido}
-
-\subsubsection{Busca Aleatória (\textit{Random Search})}
-
-A busca aleatória atua em contraponto às matrizes de enumeração rígidas, concebendo prospecções mais livres aos hiatos não convencionais de configurações latentes influentes dentro de um hiper-recinto. 
-
-\paragraph{Princípios Teóricos}
+A busca aleatória atua metodologicamente em contraposição às matrizes de enumeração rígidas, concebendo prospecções livres a hiatos não convencionais de configurações latentes. Entre os princípios teóricos que balizam a técnica, ressaltam-se:
 \begin{itemize}
-    \item \textbf{Espaço de Busca e Amostragem:} Considera integralmente as fronteiras do domínio e possibilita o despontar de testes cujas flutuações e decrescentes decimais expõem assimetrias finas, sem as regularidades intervalares discretas restritivas do método tabular.
-    \item \textbf{Vantagens Principais:} Em oposição a exaustões metodológicas, exibe proficiência e flexibilidade computacional na constatação de mínimos/máximos globais, notavelmente performático quando o dimensionamento abrange um raio onde atributos contínuos podem apresentar impactos assimétricos não antecipados aos passos (\textit{steps}) padronizados de forma simplória. 
-    \item \textbf{Desvantagens Relevantes:} É carente de rigor perante o cobrimento posicional absoluto exaustivo dos testes, sujeitando-se às leis estatísticas e ao risco de defasagem regional na validação da superfície topológica de hipóteses na carência de número expressivo de avaliações.
+    \item \textbf{Espaço de Busca e Amostragem:} Considera integralmente as fronteiras do domínio e possibilita testes cujas flutuações expõem assimetrias finas, sem as regularidades intervalares discretas restritivas próprias do método tabular.
+    \item \textbf{Vantagens Principais:} Exibe proficiência e flexibilidade computacional na constatação de mínimos/máximos globais, notavelmente performático quando o dimensionamento abrange um espaço onde atributos contínuos apresentam impactos não antecipados aos passos rígidos de simulação.
+    \item \textbf{Desvantagens Limitantes:} É carente de rigor perante o cobrimento posicional absoluto dos testes, sujeitando-se ao risco estatístico de defasagem na validação da superfície topológica quando não há número expressivo o suficiente de avaliações.
 \end{itemize}
 
-\paragraph{Comparação com Outras Estratégias}
-Ao confrontar suas práticas elementares à estratégia unificada da busca em grade (\textit{grid search}), nota-se a sobrecarga operacional inibitória atritante da grade aliada a uma suscetibilidade estruturada de desperdiçar eficiência em lacunas intermediárias cruciais aos resultados empíricos mais proeminentes de modelagens profundas de \textit{machine learning}. Alternativas probabilísticas previsoras como a otimização empírica bayesiana partem de similar amostragem para aprender o próprio custo avaliativo.
+Ao confrontar tais táticas elementares à estratégia unificada da busca em grade, infere-se que abordagens aleatórias auxiliam em sobrepor a ineficiência presente em lacunas intermediárias cruciais aos resultados empíricos mais proeminentes em redes profundas.
 
-\subsection{Resultados}
+\subsection{Resultados Reportados em Random Search}
 
-Do rol de flutuações amostradas ao modelo parametrizador numérico \texttt{factor} em \textit{random search}, compilou-se o resumo da eficácia sobre a seção validadora com as observações e resultados indicativos apadrinhados após processamento analítico profundo.
+Do rol de flutuações amostradas pelo hiperparâmetro \texttt{factor}, compilou-se a eficácia com base na seção validadora, acompanhada das correspondentes observações apuradas após processamento e decaimento da função de perda (vide Tabela \ref{tab:resultados_random_search}).
 
 \begin{table}[H]
     \centering
@@ -151,23 +134,24 @@ Do rol de flutuações amostradas ao modelo parametrizador numérico \texttt{fac
     \fonte{Autor.}
 \end{table}
 
-\subsubsection{Análise dos Resultados}
+\indent A análise comparativa atestou constatações pertinentes em correlação à performance global já validada no ensaio tabular prévio:
 \begin{itemize}
-    \item \textbf{Performance Máxima e Ponto Otimal:} Verificou-se através dos indicativos da grade validadora empírica o despontar resolutivo favorável à coordenada selecionada por sorteio de limite 1,4364 (Tentativa 1). Sob esses parâmetros, obteve-se retorno preditivo apriorístico de acurácia tangenciando \textbf{85,06\%}, consolidado simultaneamente pelas barreiras mais reduzidas captadas sobre a perda (\textit{loss} 4,1418).
-    \item \textbf{Sensibilidade de Domínio em Expansão Paramétrica:} Curvas não lineares de sensibilidade apresentaram instabilidades em hipertrofias visuais mais intensas. O contraste distorcido nas amostras de fato denotou recuos representativos em \texttt{factor} 2,3300 para o mínimo aferido (71,26\%) e decréscimo paralelo observado pontualmente sob 2,8768 (79,31\%). Demonstra-se assim a insuficiência modelar sobre espectros brutalizados onde falsos relevos são internalizados nas convoluções.
-    \item \textbf{Limites e Regimes Subtrativos:} Observando uma simulação recuada num fator contínuo inferior à neutralização primária de contraste (\texttt{factor} em 0,8900 na observação 5), foi mensurado um comportamento de toleramento relativo pela arquitetura retendo ainda a proporção preditiva conservadora base à zona de 78,16\%, o que endossa estabilidade frente à ofuscação sutil das texturas dos isolamentos elétricos na rede.
-    \item \textbf{Robustez Computacional:} Salutar o entendimento de que independente do espectro fotoluminescente inferido, não recaíram sobre a operação quaisquer impedimentos de avaliação de rede base, finalizando homogeneamente sem exceções (estados constatados de conclusão ininterrupta), corroborando a resiliência adaptativa à busca estocástica sem induções críticas de explosão operacional no fluxo.
+    \item \textbf{Performance Máxima e Ponto Ótimo:} Verificou-se através dos indicativos favoráveis o despontar da coordenada selecionada por sorteio de 1,4364 (Tentativa 1). Sob tais parâmetros, obteve-se o melhor desempenho estocástico (acurácia tangenciando 85,06\% e as barreiras mais reduzidas captadas para a \textit{loss}, 4,1418). Este evento solidificou o indício anterior de que zonas ligeiramente superiores a 1,0 resultam no "ponto doce" de melhor visualização convolucional.
+    \item \textbf{Sensibilidade de Domínio em Expansão:} Curvas não lineares de sensibilidade apresentaram instabilidades em hipertrofias visuais muito intensas. O contraste significativamente distorcido nas amostras resultou em recuos representativos no fator 2,3300 para o mínimo da análise (71,26\%) e decréscimos similares sob 2,8768 (79,31\%). Demonstra-se assim insuficiência sob espectros brutalizados, em que falsos relevos tornam-se obstáculos na classificação.
+    \item \textbf{Limites e Regimes Subtrativos:} Observando uma simulação recuada num fator contínuo inferior à neutralização primária (\texttt{factor} de 0,8900), obteve-se comportamento de tolerância pela rede (78,16\%), o que endossa a estabilidade da arquitetura mesmo frente à ofuscação parcial das texturas originais.
+    \item \textbf{Robustez Computacional:} Atesta-se que a técnica executou todos os ensaios sem introdução de induções críticas de explosão divergente ou interrupção do processamento das épocas.
 \end{itemize}
 
-\subsection{Conclusão}
+\subsection{Síntese da Etapa e Encaminhamentos Alternativos}
 
-Este estudo ratifica o respaldo categórico e a suficiência em se utilizar uma rotina focada em busca aleatória (\textit{random search}) como agente avaliador para calibrações de pré-processamento escalar do parâmetro limiar à visão computacional. O fator de contraste identificado metricamente superior equivalente a 1,4364 conferiu estabilidade de validação que alavancou e superou a expressividade pontual da capacidade previsora global da CNN focada no arranjo do repositório DRNPW. Foi confirmada a superioridade analítica deste arranjo a espaços numéricos fixos da técnica de grade.
+As constatações advindas deste estudo ratificam categórico respaldo à exequibilidade do método de busca aleatória como calibrador de limiares para a visão computacional. O pico aferido em 1,4364 conferiu estabilidade de validação que condiz e corrobora de forma similar os achados exaustivos obtidos na verificação otimizada em grade (cuja tangência do fator ótimo figurou perto de 1,33).
 
-Aventam-se em projeções posteriores visando ganhos subsequentes:
+Aventam-se projeções posteriores para alavancar a precisão paramétrica de calibração baseando-se neste referencial amostral amplificado:
 \begin{itemize}
-    \item Refinar e conciliar esta averiguação prospectiva não linear via abordagens de otimização estocásticas de aprendizagem interna, guiada através das matrizes bayesianas, para contornar instabilidades latentes de faixas contrastantes agressivas.
-    \item Expansão da experimentação multidimensional contemplando outros espectros de interferência de brilho concomitantemente com fatores não lineares, como os reajustes em cortes de isoladores ou enquadramentos complementando a métrica em resolução (\texttt{output\_resolution=640}).
+    \item Refinar e conciliar esta averiguação não linear estocástica recaindo à flexibilidade de modelos guiados empiricamente, mitigando incertezas da aleatoriedade por intermédio de Otimização Bayesiana.
+    \item Expandir as dimensões dos testes associando a outras camadas de perturbações visuais dos dados (como manipulações rotacionais e de resolução integradas ao laço paramétrico).
 \end{itemize}
+
 
 \section{Impacto dos Modelos no Desempenho dos Processamentos}
 Será analisado o impacto dos diferentes modelos de redes neurais no desempenho dos processamentos de imagem.
