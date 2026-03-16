@@ -2,6 +2,130 @@
 
 Este capítulo apresenta os resultados obtidos a partir da aplicação da metodologia proposta, iniciando com a análise detalhada da otimização de parâmetros de pré-processamento, seguida pela avaliação do impacto dos modelos, influência dos \textit{datasets} e comparação das estratégias.
 
+\section{Avaliação de Técnicas de Pré-Processamento em Redes Neurais Convolucionais para Classificação de Imagens}
+
+Esta seção descreve a avaliação conduzida para mensurar o impacto de iteradas técnicas de pré-processamento de imagens no desempenho preditivo de um modelo baseado em Redes Neurais Convolucionais (CNN). O estudo contemplou a análise de dois conjuntos de dados distintos voltados para a inspeção de infraestruturas elétricas (CPLID e DRNPW), com o propósito de diagnosticar a eficácia de diferentes transformações visuais na classificação de falhas e componentes.
+
+A abordagem seguiu uma sequência estruturada pautada no pré-processamento de imagens em alta resolução geométrica ($512 \times 512$ pixels), modelagem por CNN, predição probabilística e, por fim, a extração de métricas quantitativas.
+
+\subsection{Conjuntos de Dados Avaliados}
+A avaliação incidiu em dois conjuntos de dados voltados ao monitoramento e detecção de anomalias em isoladores de redes de transmissão de energia:
+\begin{enumerate}
+    \item \textbf{CPLID (\textit{Chinese Power Line Insulator Dataset}):} Este \textit{dataset} compreende imagens de isoladores elétricos, anotados como normais ou defeituosos. O desafio inerente diz respeito à correta categorização dos isoladores que sofrem quebras ou anomalias físicas na sua estrutura.
+    \item \textbf{DRNPW:} Um conjunto de dados disponibilizado pela CPFL constituído por imagens capturadas por drones, voltado para a identificação de aspectos específicos da infraestrutura. As imagens passaram por anotações e categorizam os objetos a fim de determinar suas classes com base nos recortes visuais de interesse.
+\end{enumerate}
+
+\subsection{Arquitetura do Modelo}
+Para fins de validação unificada, foi implementada uma CNN clássica padronizada, permitindo o isolamento da variável independente do estudo (o pré-processamento). A arquitetura estabelecida apresenta:
+\begin{itemize}
+    \item \textbf{Entrada:} Tensores de dimensionalidade configurada dependente das imagens processadas.
+    \item \textbf{Camadas de Extração de Características:} Duas configurações sequenciais convolucionais consistindo em 32 filtros (janelas $3 \times 3$) acompanhadas por funções de ativação \textit{Rectified Linear Unit} (ReLU) e subsequente redução espacial através de janelas de \textit{Max-Pooling} ($4 \times 4$).
+    \item \textbf{Camadas Densas:} Achatamento vetorial (\textit{Flatten layer}), seguida por uma formatação densa com 8 unidades ocultas (ativação ReLU) e saída probabilística implementada via rotina \textit{Softmax}, atrelada à quantidade de rótulos inerentes a cada \textit{dataset}.
+\end{itemize}
+
+A otimização dos pesos neuronais se deu através do algoritmo de descida estocástica Adam, sob ponderação da função de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}), sendo treinado por 50 épocas. Para ampliar a robustez e generalização da indução matemática, utilizaram-se translações de aumento de dados em tempo de treino (\textit{Data Augmentation}) compreendendo rotações, translações e inversões topológicas.
+
+\subsection{Técnicas de Pré-Processamento Avaliadas}
+Como variável independente deste recorte, foram injetadas diferentes técnicas de manipulação e filtragem de imagem pré-treino. As técnicas puras aplicadas individualmente ou em caráter compósito (híbrido) compreendem:
+\begin{itemize}
+    \item \textbf{\textit{Adaptive Threshold}:} Binarização adaptativa pautada em vizinhança gaussiana, permitindo o isolamento de características através de limites locais independentes.
+    \item \textbf{CLAHE (\textit{Contrast Limited Adaptive Histogram Equalization}):} Equalização de histograma adaptativa e segmentada em partições locais (\textit{grids}). Proporciona o realce de detalhes finos e contrasta texturas sem induzir à superexposição nas bordas.
+    \item \textbf{CLAHE e \textit{Contrast Enhancement} (Híbrido):} Aplicação sequencial da técnica adaptativa limitadora de contraste em blocos sucedida pelo ganho escalar iterativo no espectro luminoso.
+    \item \textbf{\textit{Contrast Enhancement}:} Realce global analítico da dinâmica de contraste, amplificando as diferenças intrínsecas dos sub-pixels através da injeção de um fator numérico multiplicador contínuo em sua matriz RGB.
+    \item \textbf{\textit{Contrast Enhancement} e CLAHE (Híbrido):} Aplicação sequencial acoplada pelo aumento primário de ganho local amplificando a diferença das polaridades, seguida da equalização regional limitadora.
+    \item \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram} (Híbrido):} Execução primária com foco no ganho escalar de luminância global, combinada ao esgotamento e equalização extrema absoluta dos níveis histogrâmicos.
+    \item \textbf{\textit{Denoise} (\textit{Fast NL-Means}):} Redução de ruído difuso preservando contornos fundamentais, utilizando o clássico algoritmo de médias não locais.
+    \item \textbf{\textit{Edge Detection}:} Descoberta e isolamento estrutural de bordas na imagem nativa.
+    \item \textbf{\textit{Equalize Histogram}:} Equalização do histograma global monocromático forçando a distribuição de intensidades na faixa dinâmica disponível.
+    \item \textbf{\textit{Equalize Histogram} e \textit{Contrast Enhancement} (Híbrido):} Expansão extensiva das frequências globais iniciais atrelada a uma finalização de correção de luminosidade por ganho de contraste simples.
+    \item \textbf{\textit{Gaussian Blur}:} Suavização espectral passa-baixo baseada num \textit{kernel} gaussiano.
+    \item \textbf{\textit{Gray Scale}:} Supressão dos intervalos de crominância originários ponderando níveis puramente luminescentes (escala de cinza).
+    \item \textbf{\textit{Median Blur}:} Filtro espacial não-linear da mediana da vizinhança de cada \textit{pixel}, atenuando características como ruídos "\textit{salt and pepper}".
+    \item \textbf{\textit{Original Image}:} Amostra de controle estabelecida como linha de base referencial não destrutiva.
+\end{itemize}
+
+O fluxo das execuções englobou o pré-processamento massivo (todas as matrizes originárias submetidas às variantes enumeradas aliadas a um redimensionamento fixo de $512 \times 512$ \textit{pixels}), o treinamento exaustivo das arquiteturas desenhadas em partições de validação estritas (nas 50 épocas documentadas), bem como o isolamento avaliativo mediante compilação do respectivo \textit{F1-Score}, Acurácia, Recall e Precisão.
+
+\subsection{Resultados e Discussões da Avaliação}
+As mensurações apuradas durante a rotina analítica evidenciam comportamentos distintos dependentes da natureza das peças e anomalias registradas em cada conjunto visual.
+
+\subsubsection{Desempenho no \textit{Dataset} CPLID}
+
+A observação das métricas salienta que estratégias ancoradas em aumento dinâmico do intervalo tonal obtiveram êxito bastante expressivo em classificar as fraturas morfológicas contíguas à modelagem em resina e cerâmica. O processo \textbf{\textit{Contrast Enhancement} Simples} sagrou-se como a aplicação dominante nestes dados, registrando altos limiares (Acurácia: 95,35\%, \textit{F1-score}: 96,55\%). Em estreita paridade analítica, encontra-se sua união híbrida com matrizes de correção limitativas como vista no \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (Acurácia: 95,35\%, \textit{F1-score}: 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (estabilizado perfeitamente em 95,35\% para todas as quatro vertentes dispostas). 
+
+Mecanismos que recorrem a algoritmos borrados, supressivos e desfocados afundaram drasticamente a aptidão predial – nivelando processamentos como \textbf{\textit{Gaussian Blur}} (67,44\% em Acurácia) abaixo mesmo das inferências atreladas aos recortes originais não tratados (93,02\%).
+
+Os valores registrados por essa compilação quantitativa são visualmente elencados de acordo com a Figura \ref{fig:cplid_acc} à Figura \ref{fig:cplid_recall}.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/Acurácia.svg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_acc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/F1 score.svg}
+    \caption{F1-Score das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_f1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/Precisão.svg}
+    \caption{Precisão das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_precisao}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/Recall.svg}
+    \caption{Recall das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_recall}
+\end{figure}
+
+
+\subsubsection{Desempenho no \textit{Dataset} DRNPW}
+
+No que concerne ao DRNPW – dotado de texturas inerentes a cenários com poluição visual significativa, o estudo endossa forte necessidade em combinações amplificadoras. A abordagem \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} desponta como protagonista categórica isolada do agrupamento, tangenciando 83,33\% (Acurácia) e 75,76\% (\textit{F1-score}). Filtros retentores baseados na segmentação de anomalias visuais como o \textbf{\textit{Median Blur}} e técnicas adaptativas (\textbf{CLAHE}, e suas derivações acopladas) conservaram viabilidade aceitável ao passo de garantirem aproximadamente 80,00\% em limite preditivo para precisão global e exatidão da detecção (junto a paridade em 71,11\% no \textit{F1-score}). 
+
+Mais do que constatada a inferioridade na manipulação destrutiva por isolamento colorimétrico, a técnica \textbf{\textit{Gray Scale}} sucumbiu os resultados aos índices sofríveis da margem estagnada de detecção contínua, com 63,33\% de Acurácia e 49,12\% de \textit{F1-score} na validação do respectivo \textit{dataset}.
+
+Estão tabulados os referenciais estritos na progressão das figuras \ref{fig:drnpw_acc} até a \ref{fig:drnpw_recall}.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/Acurácia.svg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_acc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/F1 score.svg}
+    \caption{F1-Score das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_f1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/Precisão.svg}
+    \caption{Precisão das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_precisao}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/Recall.svg}
+    \caption{Recall das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_recall}
+\end{figure}
+
+\subsection{Conclusão da Avaliação Analítica}
+
+A rotina de métricas observadas fundamenta que as operações baseadas na amplificação e polarização do intervalo luminoso incidem como vetores robustos à assertividade estrita sobre as instâncias convolucionais nos cenários delineados. Evidencia-se que tratativas contíguas de simples adaptação (valendo-se do \textit{Contrast Enhancement}) propiciam o destaque em domínios cujas falhas limitam-se à estrutura de constituição orgânica da silhueta do material isolador (CPLID), atenuando desvios marginais perante a amostra de controle referencial original. Entretanto, no que concerne aos objetos mergulhados junto à dispersão e contaminação em fundos agressivamente heterogêneos (\textit{datasets} na modalidade de drones como em DRNPW), postula-se a recomendação afirmativa pela preeminência de táticas híbridas combinatórias acoplando processamento histogrâmico, sob pena de inviabilização das restrições colorimétricas subtrativas.
+
 \section{Otimização de Parâmetros de Pré-Processamento em Visão Computacional}
 
 Nesta fase do estudo, realiza-se uma análise detalhada sobre a otimização de parâmetros de pré-processamento em um \textit{pipeline} de aprendizado de máquina aplicado à visão computacional. O objetivo principal consistiu em identificar o valor ótimo do parâmetro de realce de contraste em imagens de um \textit{dataset} específico, visando maximizar o desempenho de um modelo de rede neural convolucional (CNN) em tarefas de classificação. O estudo foi conduzido utilizando uma abordagem sistemática de busca em grade (\textit{grid search}), testando diferentes valores do parâmetro em um conjunto de dados de imagens de isoladores operantes em linhas de transmissão.
