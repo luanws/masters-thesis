@@ -2,8 +2,8 @@ name: Release PDF
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -16,14 +16,21 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Get tag version
+      id: tag
+      run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Copy PDF file
+      run: cp documents/out/main.pdf "documents/out/Dissertação ${{ steps.tag.outputs.version }}.pdf"
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ github.run_number }}
-        release_name: Release ${{ github.run_number }}
+        tag_name: ${{ steps.tag.outputs.version }}
+        release_name: Release ${{ steps.tag.outputs.version }}
         draft: false
         prerelease: false
 
@@ -34,5 +41,19 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: documents/out/main.pdf
-        asset_name: Dissertação.pdf
+        asset_name: Dissertação ${{ steps.tag.outputs.version }}.pdf
         asset_content_type: application/pdf
+
+    - name: Send email notification
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: 'Dissertação atualizada - ${{ steps.tag.outputs.version }}'
+        body: |
+          Uma nova versão da dissertação (${{ steps.tag.outputs.version }}) está disponível em anexo.
+        to: luan.w.silveira@gmail.com
+        from: 'luanws-no-reply'
+        attachments: documents/out/Dissertação ${{ steps.tag.outputs.version }}.pdf
