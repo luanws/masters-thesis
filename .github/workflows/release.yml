@@ -51,9 +51,18 @@ jobs:
         server_port: 465
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: 'Dissertação atualizada - ${{ steps.tag.outputs.version }}'
+        subject: 'Revisão da Dissertação - ${{ steps.tag.outputs.version }}'
         body: |
-          Uma nova versão da dissertação (${{ steps.tag.outputs.version }}) está disponível em anexo.
-        to: luan.w.silveira@gmail.com,paulo.c.luz@ufsm.br
+          Prezado Professor,
+          
+          Segue em anexo a versão atualizada da dissertação (${{ steps.tag.outputs.version }}) para sua avaliação e revisão.
+          
+          Fico no aguardo de suas considerações para realizarmos os ajustes necessários.
+          
+          Desde já, agradeço.
+          
+          Atenciosamente,
+          Luan Silveira
+        to: luan.w.silveira@gmail.com
         from: 'luanws-no-reply'
         attachments: documents/out/Dissertação ${{ steps.tag.outputs.version }}.pdf
