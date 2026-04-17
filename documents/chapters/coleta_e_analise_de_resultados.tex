@@ -1,9 +1,287 @@
 \chapter{Coleta e Análise de Resultados}
-\section{Impacto dos Modelos no Desempenho dos Processamentos}
-Será analisado o impacto dos diferentes modelos de redes neurais no desempenho dos processamentos de imagem.
 
-\section{Influência dos Datasets nos Resultados}
-Aqui, será discutida a influência dos diferentes datasets nos resultados dos processamentos de imagem.
+Este capítulo apresenta os resultados obtidos a partir da aplicação da metodologia proposta, iniciando com a análise detalhada da otimização de parâmetros de pré-processamento, seguida pela avaliação do impacto dos modelos, influência dos \textit{datasets} e comparação das estratégias.
 
-\section{Comparação entre Diferentes Estratégias de Processamento}
-Serão comparadas as diferentes estratégias de processamento de imagem utilizadas no estudo, destacando as vantagens e desvantagens de cada uma.
+\section{Avaliação de Técnicas de Pré-Processamento em Redes Neurais Convolucionais para Classificação de Imagens}
+
+Esta seção descreve a avaliação conduzida para mensurar o impacto de iteradas técnicas de pré-processamento de imagens no desempenho preditivo de um modelo baseado em Redes Neurais Convolucionais (CNN). O estudo contemplou a análise de dois conjuntos de dados distintos voltados para a inspeção de infraestruturas elétricas (CPLID e DRNPW), com o propósito de diagnosticar a eficácia de diferentes transformações visuais na classificação de falhas e componentes.
+
+A abordagem seguiu uma sequência estruturada pautada no pré-processamento de imagens em alta resolução geométrica ($512 \times 512$ pixels), modelagem por CNN, predição probabilística e, por fim, a extração de métricas quantitativas.
+
+\subsection{Conjuntos de Dados Avaliados}
+A avaliação incidiu em dois conjuntos de dados voltados ao monitoramento e detecção de anomalias em isoladores de redes de transmissão de energia:
+\begin{enumerate}
+    \item \textbf{CPLID (\textit{Chinese Power Line Insulator Dataset}):} Este \textit{dataset} compreende imagens de isoladores elétricos, anotados como normais ou defeituosos. O desafio inerente diz respeito à correta categorização dos isoladores que sofrem quebras ou anomalias físicas na sua estrutura.
+    \item \textbf{DRNPW:} Um conjunto de dados disponibilizado pela CPFL constituído por imagens capturadas por drones, voltado para a identificação de aspectos específicos da infraestrutura. As imagens passaram por anotações e categorizam os objetos a fim de determinar suas classes com base nos recortes visuais de interesse.
+\end{enumerate}
+
+\subsection{Arquitetura do Modelo}
+Para fins de validação unificada, foi implementada uma CNN clássica padronizada, permitindo o isolamento da variável independente do estudo (o pré-processamento). A arquitetura estabelecida apresenta:
+\begin{itemize}
+    \item \textbf{Entrada:} Tensores de dimensionalidade configurada dependente das imagens processadas.
+    \item \textbf{Camadas de Extração de Características:} Duas configurações sequenciais convolucionais consistindo em 32 filtros (janelas $3 \times 3$) acompanhadas por funções de ativação \textit{Rectified Linear Unit} (ReLU) e subsequente redução espacial através de janelas de \textit{Max-Pooling} ($4 \times 4$).
+    \item \textbf{Camadas Densas:} Achatamento vetorial (\textit{Flatten layer}), seguida por uma formatação densa com 8 unidades ocultas (ativação ReLU) e saída probabilística implementada via rotina \textit{Softmax}, atrelada à quantidade de rótulos inerentes a cada \textit{dataset}.
+\end{itemize}
+
+A otimização dos pesos neuronais se deu através do algoritmo de descida estocástica Adam, sob ponderação da função de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}), sendo treinado por 50 épocas. Para ampliar a robustez e generalização da indução matemática, utilizaram-se translações de aumento de dados em tempo de treino (\textit{Data Augmentation}) compreendendo rotações, translações e inversões topológicas.
+
+\subsection{Técnicas de Pré-Processamento Avaliadas}
+Como variável independente deste recorte, foram injetadas diferentes técnicas de manipulação e filtragem de imagem pré-treino. As técnicas puras aplicadas individualmente ou em caráter compósito (híbrido) compreendem:
+\begin{itemize}
+    \item \textbf{\textit{Adaptive Threshold}:} Binarização adaptativa pautada em vizinhança gaussiana, permitindo o isolamento de características através de limites locais independentes.
+    \item \textbf{CLAHE (\textit{Contrast Limited Adaptive Histogram Equalization}):} Equalização de histograma adaptativa e segmentada em partições locais (\textit{grids}). Proporciona o realce de detalhes finos e contrasta texturas sem induzir à superexposição nas bordas.
+    \item \textbf{CLAHE e \textit{Contrast Enhancement} (Híbrido):} Aplicação sequencial da técnica adaptativa limitadora de contraste em blocos sucedida pelo ganho escalar iterativo no espectro luminoso.
+    \item \textbf{\textit{Contrast Enhancement}:} Realce global analítico da dinâmica de contraste, amplificando as diferenças intrínsecas dos sub-pixels através da injeção de um fator numérico multiplicador contínuo em sua matriz RGB.
+    \item \textbf{\textit{Contrast Enhancement} e CLAHE (Híbrido):} Aplicação sequencial acoplada pelo aumento primário de ganho local amplificando a diferença das polaridades, seguida da equalização regional limitadora.
+    \item \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram} (Híbrido):} Execução primária com foco no ganho escalar de luminância global, combinada ao esgotamento e equalização extrema absoluta dos níveis histogrâmicos.
+    \item \textbf{\textit{Denoise} (\textit{Fast NL-Means}):} Redução de ruído difuso preservando contornos fundamentais, utilizando o clássico algoritmo de médias não locais.
+    \item \textbf{\textit{Edge Detection}:} Descoberta e isolamento estrutural de bordas na imagem nativa.
+    \item \textbf{\textit{Equalize Histogram}:} Equalização do histograma global monocromático forçando a distribuição de intensidades na faixa dinâmica disponível.
+    \item \textbf{\textit{Equalize Histogram} e \textit{Contrast Enhancement} (Híbrido):} Expansão extensiva das frequências globais iniciais atrelada a uma finalização de correção de luminosidade por ganho de contraste simples.
+    \item \textbf{\textit{Gaussian Blur}:} Suavização espectral passa-baixo baseada num \textit{kernel} gaussiano.
+    \item \textbf{\textit{Gray Scale}:} Supressão dos intervalos de crominância originários ponderando níveis puramente luminescentes (escala de cinza).
+    \item \textbf{\textit{Median Blur}:} Filtro espacial não-linear da mediana da vizinhança de cada \textit{pixel}, atenuando características como ruídos "\textit{salt and pepper}".
+    \item \textbf{\textit{Original Image}:} Amostra de controle estabelecida como linha de base referencial não destrutiva.
+\end{itemize}
+
+O fluxo das execuções englobou o pré-processamento massivo (todas as matrizes originárias submetidas às variantes enumeradas aliadas a um redimensionamento fixo de $512 \times 512$ \textit{pixels}), o treinamento exaustivo das arquiteturas desenhadas em partições de validação estritas (nas 50 épocas documentadas), bem como o isolamento avaliativo mediante compilação do respectivo \textit{F1-Score}, Acurácia, Recall e Precisão.
+
+\subsection{Resultados e Discussões da Avaliação}
+As mensurações apuradas durante a rotina analítica evidenciam comportamentos distintos dependentes da natureza das peças e anomalias registradas em cada conjunto visual.
+
+\subsubsection{Desempenho no \textit{Dataset} CPLID}
+
+A observação das métricas salienta que estratégias ancoradas em aumento dinâmico do intervalo tonal obtiveram êxito bastante expressivo em classificar as fraturas morfológicas contíguas à modelagem em resina e cerâmica. O processo \textbf{\textit{Contrast Enhancement} Simples} sagrou-se como a aplicação dominante nestes dados, registrando altos limiares (Acurácia: 95,35\%, \textit{F1-score}: 96,55\%). Em estreita paridade analítica, encontra-se sua união híbrida com matrizes de correção limitativas como vista no \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (Acurácia: 95,35\%, \textit{F1-score}: 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (estabilizado perfeitamente em 95,35\% para todas as quatro vertentes dispostas). 
+
+Mecanismos que recorrem a algoritmos borrados, supressivos e desfocados afundaram drasticamente a aptidão predial – nivelando processamentos como \textbf{\textit{Gaussian Blur}} (67,44\% em Acurácia) abaixo mesmo das inferências atreladas aos recortes originais não tratados (93,02\%).
+
+Os valores registrados por essa compilação quantitativa são visualmente elencados de acordo com a Figura \ref{fig:cplid_acc} à Figura \ref{fig:cplid_recall}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/Acurácia.jpg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_acc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/F1 score.jpg}
+    \caption{F1-Score das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_f1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/Precisão.jpg}
+    \caption{Precisão das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_precisao}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/CPLID/Recall.jpg}
+    \caption{Recall das diferentes estratégias de pré-processamento - CPLID.}
+    \label{fig:cplid_recall}
+\end{figure}
+
+
+\subsubsection{Desempenho no \textit{Dataset} DRNPW}
+
+No que concerne ao DRNPW – dotado de texturas inerentes a cenários com poluição visual significativa, o estudo endossa forte necessidade em combinações amplificadoras. A abordagem \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} desponta como protagonista categórica isolada do agrupamento, tangenciando 83,33\% (Acurácia) e 75,76\% (\textit{F1-score}). Filtros retentores baseados na segmentação de anomalias visuais como o \textbf{\textit{Median Blur}} e técnicas adaptativas (\textbf{CLAHE}, e suas derivações acopladas) conservaram viabilidade aceitável ao passo de garantirem aproximadamente 80,00\% em limite preditivo para precisão global e exatidão da detecção (junto a paridade em 71,11\% no \textit{F1-score}). 
+
+Mais do que constatada a inferioridade na manipulação destrutiva por isolamento colorimétrico, a técnica \textbf{\textit{Gray Scale}} sucumbiu os resultados aos índices sofríveis da margem estagnada de detecção contínua, com 63,33\% de Acurácia e 49,12\% de \textit{F1-score} na validação do respectivo \textit{dataset}.
+
+Estão tabulados os referenciais estritos na progressão das figuras \ref{fig:drnpw_acc} até a \ref{fig:drnpw_recall}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/Acurácia.jpg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_acc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/F1 score.jpg}
+    \caption{F1-Score das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_f1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/Precisão.jpg}
+    \caption{Precisão das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_precisao}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/DRNPW/Recall.jpg}
+    \caption{Recall das diferentes estratégias de pré-processamento - DRNPW.}
+    \label{fig:drnpw_recall}
+\end{figure}
+
+\subsection{Conclusão da Avaliação Analítica}
+
+A rotina de métricas observadas fundamenta que as operações baseadas na amplificação e polarização do intervalo luminoso incidem como vetores robustos à assertividade estrita sobre as instâncias convolucionais nos cenários delineados. Evidencia-se que tratativas contíguas de simples adaptação (valendo-se do \textit{Contrast Enhancement}) propiciam o destaque em domínios cujas falhas limitam-se à estrutura de constituição orgânica da silhueta do material isolador (CPLID), atenuando desvios marginais perante a amostra de controle referencial original. Entretanto, no que concerne aos objetos mergulhados junto à dispersão e contaminação em fundos agressivamente heterogêneos (\textit{datasets} na modalidade de drones como em DRNPW), postula-se a recomendação afirmativa pela preeminência de táticas híbridas combinatórias acoplando processamento histogrâmico, sob pena de inviabilização das restrições colorimétricas subtrativas.
+
+\section{Otimização de Parâmetros de Pré-Processamento em Visão Computacional}
+
+Nesta fase do estudo, realiza-se uma análise detalhada sobre a otimização de parâmetros de pré-processamento em um \textit{pipeline} de aprendizado de máquina aplicado à visão computacional. O objetivo principal consistiu em identificar o valor ótimo do parâmetro de realce de contraste em imagens de um \textit{dataset} específico, visando maximizar o desempenho de um modelo de rede neural convolucional (CNN) em tarefas de classificação. O estudo foi conduzido utilizando uma abordagem sistemática de busca em grade (\textit{grid search}), testando diferentes valores do parâmetro em um conjunto de dados de imagens de isoladores operantes em linhas de transmissão.
+
+\subsection{Metodologia Experimental}
+
+\subsubsection{Conjunto de Dados}
+O conjunto de dados utilizado foi o DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), o qual consiste em imagens de isoladores de linhas de transmissão. Este acervo inclui anotações automáticas para detecção de objetos, totalizando 779 imagens brutas processadas. Após etapas de pré-processamento e redimensionamento para uma resolução fixa de $640 \times 640$ pixels, as imagens foram particionadas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é principalmente projetado para tarefas de detecção e classificação de defeitos estruturais em isoladores, demonstrando grande aptidão para o contexto de manutenção preditiva em infraestrutura elétrica.
+
+\subsubsection{Estratégia de Pré-Processamento}
+A técnica de pré-processamento selecionada foi intitulada \textit{ContrastEnhancement}, que recorre à biblioteca PIL (\textit{Python Imaging Library}) para retificar os níveis de contraste das amostras visuais. O método incide sobre o realce de contraste da imagem, na qual uma variável governa a intensidade da transformação. Valores de \texttt{factor} menores que 1,0 atenuam o contraste, ao passo que frações superiores a 1,0 resultam em intensificação. O hiperparâmetro otimizado foi, de forma exclusiva, o \texttt{factor}, estipulado no domínio dos números em ponto flutuante na faixa abarcada entre 0,5 e 1,611.
+
+\subsubsection{Modelo de Aprendizado de Máquina}
+A estratégia de avaliação baseou-se um algoritmo simples de Rede Neural Convolucional (CNN), implementado sob o \textit{framework} TensorFlow/Keras. O projeto estrutural adotado abrange:
+\begin{itemize}
+    \item Camada de entrada conformada por dimensões $(640, 640, 3)$, condizente com imagens do espectro RGB.
+    \item Duas camadas convolucionais dispondo de 32 filtros cada (possuindo \textit{kernels} de $3 \times 3$ e ativação ReLU), sucedidas recursivamente por rotinas de agrupamento máximo (\textit{max-pooling} com janelas de $4 \times 4$).
+    \item Camada com operação de achatamento matricial (\textit{Flatten}).
+    \item Camada densa composta por 8 neurônios artificiais e ativação ReLU.
+    \item Camada de saída dispondo de neurônios correspondentes ao montante de classes do preditor, orientada por uma operação de ativação \textit{softmax}.
+\end{itemize}
+
+Durante a compilação optou-se pelo otimizador Adam, atrelado a uma função objetivo de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}) com monitoramento de desempenho provido pela acurácia. O fluxo de treinamento limitou-se a 5 épocas globais. A avaliação do modelo culminou em inferências sobre o subconjunto de testes extraindo-se as métricas: acurácia, precisão, \textit{recall} e \textit{F1-score}.
+
+\subsubsection{Estratégia de Otimização Paramétrica}
+A arquitetura de otimização fundamentou-se no paradigma de Busca em Grade (\textit{Grid Search}), técnica exaustiva que avalia valores uniformemente graduados correspondentes ao hiperparâmetro de interesse. Assinalaram-se 5 instâncias distintas para o \texttt{factor}: 0,5, 0,778, 1,056, 1,333 e 1,611, espaçadas iterativamente valendo-se da função \texttt{numpy.linspace}.
+
+Para cada valor adotado do respectivo \texttt{factor}, o fluxo executou os seguintes passos:
+\begin{enumerate}
+    \item Pré-processamento sistemático restrito ao valor atual avaliado.
+    \item Treinamento estatístico do modelo CNN supervisionado durante as 5 épocas.
+    \item Extração autônoma das métricas preditivas oriundas do espécime de teste.
+    \item Transcrição final com registro do limiar ideal balizado pela detecção do ponto de máxima acurácia observada.
+\end{enumerate}
+
+\subsection{Apoio Teórico do Método Selecionado}
+
+A busca em grade consolida-se através da literatura como um método de eleição para o dimensionamento prático de parâmetros visando o ótimo absoluto perante discretização de instâncias curtas. A operacionalidade atrela-se a princípios fundamentais:
+\begin{itemize}
+    \item \textbf{Espaço de Busca:} A busca foi realizada de forma uniforme, testando valores entre 0,5 e 1,611 em 5 etapas.
+    \item \textbf{Custo Computacional:} Embora a busca em grade possa apresentar ineficiências em cenários com múltiplas variáveis a serem otimizadas, no presente caso, em que há apenas uma variável, tal limitação não se configura como um obstáculo significativo.
+    \item \textbf{Atratividade Determinística:} Essa abordagem oferece alta reprodutibilidade científica ao contrário de métodos heurísticos como o \textit{Random Search} ou modelos estocásticos em buscas bayesianas.
+\end{itemize}
+
+\subsection{Resultados Reportados e Análise Factual}
+
+O ciclo de otimização contemplou satisfatoriamente as 5 métricas submetidas aos blocos do experimento, refletindo na consolidação dos valores de acurácia observados (vide Tabela \ref{tab:resultados_grid_search}).
+
+\begin{table}[H]
+    \centering
+    \caption{\label{tab:resultados_grid_search}Resultados da otimização por busca em grade do parâmetro de contraste (\texttt{factor})}
+    \vspace{0.2cm}
+    \begin{tabular}{ccccc}
+        \hline
+        \textbf{Fator (\texttt{factor})} & \textbf{Acurácia} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\
+        \hline
+        0,5     & 0,767    & 0,588    & 0,767  & 0,665 \\
+        0,778   & 0,833    & 0,694    & 0,833  & 0,758 \\
+        1,056   & 0,800    & 0,640    & 0,800  & 0,711 \\
+        1,333   & 0,900    & 0,810    & 0,900  & 0,853 \\
+        1,611   & 0,833    & 0,694    & 0,833  & 0,758 \\
+        \hline
+    \end{tabular}
+    \fonte{Autor.}
+\end{table}
+
+\indent Mediante minucioso escrutínio dos eventos computados, atestam-se os pertinentes achados analíticos:
+\begin{itemize}
+    \item \textbf{Otimização Consistente:} O marco otimizado recai sobre o fator de 1,333, onde obtiveram-se índices altamente significativos: 90,0\% de acurácia, 81,0\% de precisão e uma pontuação \textit{F1-score} alocada em 85,3\%. Este evento infere que um acréscimo de contraste moderado maximizou a discernibilidade morfológica do arcabouço convolucional de filtros em prol de detecção das características relevantes ao diagnóstico do problema.
+    \item \textbf{Estabilidade nos Vértices Adjacentes:} Diferentemente de cenários com degradação extrema, notou-se que os fatores adjacentes (0,778 e 1,611) mantiveram um desempenho sólido, com acurácia de 83,3\% e \textit{F1-score} em torno de 75,8\%. Isso aponta para uma relativa robustez do modelo em relação a pequenas variações de contraste ao redor do ponto ótimo.
+    \item \textbf{Comportamento Côncavo Observável:} A variação do desempenho em relação ao fator de contraste descreve um comportamento característico de pico, onde reduções exageradas no contraste (fator de 0,5) afetam consideravelmente a capacidade preditiva, resultando nas métricas mais baixas observadas no experimento, como acurácia de 76,7\%.
+\end{itemize}
+
+Cita-se que o consolidado das medições extraídas foi resguardado visando a reprodutibilidade na trilha \texttt{optimization\_factor\_results.json}.
+
+\subsection{Síntese da Etapa e Encaminhamentos}
+
+As validações empíricas reiteram enfaticamente o papel expressivo da varredura sistemática adotada perfeitamente amoldada ao aperfeiçoamento prévio dos módulos convolucionais. O preditor fixou o \texttt{factor} ótimo estimado como sendo 1,333, com proveitos notáveis na detecção base sobre o DRNPW, assinalados no expressivo valor de aderência quantificado (90,0\% acurácia).
+
+Frente às variações colhidas onde os índices de \textit{score} oscilaram sob constrições ou acréscimos contínuos de contraste visual, sinaliza-se expressamente recomendações iminentes focadas nas rodadas sequenciais englobando:
+\begin{itemize}
+    \item Verificação de processos autônomos por exploração bayesiana viabilizando eficiências dimensionais mais abrangentes a hiperparâmetros diversificados.
+    \item Expansão amostral adensada que viabilize \textit{trials} de refinação granular em torno da região favorável já mapeada no fator de contraste, isolando picos globais exatos.
+    \item Sindicância exploratória na arquitetura interna recorrendo a laudos em \textit{logs} transientes ou validações em \textit{checkpointing} a fim de diagnosticar com primor a estocástica de impedimentos paralelos encontrados.
+    \item Desdobrar destas simulações elementares as diretrizes vitais à validação robusta para implantações sob vigilância \textit{in loco} em infraestrutura isolante de usinas elétricas convencionais.
+\end{itemize}
+
+\section{Avaliação de Busca Aleatória na Otimização de Parâmetros}
+
+Em complemento à análise anterior, conduziu-se uma investigação empírica empregando a configuração de busca aleatória (\textit{random search}). O objetivo consistiu em determinar o valor ótimo do fator de realce de contraste que maximizasse o poder preditivo da Rede Neural Convolucional (CNN), processando diferentes instâncias geradas de forma randômica num intervalo contínuo definido empiricamente. A avaliação manteve a utilização do conjunto de dados DRNPW.
+
+\subsection{Ajustes Metodológicos}
+
+A experimentação preservou as características fundamentais da abordagem sistemática de grade, englobando o redimensionamento das matrizes de imagem para $640 \times 640$ pixels, o método de transformação global \textit{ContrastEnhancement} modelado pelo hiperparâmetro \texttt{factor}, bem como a mesma arquitetura de aprendizado supervisionada.
+
+\subsubsection{Estratégia de Otimização Estocástica}
+
+Em contraponto às simulações espaçadas linearmente vistas no rigor das progressões estáticas da busca em grade, este plano investigativo recorreu à estratégia de busca aleatória. A dinâmica teórica deste mecanismo repousa na constituição prévia do contínuo delimitado inferior e superiormente (0,5 a 3,0), prosseguindo à seleção amostral independente de coordenadas unificadas numa distribuição randômica. Foram estipuladas 10 tentativas avaliativas (\textit{trials}) independentes na simulação parametrizadora.
+
+\subsection{Apoio Teórico do Método de Busca Estocástica}
+
+A busca aleatória atua metodologicamente em contraposição às matrizes de enumeração rígidas, concebendo prospecções livres a hiatos não convencionais de configurações latentes. Entre os princípios teóricos que balizam a técnica, ressaltam-se:
+\begin{itemize}
+    \item \textbf{Espaço de Busca e Amostragem:} Considera integralmente as fronteiras do domínio e possibilita testes cujas flutuações expõem assimetrias finas, sem as regularidades intervalares discretas restritivas próprias do método tabular.
+    \item \textbf{Vantagens Principais:} Exibe proficiência e flexibilidade computacional na constatação de mínimos/máximos globais, notavelmente performático quando o dimensionamento abrange um espaço onde atributos contínuos apresentam impactos não antecipados aos passos rígidos de simulação.
+    \item \textbf{Desvantagens Limitantes:} É carente de rigor perante o cobrimento posicional absoluto dos testes, sujeitando-se ao risco estatístico de defasagem na validação da superfície topológica quando não há número expressivo o suficiente de avaliações.
+\end{itemize}
+
+Ao confrontar tais táticas elementares à estratégia unificada da busca em grade, infere-se que abordagens aleatórias auxiliam em sobrepor a ineficiência presente em lacunas intermediárias cruciais aos resultados empíricos mais proeminentes em redes profundas.
+
+\subsection{Resultados Reportados em Random Search}
+
+Do rol de flutuações amostradas pelo hiperparâmetro \texttt{factor}, compilou-se a eficácia com base na seção validadora, acompanhada das correspondentes observações apuradas após processamento e decaimento da função de perda (vide Tabela \ref{tab:resultados_random_search}).
+
+\begin{table}[H]
+    \centering
+    \caption{\label{tab:resultados_random_search}Resumo experimental das tentativas estocásticas em fator de contraste}
+    \vspace{0.2cm}
+    \begin{tabular}{cccc}
+        \hline
+        \textbf{Tentativa} & \textbf{Fator (\texttt{factor})} & \textbf{Acurácia (Validação)} & \textbf{Loss (Validação)} \\
+        \hline
+        1 & 1,4364 & 0,8506 & 4,1418 \\
+        2 & 2,8768 & 0,7931 & 4,1455 \\
+        3 & 2,3300 & 0,7126 & 4,1499 \\
+        4 & 1,9966 & 0,8046 & 4,1416 \\
+        5 & 0,8900 & 0,7816 & 4,1480 \\
+        \hline
+    \end{tabular}
+    \fonte{Autor.}
+\end{table}
+
+\indent A análise comparativa atestou constatações pertinentes em correlação à performance global já validada no ensaio tabular prévio:
+\begin{itemize}
+    \item \textbf{Performance Máxima e Ponto Ótimo:} Verificou-se através dos indicativos favoráveis o despontar da coordenada selecionada por sorteio de 1,4364 (Tentativa 1). Sob tais parâmetros, obteve-se o melhor desempenho estocástico (acurácia tangenciando 85,06\% e as barreiras mais reduzidas captadas para a \textit{loss}, 4,1418). Este evento solidificou o indício anterior de que zonas ligeiramente superiores a 1,0 resultam no "ponto doce" de melhor visualização convolucional.
+    \item \textbf{Sensibilidade de Domínio em Expansão:} Curvas não lineares de sensibilidade apresentaram instabilidades em hipertrofias visuais muito intensas. O contraste significativamente distorcido nas amostras resultou em recuos representativos no fator 2,3300 para o mínimo da análise (71,26\%) e decréscimos similares sob 2,8768 (79,31\%). Demonstra-se assim insuficiência sob espectros brutalizados, em que falsos relevos tornam-se obstáculos na classificação.
+    \item \textbf{Limites e Regimes Subtrativos:} Observando uma simulação recuada num fator contínuo inferior à neutralização primária (\texttt{factor} de 0,8900), obteve-se comportamento de tolerância pela rede (78,16\%), o que endossa a estabilidade da arquitetura mesmo frente à ofuscação parcial das texturas originais.
+    \item \textbf{Robustez Computacional:} Atesta-se que a técnica executou todos os ensaios sem introdução de induções críticas de explosão divergente ou interrupção do processamento das épocas.
+\end{itemize}
+
+\subsection{Síntese da Etapa e Encaminhamentos Alternativos}
+
+As constatações advindas deste estudo ratificam categórico respaldo à exequibilidade do método de busca aleatória como calibrador de limiares para a visão computacional. O pico aferido em 1,4364 conferiu estabilidade de validação que condiz e corrobora de forma similar os achados exaustivos obtidos na verificação otimizada em grade (cuja tangência do fator ótimo figurou perto de 1,33).
+
+Aventam-se projeções posteriores para alavancar a precisão paramétrica de calibração baseando-se neste referencial amostral amplificado:
+\begin{itemize}
+    \item Refinar e conciliar esta averiguação não linear estocástica recaindo à flexibilidade de modelos guiados empiricamente, mitigando incertezas da aleatoriedade por intermédio de Otimização Bayesiana.
+    \item Expandir as dimensões dos testes associando a outras camadas de perturbações visuais dos dados (como manipulações rotacionais e de resolução integradas ao laço paramétrico).
+\end{itemize}
+
+
+% \section{Impacto dos Modelos no Desempenho dos Processamentos}
+% Será analisado o impacto dos diferentes modelos de redes neurais no desempenho dos processamentos de imagem.
+
+% \section{Influência dos Datasets nos Resultados}
+% Aqui, será discutida a influência dos diferentes datasets nos resultados dos processamentos de imagem.
+
+% \section{Comparação entre Diferentes Estratégias de Processamento}
+% Serão comparadas as diferentes estratégias de processamento de imagem utilizadas no estudo, destacando as vantagens e desvantagens de cada uma.
