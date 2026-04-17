@@ -54,6 +54,6 @@ jobs:
         subject: 'Dissertação atualizada - ${{ steps.tag.outputs.version }}'
         body: |
           Uma nova versão da dissertação (${{ steps.tag.outputs.version }}) está disponível em anexo.
-        to: luan.w.silveira@gmail.com
+        to: luan.w.silveira@gmail.com,paulo.c.luz@ufsm.br
         from: 'luanws-no-reply'
         attachments: documents/out/Dissertação ${{ steps.tag.outputs.version }}.pdf
