@@ -68,7 +68,7 @@ nelson.knak@ufsm.br}
 \maketitle
 
 \begin{abstract}
-A crescente demanda por sistemas automatizados de inspeção de cadeias de isoladores impulsiona o uso de inteligência artificial. Este trabalho propõe uma metodologia sistemática para comparar, selecionar e aprimorar técnicas de processamento de imagens, visando otimizar o desempenho preditivo de Redes Neurais Convolucionais (CNNs) na detecção de falhas. Utilizando os datasets CPLID e DRNPW, constatou-se que o pré-processamento é um fator vital e não óbvio. Para imagens com fundos homogêneos (CPLID), a técnica de ganho simples de contraste (Contrast Enhancement) alcançou 95,35\% de acurácia. Em ambientes complexos com poluição visual obtidos por drones (DRNPW), abordagens híbridas, que combinam realce de contraste e equalização de histograma, tornaram-se necessárias, atingindo 83,33\% de acurácia. A otimização paramétrica via busca em grade confirmou um fator ideal de ajuste de contraste situado em torno de 1,33, mitigando interferências destrutivas. Os resultados comprovam que não há uma técnica universalmente superior, dependendo substancialmente das características intrínsecas da imagem e do ambiente de captura.
+A crescente demanda por sistemas automatizados de inspeção de cadeias de isoladores impulsiona o uso de inteligência artificial. Este trabalho propõe uma metodologia sistemática para comparar, selecionar e aprimorar técnicas de processamento de imagens, visando otimizar o desempenho preditivo de Redes Neurais Convolucionais (CNNs) na detecção de falhas. Utilizando os \textit{datasets} CPLID e DRNPW, constatou-se que o pré-processamento é um fator vital e não óbvio. Para imagens com fundos homogêneos (CPLID), a técnica de ganho simples de contraste (\textit{Contrast Enhancement}) alcançou 95,35\% de acurácia. Em ambientes complexos com poluição visual obtidos por drones (DRNPW), abordagens híbridas, que combinam realce de contraste e equalização de histograma, tornaram-se necessárias, atingindo 83,33\% de acurácia. A otimização paramétrica via busca em grade (\textit{Grid Search}) confirmou um fator ideal de ajuste de contraste situado em torno de 1,33, mitigando interferências destrutivas. Os resultados comprovam que não há uma técnica universalmente superior, dependendo substancialmente das características intrínsecas da imagem e do ambiente de captura.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -109,7 +109,7 @@ Esse cuidado com o tratamento inicial reflete-se na performance de Redes Neurais
 
 Na literatura científica recente, uma profunda divergência evidencia-se no tocante aos impactos de técnicas preparatórias sobre o desempenho algorítmico. 
 
-Por um lado, diversos estudos relatam saltos notórios de exatidão decorrentes de intervenções ricas. Por exemplo, abordagens híbridas associando segmentação morfológica ao classificador Faster RCNN lograram contornar fundos distorcidos de torres de energia, alcançando \textit{recall} altíssimo de 0,98 na localização das cerâmicas fraturadas \cite{zhang2022}. De modo paralelo, arquiteturas modernizadas sob o framework YOLO (YOLOv7) demonstraram ser eficientes para detectar microdefeitos na isolação quando auxiliadas por ajustes arquitetônicos focados na captura coordenada de atenção \cite{zheng2022improved}.
+Por um lado, diversos estudos relatam saltos notórios de exatidão decorrentes de intervenções ricas. Por exemplo, abordagens híbridas associando segmentação morfológica ao classificador Faster RCNN lograram contornar fundos distorcidos de torres de energia, alcançando \textit{recall} altíssimo de 0,98 na localização das cerâmicas fraturadas \cite{zhang2022}. De modo paralelo, arquiteturas modernizadas sob o \textit{framework} YOLO (YOLOv7) demonstraram ser eficientes para detectar microdefeitos na isolação quando auxiliadas por ajustes arquitetônicos focados na captura coordenada de atenção \cite{zheng2022improved}.
 
 Em contrapartida, há pesquisas que questionam a intervenção excessiva na topologia da imagem. Alguns autores, testando complexas modificações sobre bancos de imagens médicas estruturadas (cujo comparativo é ilustrado na Fig. \ref{fig:preprocessing_rodrigues}), concluíram surpreendentemente que algoritmos profundos treinados totalmente do zero com imagens em estado bruto atingiram patamares de precisão superiores (98,28\%) do que versões submetidas a realces extremos e equalizações forçadas \cite{rodrigues2020comparing}. 
 
@@ -120,7 +120,7 @@ Em contrapartida, há pesquisas que questionam a intervenção excessiva na topo
     \label{fig:preprocessing_rodrigues}
 \end{figure}
 
-Essa perspectiva é reafirmada por constatações que advertem para o risco do ``sobre-processamento'', pontuando que exageros no realce podem obliterar gradientes vitais que a própria rede neural mapearia autonomamente \cite{ozturk2018histopathological}. Até mesmo em detecções diretas sobre redes elétricas com modelos RA-CNN baseados em otimização, há defesas para o treinamento linear com redimensionamento simples \cite{liu2021}.
+Essa perspectiva é reafirmada por constatações que advertem para o risco do "sobre-processamento", pontuando que exageros no realce podem obliterar gradientes vitais que a própria rede neural mapearia autonomamente \cite{ozturk2018histopathological}. Até mesmo em detecções diretas sobre redes elétricas com modelos RA-CNN baseados em otimização, há defesas para o treinamento linear com redimensionamento simples \cite{liu2021}.
 
 Essa ambiguidade expõe uma lacuna técnica notável: a ausência de um fluxo de determinação exata do limite tolerável de realce para diferentes espectros visuais. Os trabalhos raramente propõem a exploração quantitativa interativa do fator isolado de correção, presumindo blocos universais. O presente projeto, conforme metodizado nas seções a seguir, estrutura-se para transpor esse distanciamento empírico ao avaliar matematicamente parâmetros de controle como o \textit{Grid Search} diretamente na margem limiar do ganho de contraste, oferecendo um balizador tangível sobre quando e até quanto uma matriz de inspeção fotográfica deve ser editada.
 
@@ -159,7 +159,7 @@ O foco da experimentação analítica incidiu nas abordagens de iluminação, va
 
 A implementação dessa densa carga de filtros revelou na fase de inferência computacional que a viabilidade da rotina encontra-se rigidamente subordinada à topologia do fundo da imagem captada. 
 
-\subsection{Avaliação no Dataset CPLID}
+\subsection{Avaliação no \textit{Dataset} CPLID}
 
 Devido ao fundo predominantemente homogêneo dessas imagens, técnicas fundamentadas na amplificação direta do intervalo de iluminação provaram ser superiores para o isolamento das trincas na cerâmica. O emprego exclusivo do filtro \textbf{\textit{Contrast Enhancement}} logrou Acurácia de 95,35\% e \textit{F1-score} de 96,55\%. Rotinas compostas de \textit{Contrast Enhancement} com equalização adaptativa limitadora obtiveram valores paritários idênticos de exatidão. 
 
@@ -168,11 +168,11 @@ De forma antagônica, procedimentos supressivos de desfoque, notadamente o \text
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.48\textwidth]{img/cplid_acc.jpg}
-    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no dataset CPLID.}
+    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no \textit{dataset} CPLID.}
     \label{fig:cplid_acc}
 \end{figure}
 
-\subsection{Avaliação no Dataset DRNPW}
+\subsection{Avaliação no \textit{Dataset} DRNPW}
 
 No que concerne ao processamento de aerofotogrametria via drones (DRNPW), a densa presença de fundos com distorções arbóreas e metálicas suprimiu a eficácia das manipulações simples do CPLID. A abordagem de mitigação vitoriosa deu-se através de arquitetura híbrida: \textbf{\textit{Contrast Enhancement} seguido por \textit{Equalize Histogram}}. Essa mescla despontou como o expoente com expressivos 83,33\% de acurácia, isolando eficientemente os corpos de interesse da poluição visual subjacente.
 
@@ -181,7 +181,7 @@ Conversões restritivas como a de escalas de cinza (\textit{Gray Scale}) não re
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.48\textwidth]{img/drnpw_acc.jpg}
-    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no dataset DRNPW.}
+    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no \textit{dataset} DRNPW.}
     \label{fig:drnpw_acc}
 \end{figure}
 
@@ -215,7 +215,7 @@ A Busca em Grade foi estruturada sob 5 partições lineares rígidas. Conforme a
 
 Visando preencher hiatos não convencionais de configurações latentes entre as faixas discretas e testar flutuações extremas, aplicou-se também a amostragem estocástica. Foram avaliadas 5 tentativas em uma distribuição randômica contínua. 
 
-De acordo com a Tabela \ref{tab:resultados_random_search}, os dados comprovaram a vulnerabilidade do modelo frente a hipertrofias visuais muito intensas (como a acurácia decaindo para 71,26\% no fator 2,3300). Contudo, o método validou com êxito o "ponto doce" da CNN na fronteira aleatória de 1,4364 (atingindo 85,06\% de acurácia), defendendo uma margem extremamente compatível com o Grid Search. Ambas as buscas provam de forma complementar a eficiência de ajustes matemáticos sutis (próximos de 1,3 e 1,4), sem a necessidade de superexposição e distorção ruidosa total no espectro.
+De acordo com a Tabela \ref{tab:resultados_random_search}, os dados comprovaram a vulnerabilidade do modelo frente a hipertrofias visuais muito intensas (como a acurácia decaindo para 71,26\% no fator 2,3300). Contudo, o método validou com êxito o "ponto doce" da CNN na fronteira aleatória de 1,4364 (atingindo 85,06\% de acurácia), defendendo uma margem extremamente compatível com o \textit{Grid Search}. Ambas as buscas provam de forma complementar a eficiência de ajustes matemáticos sutis (próximos de 1,3 e 1,4), sem a necessidade de superexposição e distorção ruidosa total no espectro.
 
 \begin{table}[H]
     \centering
