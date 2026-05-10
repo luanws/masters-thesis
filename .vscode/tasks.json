@@ -35,6 +35,26 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Compile LaTeX (Sepoc)",
+            "type": "process",
+            "dependsOn": "Build Docker Image",
+            "command": "docker",
+            "args": [
+                "run",
+                "--rm",
+                "-v",
+                "${workspaceFolder}:/workspace",
+                "-w",
+                "/workspace",
+                "masters-latex",
+                "sh",
+                "-c",
+                "sed -i 's/\\r$//' compile_sepoc.sh && sh ./compile_sepoc.sh"
+            ],
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }

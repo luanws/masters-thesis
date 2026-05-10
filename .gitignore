@@ -1,2 +1,4 @@
 /documents/out/*
+/sepoc/out/*
 !/documents/out/main.pdf
+!/sepoc/out/main.pdf

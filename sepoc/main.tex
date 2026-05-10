@@ -1,0 +1,266 @@
+\documentclass[conference]{IEEEtran}
+% \IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage[portuguese]{babel}
+
+\addto\captionsportuguese{\renewcommand{\figurename}{Fig.}}
+\addto\captionsportuguese{\renewcommand{\tablename}{TABELA}}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+%\title{Conference Paper Title*\\
+%{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
+%should not be used}
+%\thanks{Identify applicable funding agency here. If none, delete this.}
+%}
+
+\title{ \LARGE \MakeUppercase{Método de aprimoramento de processamentos de imagens aplicados à detecção e classificação de falhas em cadeias de isoladores}}
+
+
+\author{
+\IEEEauthorblockN{1\textsuperscript{st} Luan Willig Silveira}
+\IEEEauthorblockA{\textit{Engenharia Elétrica} \\
+\textit{Universidade Federal de Santa Maria}\\
+Cachoeira do Sul, Brasil \\
+luan.w.silveira@gmail.com}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Paulo César Vargas Luz}
+\IEEEauthorblockA{\textit{Engenharia Elétrica} \\
+\textit{Universidade Federal de Santa Maria}\\
+Cachoeira do Sul, Brasil \\
+paulo.c.luz@ufsm.br}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Daniel Pinheiro Bernardon}
+\IEEEauthorblockA{\textit{Engenharia Elétrica} \\
+\textit{name of organization (of Aff.)}\\
+Cachoeira do Sul, Brasil \\
+dpbernardon@ufsm.br}
+\and
+\IEEEauthorblockN{4\textsuperscript{th} Dion Lenon Prediger Feil}
+\IEEEauthorblockA{\textit{Engenharia Elétrica} \\
+\textit{Universidade Federal de Santa Maria}\\
+Cachoeira do Sul, Brasil \\
+dion.feil@ufsm.br}
+\and
+\IEEEauthorblockN{5\textsuperscript{th} Laura Lisiane Callai dos Santos}
+\IEEEauthorblockA{\textit{Engenharia Elétrica} \\
+\textit{Universidade Federal de Santa Maria}\\
+Cachoeira do Sul, Brasil \\
+laura.santos@ufsm.br}
+\and
+\IEEEauthorblockN{6\textsuperscript{th} Nelson Knak Neto}
+\IEEEauthorblockA{\textit{Engenharia Elétrica} \\
+\textit{Universidade Federal de Santa Maria}\\
+Cachoeira do Sul, Brasil \\
+nelson.knak@ufsm.br}
+}
+
+\maketitle
+
+\begin{abstract}
+A crescente demanda por sistemas automatizados de inspeção de cadeias de isoladores impulsiona o uso de inteligência artificial. Este trabalho propõe uma metodologia sistemática para comparar, selecionar e aprimorar técnicas de processamento de imagens, visando otimizar o desempenho preditivo de Redes Neurais Convolucionais (CNNs) na detecção de falhas. Utilizando os \textit{datasets} CPLID e DRNPW, constatou-se que o pré-processamento é um fator vital. Para imagens com fundos homogêneos (CPLID), a técnica de ganho simples de contraste (\textit{Contrast Enhancement}) alcançou 95,35\% de acurácia. Em ambientes complexos com poluição visual obtidos por drones (DRNPW), abordagens híbridas, que combinam realce de contraste e equalização de histograma, tornaram-se necessárias, atingindo 83,33\% de acurácia. A otimização paramétrica via busca em grade (\textit{Grid Search}) confirmou um fator ideal de ajuste de contraste situado em torno de 1,33, mitigando interferências destrutivas. Os resultados comprovam que não há uma técnica universalmente superior, dependendo substancialmente das características intrínsecas da imagem e do ambiente de captura.
+\end{abstract}
+
+\begin{IEEEkeywords}
+processamento de imagens, redes neurais convolucionais, cadeias de isoladores, detecção de falhas, inteligência artificial
+\end{IEEEkeywords}
+
+
+\section{Introdução}
+
+A crescente demanda por sistemas automatizados de inspeção de cadeias de isoladores evidencia a necessidade de técnicas avançadas de processamento de imagem para a detecção precoce de falhas. A análise digital de imagens permite extrair características relevantes para identificar anomalias em componentes elétricos, possibilitando diagnósticos mais precisos nas linhas de transmissão de energia \cite{Gonzalez2008}. 
+
+Ademais, o emprego de redes neurais, e mais especificamente as Redes Neurais Convolucionais (CNNs), tem se destacado na resolução de problemas complexos de classificação e detecção, contribuindo para a robustez dos sistemas de inspeção \cite{LeCun2015, Krizhevsky2012}. Contudo, a eficácia preditiva desses modelos de inteligência artificial depende intrinsecamente da qualidade das imagens de entrada. Estudos apontam que a combinação de diferentes técnicas de pré-processamento, aliada ao ajuste automático de parâmetros, pode resultar em melhorias significativas no desempenho dos sistemas de diagnóstico automatizados \cite{Li2019}.
+
+Assim, o presente estudo tem como objetivo desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e classificação de falhas em cadeias de isoladores elétricos. Para isso, são estabelecidas métricas quantitativas de acurácia e \textit{F1-score}, bem como avaliadas estratégias unificadas e compostas de tratamentos de imagem aplicadas em dois conjuntos de dados distintos da área (CPLID e DRNPW).
+
+\section{Fundamentação Teórica e Trabalhos Relacionados}
+
+A utilização de ferramentas de inteligência artificial para diagnósticos em equipamentos tem se destacado como uma solução promissora no contexto da manutenção preventiva, especialmente diante do aumento da complexidade dos sistemas industriais do setor elétrico e da necessidade de maior confiabilidade operacional \cite{Salvi2021}. A detecção precoce de falhas em componentes como cadeias de isoladores, transformadores e suportes de linhas de transmissão é fundamental para evitar interrupções de longo prazo e reduzir custos associados à intervenção humana direta \cite{wang2023, eze2022deep}.
+
+\subsection{Processamento de Imagens e Redes Neurais}
+
+O processamento de imagens desempenha um papel inegociável na preparação dos dados visuais antes de sua alimentação em arquiteturas profundas de predição. Imagens capturadas por Veículos Aéreos Não Tripulados (VANTs) ou câmeras de inspeção frequentemente sofrem com ruídos visuais, interferência climática, variações severas de iluminação e fundos repletos de vegetação e poluição ambiental \cite{kumar2023novel}. 
+
+Entre as técnicas fundamentais destacam-se a normalização e a padronização de histogramas, as quais são aplicadas para mitigar oscilações abruptas de intensidade luminosa nos canais RGB, escalonando os valores e facilitando a convergência matemática no treinamento das redes \cite{sharma2024deep, chen2023robustness}. Do mesmo modo, o redimensionamento padronizado reduz a carga computacional, adequando as matrizes visuais ao vetor de entrada exigido pela primeira camada convolucional, enquanto o aumento de dados (\textit{Data Augmentation}) supre a escassez endêmica de falhas reais catalogadas, gerando distorções espaciais sintéticas para melhorar a robustez do classificador \cite{shorten2019survey}.
+
+O ajuste de contraste é uma manipulação particularmente crítica no contexto de isoladores. Enquanto a \textit{Contrast Limited Adaptive Histogram Equalization} (CLAHE) evita a amplificação excessiva de ruído subdividindo a imagem para correção localizada \cite{sciencedirect2023normalization}, a equalização direta global foca na separação nítida das bordas fractais do material cerâmico ou vítreo deteriorado. Contudo, intervenções agressivas, como filtros supressivos excessivos, podem acarretar a perda de texturas vitais que caracterizam fraturas microscópicas ou contaminações na superfície do equipamento \cite{sharma2024deep}.
+
+Esse cuidado com o tratamento inicial reflete-se na performance de Redes Neurais Convolucionais (CNNs). Diferentemente das Redes \textit{Feed-Forward} tradicionais, as CNNs operam preservando a espacialidade das matrizes de imagem através de convoluções com \textit{kernels} locais, reduzindo a complexidade de abstração via \textit{MaxPooling} e extraindo mapas hierárquicos de textura e contraste de forma intrínseca \cite{LeCun2015}. Entretanto, a sua competência para delimitar as anomalias da rede elétrica obedece estritamente ao nível de representatividade dos dados, o que consolida o processo metodológico da matriz da imagem original, conforme a estrutura topológica demonstrada na Fig. \ref{fig:cnn}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{img/cnn.png}
+    \caption{Representação estrutural típica de uma Rede Neural Convolucional na extração de características visuais.}
+    \label{fig:cnn}
+\end{figure}
+
+\subsection{Trabalhos Correlatos e Lacunas da Literatura}
+
+Na literatura científica recente, uma profunda divergência evidencia-se no tocante aos impactos de técnicas preparatórias sobre o desempenho algorítmico. 
+
+Por um lado, diversos estudos relatam saltos notórios de exatidão decorrentes de intervenções ricas. Por exemplo, abordagens híbridas associando segmentação morfológica ao classificador Faster RCNN lograram contornar fundos distorcidos de torres de energia, alcançando \textit{recall} altíssimo de 0,98 na localização das cerâmicas fraturadas \cite{zhang2022}. De modo paralelo, arquiteturas modernizadas sob o \textit{framework} YOLO (YOLOv7) demonstraram ser eficientes para detectar microdefeitos na isolação quando auxiliadas por ajustes arquitetônicos focados na captura coordenada de atenção \cite{zheng2022improved}.
+
+Em contrapartida, há pesquisas que questionam a intervenção excessiva na topologia da imagem. Alguns autores, testando complexas modificações sobre bancos de imagens médicas estruturadas (cujo comparativo é ilustrado na Fig. \ref{fig:preprocessing_rodrigues}), concluíram surpreendentemente que algoritmos profundos treinados totalmente do zero com imagens em estado bruto atingiram patamares de precisão superiores (98,28\%) do que versões submetidas a realces extremos e equalizações forçadas \cite{rodrigues2020comparing}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{img/preprocessing_rodrigues2020comparing.png}
+    \caption{Comparativo de estratégias de processamento de imagens propostas na literatura para avaliação de modelos preditivos \cite{rodrigues2020comparing}.}
+    \label{fig:preprocessing_rodrigues}
+\end{figure}
+
+Essa perspectiva é reafirmada por constatações que advertem para o risco do "sobre-processamento", pontuando que exageros no realce podem obliterar gradientes vitais que a própria rede neural mapearia autonomamente \cite{ozturk2018histopathological}. Até mesmo em detecções diretas sobre redes elétricas com modelos RA-CNN baseados em otimização, há defesas para o treinamento linear com redimensionamento simples \cite{liu2021}.
+
+Essa ambiguidade expõe uma lacuna técnica notável: a ausência de um fluxo de determinação exata do limite tolerável de realce para diferentes espectros visuais. Os trabalhos raramente propõem a exploração quantitativa interativa do fator isolado de correção, presumindo blocos universais. O presente projeto, conforme metodizado nas seções a seguir, estrutura-se para transpor esse distanciamento empírico ao avaliar matematicamente parâmetros de controle como o \textit{Grid Search} diretamente na margem limiar do ganho de contraste, oferecendo um balizador tangível sobre quando e até quanto uma matriz de inspeção fotográfica deve ser editada.
+
+\section{Metodologia}
+
+A metodologia delineada possui um fluxo de trabalho estruturado para otimizar os processamentos aplicados nas imagens de entrada de uma CNN. O processo geral, detalhado na Fig. \ref{fig:metodologia_geral}, envolve iterativamente a seleção de \textit{datasets}, o pré-processamento da imagem, o ajuste paramétrico, e a avaliação através do treinamento de modelos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/metodologia - geral.png}
+    \caption{Fluxograma geral da metodologia proposta, detalhando o processo iterativo de tratamento e avaliação.}
+    \label{fig:metodologia_geral}
+\end{figure}
+
+A qualidade, a quantidade e a diversidade dos dados exercem um impacto direto no treinamento das redes profundas \cite{shorten2019survey, he2009learning}. Por esta razão, empregaram-se dois importantes conjuntos de dados de imagens no estudo:
+\begin{enumerate}
+    \item \textbf{CPLID (\textit{Chinese Power Line Insulator Dataset}):} Base caracterizada por fundos homogêneos, anotando recortes de isoladores estruturais sadios e com fraturas visíveis nas cascatas de vidro ou cerâmica.
+    \item \textbf{DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}):} Composto por recortes visuais complexos provenientes da inspeção aérea com drones. Estas amostras possuem fundos ruidosos e rica poluição visual de componentes topológicos adjacentes e vegetação.
+\end{enumerate}
+
+Para fins de validação dos processamentos, estruturou-se uma arquitetura CNN consistente em todas as avaliações. As imagens originais ($512 \times 512$ ou $640 \times 640$ pixels) são inseridas em duas camadas convolucionais sequenciais (\textit{kernels} de $3 \times 3$, 32 filtros, função de ativação ReLU, acopladas a agrupamentos \textit{Max-Pooling} de $4 \times 4$). Subsequentemente, os mapas de características convergem em um vetor final denso (\textit{Flatten layer}) ligado a 8 unidades ReLU antes da última camada probabilística de classificação (\textit{Softmax}).
+
+Durante o bloco de \textbf{Pré-processamento}, dezenas de filtros foram testados, tanto de forma unitária quanto híbrida, incluindo equalizações limitativas de espectro (CLAHE), variações tonais (\textit{Gray Scale}), binarizações (\textit{Adaptive Threshold}) e supressões retentoras (\textit{Fast NL-Means Denoise}, \textit{Gaussian Blur}). A técnica de \textit{Contrast Enhancement} ganha relevo especial manipulando o contraste analítico global dos substratos RGB através de um fator iterativo.
+
+Por fim, após a extração da configuração preditiva favorável, processou-se uma etapa de \textbf{Ajuste Paramétrico} com busca exaustiva em grade (\textit{Grid Search}), a fim de encontrar o ponto de estabilidade e pico absoluto de processamento do hiperparâmetro de contraste (variável \texttt{factor}), contornando distorções subtrativas \cite{sharma2024deep}.
+
+\section{Resultados e Discussões}
+
+\subsection{Delineamento dos Experimentos e Arquitetura}
+
+A validação metodológica avaliou o desempenho preditivo de uma Rede Neural Convolucional (CNN) especialmente desenvolvida para este projeto. A arquitetura clássica estipulada é constituída por camadas convolucionais sequenciais dotadas de 32 filtros com \textit{kernels} de $3 \times 3$, ativação ReLU e subsequente redução espacial topológica via \textit{Max-Pooling}. A classificação final é promovida por achatamento vetorial (\textit{Flatten}) e 8 neurônios nas camadas densas, convergindo à probabilidade por \textit{softmax}. O algoritmo foi rigorosamente otimizado por 50 épocas de treinamento sob translações de \textit{Data Augmentation}.
+
+O escopo extensivo dos experimentos baseou-se na submissão desta rede a 14 grupos distintos de pré-processamentos nas bases CPLID e DRNPW. O grupo de controle baseou-se nas matrizes em estado natural (\textit{Original Image}). Foram amplamente testados: algoritmos de limiarização (\textit{Adaptive Threshold}), detecção de contornos (\textit{Edge Detection}), conversores de restrição colorimétrica para escalas de cinza (\textit{Gray Scale}) e técnicas de suavização espectral e supressão de ruído pontuais (\textit{Gaussian Blur}, \textit{Median Blur} e \textit{Fast NL-Means Denoise}).
+
+O foco da experimentação analítica incidiu nas abordagens de iluminação, variando equalizações de histograma tanto parciais e adaptativas (CLAHE) quanto globais (\textit{Equalize Histogram}), além de métodos diretos de ganho escalar (\textit{Contrast Enhancement}). Testaram-se não somente as aplicações puras, mas implementações híbridas sequenciais com cruzamento de filtros para mensurar o limite do processamento iterativo.
+
+A implementação dessa densa carga de filtros revelou na fase de inferência computacional que a viabilidade da rotina encontra-se rigidamente subordinada à topologia do fundo da imagem captada. 
+
+\subsection{Avaliação no \textit{Dataset} CPLID}
+
+Devido ao fundo predominantemente homogêneo dessas imagens, técnicas fundamentadas na amplificação direta do intervalo de iluminação provaram ser superiores para o isolamento das trincas na cerâmica. O emprego exclusivo do filtro \textbf{\textit{Contrast Enhancement}} logrou Acurácia de 95,35\% e \textit{F1-score} de 96,55\%. Rotinas compostas de \textit{Contrast Enhancement} com equalização adaptativa limitadora obtiveram valores paritários idênticos de exatidão. 
+
+De forma antagônica, procedimentos supressivos de desfoque, notadamente o \textbf{\textit{Gaussian Blur}}, atenuaram as arestas úteis das anomalias do material e derrubaram drasticamente o acerto do modelo, registrando meros 67,44\% de acurácia preditiva, uma estagnação notória mesmo em oposição às matrizes originais em estado bruto (93,02\%). O desempenho quantitativo de todas as 14 variações experimentadas no respectivo conjunto de dados pode ser visualizado na Fig. \ref{fig:cplid_acc}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{img/cplid_acc.jpg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no \textit{dataset} CPLID.}
+    \label{fig:cplid_acc}
+\end{figure}
+
+\subsection{Avaliação no \textit{Dataset} DRNPW}
+
+No que concerne ao processamento de aerofotogrametria via drones (DRNPW), a densa presença de fundos com distorções arbóreas e metálicas suprimiu a eficácia das manipulações simples do CPLID. A abordagem de mitigação vitoriosa deu-se através de arquitetura híbrida: \textbf{\textit{Contrast Enhancement} seguido por \textit{Equalize Histogram}}. Essa mescla despontou como o expoente com expressivos 83,33\% de acurácia, isolando eficientemente os corpos de interesse da poluição visual subjacente.
+
+Conversões restritivas como a de escalas de cinza (\textit{Gray Scale}) não resistiram às variações tonais e despencaram as métricas para a margem mínima de 63,33\% em sua generalização, evidenciando que a crominância na observação ruidosa porta referências indissociáveis para o rastreamento local de objetos perante o classificador \cite{braga2011redes}. A consolidação global da acurácia de todos os métodos aplicados neste banco encontra-se na Fig. \ref{fig:drnpw_acc}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{img/drnpw_acc.jpg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no \textit{dataset} DRNPW.}
+    \label{fig:drnpw_acc}
+\end{figure}
+
+\subsection{Otimização Paramétrica}
+
+Apoiando a evidência favorável sobre a técnica de manipulação de contraste nos isoladores, delinearam-se duas abordagens de otimização de hiperparâmetros para o limite de amplificação (\texttt{factor}): a Busca em Grade (\textit{Grid Search}) e a Busca Aleatória (\textit{Random Search}).
+
+\subsubsection{Busca em Grade (\textit{Grid Search})}
+
+A Busca em Grade foi estruturada sob 5 partições lineares rígidas. Conforme aponta a Tabela \ref{tab:resultados_grid_search}, o ápice das predições de validação foi estabilizado num acréscimo ponderado fixado no limite de 1,333, auferindo notáveis 90,0\% de precisão global. Fatores excessivamente recuados, a exemplo do ponto 0,5, estagnaram as análises na base mais rebaixada reportada de todo o viés otimizado (76,7\%).
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados da otimização por busca em grade do parâmetro de contraste (\texttt{factor})}
+    \label{tab:resultados_grid_search}
+    \vspace{0.2cm}
+    \begin{tabular}{ccccc}
+        \hline
+        \textbf{Fator} & \textbf{Acurácia} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\
+        \hline
+        0,5     & 0,767    & 0,588    & 0,767  & 0,665 \\
+        0,778   & 0,833    & 0,694    & 0,833  & 0,758 \\
+        1,056   & 0,800    & 0,640    & 0,800  & 0,711 \\
+        \textbf{1,333}   & \textbf{0,900}    & \textbf{0,810}    & \textbf{0,900}  & \textbf{0,853} \\
+        1,611   & 0,833    & 0,694    & 0,833  & 0,758 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Busca Aleatória (\textit{Random Search})}
+
+Visando preencher hiatos não convencionais de configurações latentes entre as faixas discretas e testar flutuações extremas, aplicou-se também a amostragem estocástica. Foram avaliadas 5 tentativas em uma distribuição randômica contínua. 
+
+De acordo com a Tabela \ref{tab:resultados_random_search}, os dados comprovaram a vulnerabilidade do modelo frente a hipertrofias visuais muito intensas (como a acurácia decaindo para 71,26\% no fator 2,3300). Contudo, o método validou com êxito o "ponto doce" da CNN na fronteira aleatória de 1,4364 (atingindo 85,06\% de acurácia), defendendo uma margem extremamente compatível com o \textit{Grid Search}. Ambas as buscas provam de forma complementar a eficiência de ajustes matemáticos sutis (próximos de 1,3 e 1,4), sem a necessidade de superexposição e distorção ruidosa total no espectro.
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados da otimização estocástica (Random Search) no fator de contraste}
+    \label{tab:resultados_random_search}
+    \vspace{0.2cm}
+    \begin{tabular}{cccc}
+        \hline
+        \textbf{Tentativa} & \textbf{Fator} & \textbf{Acurácia} & \textbf{Loss (Validação)} \\
+        \hline
+        1 & \textbf{1,4364} & \textbf{0,8506} & \textbf{4,1418} \\
+        2 & 2,8768 & 0,7931 & 4,1455 \\
+        3 & 2,3300 & 0,7126 & 4,1499 \\
+        4 & 1,9966 & 0,8046 & 4,1416 \\
+        5 & 0,8900 & 0,7816 & 4,1480 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\section{Conclusão}
+
+O projeto demonstrou objetivamente que não há um método de tratativa de imagens de uso universal ou um simples algoritmo trivial. O acerto no emprego das Redes Neurais Convolucionais à inspeção de equipamentos vitais elétricos em campo depende de um roteiro analítico de adequação.
+
+A matriz avaliativa inferiu que o processamento ideal é rigorosamente dependente do seu contexto de fundo. Para cenários laboratoriais com baixo índice de ruído visual (CPLID), o realce simplório de polaridades luminosas detém resultados superlativos (superior a 95\% de acurácia). No entanto, frente à alta carga ambiental observada das câmeras aéreas por drones em isoladores urbanos (DRNPW), exige-se a sofisticação da implementação híbrida entre equalização do espectro num todo em comunhão iterativa ao ganho de contraste paramétrico. O alinhamento paramétrico de intensidade ideal revelado em valores entre 1,3 e 1,4 comprova por fim a inviabilidade dos parâmetros destrutivos agressivos e consolida um fluxo que resguarda as premissas essenciais à manutenção segura automatizada no setor elétrico.
+
+\begin{thebibliography}{00}
+\bibitem{Gonzalez2008} R. C. Gonzalez and R. E. Woods, \textit{Digital Image Processing}, 3rd ed. Prentice Hall, 2008.
+\bibitem{LeCun2015} Y. LeCun, Y. Bengio, and G. Hinton, ``Deep learning,'' \textit{Nature}, vol. 521, no. 7553, pp. 436--444, 2015.
+\bibitem{Krizhevsky2012} A. Krizhevsky, I. Sutskever, and G. E. Hinton, ``ImageNet classification with deep convolutional neural networks,'' \textit{Advances in Neural Information Processing Systems}, 2012.
+\bibitem{Li2019} X. Li et al., ``Fusion of image processing techniques for fault detection in electrical insulators,'' \textit{IEEE Transactions on Power Delivery}, vol. 34, no. 3, pp. 1234--1241, 2019.
+\bibitem{shorten2019survey} C. Shorten et al., ``A survey on Image Data Augmentation for Deep Learning,'' \textit{Journal of Big Data}, vol. 6, no. 1, pp. 1--48, 2019.
+\bibitem{he2009learning} H. He and E. A. Garcia, ``Learning from imbalanced data,'' \textit{IEEE Transactions on Knowledge and Data Engineering}, vol. 21, no. 9, pp. 1263--1284, 2009.
+\bibitem{sharma2024deep} A. Sharma et al., ``Deep learning models for digital image processing: a review,'' \textit{Artificial Intelligence Review}, 2024.
+\bibitem{braga2011redes} P. Braga and J. Silva, ``Aplicação de Redes Neurais Artificiais em Conjunto com o Método Vetorial da Propagação de Feixes na Análise de um Acoplador Direcional Baseado em Fibra Ótica,'' \textit{Revista Brasileira de Computação Aplicada}, vol. 16, 2011.
+\bibitem{Salvi2021} M. Salvi et al., ``The impact of pre- and post-image processing techniques on deep learning frameworks: A comprehensive review for digital pathology image analysis,'' \textit{Computers in Biology and Medicine}, vol. 128, 2021.
+\bibitem{wang2023} L. Wang et al., ``Análise Sustentável da Detecção de Falhas em Isoladores Baseada em Otimização Visual Refinada,'' \textit{Sustainability}, vol. 15, no. 4, 2023.
+\bibitem{eze2022deep} C. C. Eze et al., ``Deep learning for component fault detection in electricity transmission lines,'' \textit{Journal of Big Data}, vol. 9, no. 1, 2022.
+\bibitem{kumar2023novel} D. Kumar et al., ``A Novel Scheme of Fault Detection in Transmission Line using Image Processing,'' \textit{Global Journal of Computer Science and Technology}, vol. 17, no. 1, 2023.
+\bibitem{chen2023robustness} Y. Chen et al., ``Robustness of machine learning to color, size change, normalization, and image enhancement on micrograph datasets,'' \textit{Materials \& Design}, 2023.
+\bibitem{sciencedirect2023normalization} P. K. Malla et al., ``A comprehensive review of deep neural networks for medical image processing: Recent developments and future opportunities,'' \textit{Healthcare Analytics}, vol. 4, 2023.
+\bibitem{zhang2022} Z. Zhang et al., ``Detecção de Defeitos em Isoladores por Imagem Baseada em Processamento Morfológico e Aprendizado Profundo,'' \textit{Energies}, vol. 15, no. 7, 2022.
+\bibitem{zheng2022improved} J. Zheng et al., ``Insulator-Defect Detection Algorithm Based on Improved YOLOv7,'' \textit{Sensors}, vol. 22, no. 22, 2022.
+\bibitem{rodrigues2020comparing} L. F. Rodrigues, M. C. Naldi, and J. F. Mari, ``Comparing convolutional neural networks and preprocessing techniques for HEp-2 cell classification in immunofluorescence images,'' \textit{Computers in Biology and Medicine}, vol. 116, 2020.
+\bibitem{ozturk2018histopathological} \c{S}. \"Ozt\"urk and B. Akdemir, ``Effects of Histopathological Image Pre-processing on Convolutional Neural Networks,'' \textit{Procedia Computer Science}, vol. 132, pp. 396--403, 2018.
+\bibitem{liu2021} C. Liu et al., ``Detecção de Falhas em Isoladores em Imagens Aéreas de Linhas de Transmissão de Alta Voltagem Baseada em Modelo de Aprendizado Profundo,'' \textit{Appl. Sci.}, vol. 11, no. 10, 2021.
+\end{thebibliography}
+
+\end{document}
