@@ -96,7 +96,7 @@ Entre as técnicas fundamentais destacam-se a normalização e a padronização 
 
 O ajuste de contraste é uma manipulação particularmente crítica no contexto de isoladores. Enquanto a \textit{Contrast Limited Adaptive Histogram Equalization} (CLAHE) evita a amplificação excessiva de ruído subdividindo a imagem para correção localizada \cite{sciencedirect2023normalization}, a equalização direta global foca na separação nítida das bordas fractais do material cerâmico ou vítreo deteriorado. Contudo, intervenções agressivas, como filtros supressivos excessivos, podem acarretar a perda de texturas vitais que caracterizam fraturas microscópicas ou contaminações na superfície do equipamento \cite{sharma2024deep}.
 
-Esse cuidado com o tratamento inicial reflete-se na performance de Redes Neurais Convolucionais (CNNs). Diferentemente das Redes \textit{Feed-Forward} tradicionais, as CNNs operam preservando a espacialidade das matrizes de imagem através de convoluções com \textit{kernels} locais, reduzindo a complexidade de abstração via \textit{MaxPooling} e extraindo mapas hierárquicos de textura e contraste de forma intrínseca \cite{LeCun2015}. Entretanto, a sua competência para delimitar as anomalias da rede elétrica obedece estritamente ao nível de representatividade dos dados, o que consolida o processo metodológico da matriz da imagem original.
+Esse cuidado com o tratamento inicial reflete-se na performance de Redes Neurais Convolucionais (CNNs). Diferentemente das Redes \textit{Feed-Forward} tradicionais, as CNNs operam preservando a espacialidade das matrizes de imagem através de convoluções com \textit{kernels} locais, reduzindo a complexidade de abstração via \textit{MaxPooling} e extraindo mapas hierárquicos de textura e contraste de forma intrínseca \cite{LeCun2015}. Entretanto, a sua competência para delimitar as anomalias da rede elétrica obedece estritamente ao nível de representatividade dos dados, o que consolida o processo metodológico da matriz da imagem original, conforme a estrutura topológica demonstrada na Fig. \ref{fig:cnn}.
 
 \begin{figure}[H]
     \centering
@@ -111,7 +111,7 @@ Na literatura científica recente, uma profunda divergência evidencia-se no toc
 
 Por um lado, diversos estudos relatam saltos notórios de exatidão decorrentes de intervenções ricas. Por exemplo, abordagens híbridas associando segmentação morfológica ao classificador Faster RCNN lograram contornar fundos distorcidos de torres de energia, alcançando \textit{recall} altíssimo de 0,98 na localização das cerâmicas fraturadas \cite{zhang2022}. De modo paralelo, arquiteturas modernizadas sob o framework YOLO (YOLOv7) demonstraram ser eficientes para detectar microdefeitos na isolação quando auxiliadas por ajustes arquitetônicos focados na captura coordenada de atenção \cite{zheng2022improved}.
 
-Em contrapartida, há pesquisas que questionam a intervenção excessiva na topologia da imagem. Alguns autores, testando complexas modificações sobre bancos de imagens médicas estruturadas, concluíram surpreendentemente que algoritmos profundos treinados totalmente do zero com imagens em estado bruto atingiram patamares de precisão superiores (98,28\%) do que versões submetidas a realces extremos e equalizações forçadas \cite{rodrigues2020comparing}. 
+Em contrapartida, há pesquisas que questionam a intervenção excessiva na topologia da imagem. Alguns autores, testando complexas modificações sobre bancos de imagens médicas estruturadas (cujo comparativo é ilustrado na Fig. \ref{fig:preprocessing_rodrigues}), concluíram surpreendentemente que algoritmos profundos treinados totalmente do zero com imagens em estado bruto atingiram patamares de precisão superiores (98,28\%) do que versões submetidas a realces extremos e equalizações forçadas \cite{rodrigues2020comparing}. 
 
 \begin{figure}[H]
     \centering
@@ -149,19 +149,41 @@ Por fim, após a extração da configuração preditiva favorável, processou-se
 
 \section{Resultados e Discussões}
 
-A implementação dos filtros nas instâncias visuais e a respectiva inferência computacional elucidaram que a viabilidade de uma rotina pré-processual encontra-se rigidamente subordinada à topologia do fundo da imagem captada. 
+\subsection{Delineamento dos Experimentos e Arquitetura}
+
+A validação metodológica avaliou o desempenho preditivo de uma Rede Neural Convolucional (CNN) especialmente desenvolvida para este projeto. A arquitetura clássica estipulada é constituída por camadas convolucionais sequenciais dotadas de 32 filtros com \textit{kernels} de $3 \times 3$, ativação ReLU e subsequente redução espacial topológica via \textit{Max-Pooling}. A classificação final é promovida por achatamento vetorial (\textit{Flatten}) e 8 neurônios nas camadas densas, convergindo à probabilidade por \textit{softmax}. O algoritmo foi rigorosamente otimizado por 50 épocas de treinamento sob translações de \textit{Data Augmentation}.
+
+O escopo extensivo dos experimentos baseou-se na submissão desta rede a 14 grupos distintos de pré-processamentos nas bases CPLID e DRNPW. O grupo de controle baseou-se nas matrizes em estado natural (\textit{Original Image}). Foram amplamente testados: algoritmos de limiarização (\textit{Adaptive Threshold}), detecção de contornos (\textit{Edge Detection}), conversores de restrição colorimétrica para escalas de cinza (\textit{Gray Scale}) e técnicas de suavização espectral e supressão de ruído pontuais (\textit{Gaussian Blur}, \textit{Median Blur} e \textit{Fast NL-Means Denoise}).
+
+O foco da experimentação analítica incidiu nas abordagens de iluminação, variando equalizações de histograma tanto parciais e adaptativas (CLAHE) quanto globais (\textit{Equalize Histogram}), além de métodos diretos de ganho escalar (\textit{Contrast Enhancement}). Testaram-se não somente as aplicações puras, mas implementações híbridas sequenciais com cruzamento de filtros para mensurar o limite do processamento iterativo.
+
+A implementação dessa densa carga de filtros revelou na fase de inferência computacional que a viabilidade da rotina encontra-se rigidamente subordinada à topologia do fundo da imagem captada. 
 
 \subsection{Avaliação no Dataset CPLID}
 
 Devido ao fundo predominantemente homogêneo dessas imagens, técnicas fundamentadas na amplificação direta do intervalo de iluminação provaram ser superiores para o isolamento das trincas na cerâmica. O emprego exclusivo do filtro \textbf{\textit{Contrast Enhancement}} logrou Acurácia de 95,35\% e \textit{F1-score} de 96,55\%. Rotinas compostas de \textit{Contrast Enhancement} com equalização adaptativa limitadora obtiveram valores paritários idênticos de exatidão. 
 
-De forma antagônica, procedimentos supressivos de desfoque, notadamente o \textbf{\textit{Gaussian Blur}}, atenuaram as arestas úteis das anomalias do material e derrubaram drasticamente o acerto do modelo, registrando meros 67,44\% de acurácia preditiva, uma estagnação notória mesmo em oposição às matrizes originais em estado bruto (93,02\%).
+De forma antagônica, procedimentos supressivos de desfoque, notadamente o \textbf{\textit{Gaussian Blur}}, atenuaram as arestas úteis das anomalias do material e derrubaram drasticamente o acerto do modelo, registrando meros 67,44\% de acurácia preditiva, uma estagnação notória mesmo em oposição às matrizes originais em estado bruto (93,02\%). O desempenho quantitativo de todas as 14 variações experimentadas no respectivo conjunto de dados pode ser visualizado na Fig. \ref{fig:cplid_acc}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{img/cplid_acc.jpg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no dataset CPLID.}
+    \label{fig:cplid_acc}
+\end{figure}
 
 \subsection{Avaliação no Dataset DRNPW}
 
 No que concerne ao processamento de aerofotogrametria via drones (DRNPW), a densa presença de fundos com distorções arbóreas e metálicas suprimiu a eficácia das manipulações simples do CPLID. A abordagem de mitigação vitoriosa deu-se através de arquitetura híbrida: \textbf{\textit{Contrast Enhancement} seguido por \textit{Equalize Histogram}}. Essa mescla despontou como o expoente com expressivos 83,33\% de acurácia, isolando eficientemente os corpos de interesse da poluição visual subjacente.
 
-Conversões restritivas como a de escalas de cinza (\textit{Gray Scale}) não resistiram às variações tonais e despencaram as métricas para a margem mínima de 63,33\% em sua generalização, evidenciando que a crominância na observação ruidosa porta referências indissociáveis para o rastreamento local de objetos perante o classificador \cite{braga2011redes}.
+Conversões restritivas como a de escalas de cinza (\textit{Gray Scale}) não resistiram às variações tonais e despencaram as métricas para a margem mínima de 63,33\% em sua generalização, evidenciando que a crominância na observação ruidosa porta referências indissociáveis para o rastreamento local de objetos perante o classificador \cite{braga2011redes}. A consolidação global da acurácia de todos os métodos aplicados neste banco encontra-se na Fig. \ref{fig:drnpw_acc}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{img/drnpw_acc.jpg}
+    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no dataset DRNPW.}
+    \label{fig:drnpw_acc}
+\end{figure}
 
 \subsection{Otimização Paramétrica: Grid Search}
 
