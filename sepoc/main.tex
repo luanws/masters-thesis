@@ -185,11 +185,13 @@ Conversões restritivas como a de escalas de cinza (\textit{Gray Scale}) não re
     \label{fig:drnpw_acc}
 \end{figure}
 
-\subsection{Otimização Paramétrica: Grid Search}
+\subsection{Otimização Paramétrica}
 
-Apoiando a evidência favorável sobre a técnica de manipulação de contraste nos isoladores, delineou-se a Busca em Grade (\textit{Grid Search}) sob 5 partições lineares para o limite de amplificação do hiperparâmetro \texttt{factor} na biblioteca de realce. 
+Apoiando a evidência favorável sobre a técnica de manipulação de contraste nos isoladores, delinearam-se duas abordagens de otimização de hiperparâmetros para o limite de amplificação (\texttt{factor}) na biblioteca de realce: a Busca em Grade (\textit{Grid Search}) e a Busca Aleatória (\textit{Random Search}).
 
-Conforme aponta a Tabela \ref{tab:resultados_grid_search}, o ápice das predições de validação foi estabilizado num acréscimo ponderado fixado no limite de 1,333, auferindo notáveis 90,0\% de precisão global. Fatores excessivamente recuados, a exemplo do ponto 0,5, estagnaram as análises na base mais rebaixada reportada de todo o viés otimizado (76,7\%). O estudo secundário de amostragem estocástica (\textit{Random Search}) defendeu uma margem compatível validando ótimo na fronteira de 1,43. Ambas as buscas provam a eficiência de ajustes matemáticos sutis sem a necessidade de superexposição e distorção ruidosa total.
+\subsubsection{Busca em Grade (\textit{Grid Search})}
+
+A Busca em Grade foi estruturada sob 5 partições lineares rígidas. Conforme aponta a Tabela \ref{tab:resultados_grid_search}, o ápice das predições de validação foi estabilizado num acréscimo ponderado fixado no limite de 1,333, auferindo notáveis 90,0\% de precisão global. Fatores excessivamente recuados, a exemplo do ponto 0,5, estagnaram as análises na base mais rebaixada reportada de todo o viés otimizado (76,7\%).
 
 \begin{table}[H]
     \centering
@@ -205,6 +207,30 @@ Conforme aponta a Tabela \ref{tab:resultados_grid_search}, o ápice das prediç�
         1,056   & 0,800    & 0,640    & 0,800  & 0,711 \\
         \textbf{1,333}   & \textbf{0,900}    & \textbf{0,810}    & \textbf{0,900}  & \textbf{0,853} \\
         1,611   & 0,833    & 0,694    & 0,833  & 0,758 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Busca Aleatória (\textit{Random Search})}
+
+Visando preencher hiatos não convencionais de configurações latentes entre as faixas discretas e testar flutuações extremas, aplicou-se também a amostragem estocástica. Foram avaliadas 5 tentativas em uma distribuição randômica contínua. 
+
+De acordo com a Tabela \ref{tab:resultados_random_search}, os dados comprovaram a vulnerabilidade do modelo frente a hipertrofias visuais muito intensas (como a acurácia decaindo para 71,26\% no fator 2,3300). Contudo, o método validou com êxito o "ponto doce" da CNN na fronteira aleatória de 1,4364 (atingindo 85,06\% de acurácia), defendendo uma margem extremamente compatível com o Grid Search. Ambas as buscas provam de forma complementar a eficiência de ajustes matemáticos sutis (próximos de 1,3 e 1,4), sem a necessidade de superexposição e distorção ruidosa total no espectro.
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados da otimização estocástica (Random Search) no fator de contraste}
+    \label{tab:resultados_random_search}
+    \vspace{0.2cm}
+    \begin{tabular}{cccc}
+        \hline
+        \textbf{Tentativa} & \textbf{Fator} & \textbf{Acurácia} & \textbf{Loss (Validação)} \\
+        \hline
+        1 & \textbf{1,4364} & \textbf{0,8506} & \textbf{4,1418} \\
+        2 & 2,8768 & 0,7931 & 4,1455 \\
+        3 & 2,3300 & 0,7126 & 4,1499 \\
+        4 & 1,9966 & 0,8046 & 4,1416 \\
+        5 & 0,8900 & 0,7816 & 4,1480 \\
         \hline
     \end{tabular}
 \end{table}
