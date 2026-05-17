@@ -1,4 +1,4 @@
-cd documents
+cd sepoc
 mkdir -p out
 chmod u+w out
 chmod -R u+w out
