@@ -9,6 +9,7 @@ Esta seção descreve a avaliação conduzida para medir o impacto de diferentes
 A avaliação seguiu uma sequência estruturada: pré-processamento das imagens em resolução de $512 \times 512$ pixels, modelagem por CNN, predição e extração de métricas quantitativas.
 
 \subsection{Conjuntos de Dados Avaliados}
+\label{sec:conjuntos_de_dados_avaliados}
 A avaliação utilizou dois conjuntos de dados voltados ao monitoramento e à detecção de anomalias em isoladores de redes de transmissão:
 \begin{enumerate}
     \item \textbf{CPLID (\textit{Chinese Power Line Insulator Dataset}):} conjunto de imagens de isoladores elétricos, anotados como normais ou defeituosos. O desafio consiste em identificar corretamente os isoladores com quebras ou anomalias físicas na estrutura.
@@ -16,7 +17,7 @@ A avaliação utilizou dois conjuntos de dados voltados ao monitoramento e à de
 \end{enumerate}
 
 \subsection{Arquitetura do Modelo}
-Para garantir uma avaliação uniforme, foi implementada uma CNN clássica padronizada, o que permitiu isolar a variável independente do estudo (o pré-processamento). A arquitetura adotada é a seguinte:
+Para garantir uma avaliação uniforme, foi implementada uma CNN clássica padronizada, o que permitiu isolar a variável independente do estudo (o pré-processamento). A opção por uma arquitetura deliberadamente simples é metodológica: uma rede rasa e de baixo custo reduz a influência da capacidade do modelo sobre os resultados, evidenciando o efeito atribuível ao pré-processamento. Como consequência, os valores absolutos de desempenho não devem ser interpretados como o máximo alcançável para o problema, e os resultados aqui obtidos não se transferem automaticamente para arquiteturas mais profundas. A arquitetura adotada é a seguinte:
 \begin{itemize}
     \item \textbf{Entrada:} tensores com dimensões definidas conforme as imagens processadas.
     \item \textbf{Camadas de extração de características:} duas camadas convolucionais com 32 filtros (janelas $3 \times 3$) e ativação \textit{Rectified Linear Unit} (ReLU), seguidas por redução espacial com \textit{Max-Pooling} (janelas $4 \times 4$).
@@ -47,11 +48,14 @@ Como variável independente, foram avaliadas diferentes técnicas de manipulaç�
 O fluxo de execução incluiu o pré-processamento de todas as imagens (submetidas às variantes listadas e redimensionadas para $512 \times 512$ \textit{pixels}), o treinamento das arquiteturas por 50 épocas com partições de validação e a avaliação por meio do \textit{F1-score}, da acurácia, do recall e da precisão.
 
 \subsection{Resultados e Discussões da Avaliação}
+
+Antes da apresentação dos resultados, cabem três observações sobre a forma de interpretá-los. Primeiro, a análise tem caráter comparativo e relativo: todas as técnicas foram avaliadas sob o mesmo orçamento de treino (mesma arquitetura, mesmo número de épocas e mesmas condições), de modo que o objetivo é ordenar o efeito dos pré-processamentos entre si, e não obter a máxima acurácia possível para o problema. Segundo, os conjuntos de teste são reduzidos, sobretudo o DRNPW, o que confere baixa resolução às métricas: diferenças de poucos pontos percentuais correspondem a poucas imagens e devem ser lidas como tendências, não como uma ordenação definitiva entre técnicas de desempenho próximo. Terceiro, os experimentos não foram repetidos com múltiplas sementes aleatórias; assim, não se reivindica significância estatística para as diferenças observadas, e as conclusões apoiam-se na consistência dos padrões entre técnicas e entre conjuntos de dados.
+
 As métricas obtidas evidenciam comportamentos distintos conforme a natureza das peças e das anomalias de cada conjunto de dados.
 
 \subsubsection{Desempenho no \textit{Dataset} CPLID}
 
-As métricas indicam que as estratégias baseadas no aumento do intervalo tonal obtiveram bom desempenho na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o melhor resultado neste conjunto (acurácia de 95,35\% e \textit{F1-score} de 96,55\%). Resultados próximos foram obtidos por combinações híbridas, como \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (95,35\% em todas as quatro variantes avaliadas).
+As métricas indicam que as estratégias baseadas no aumento do intervalo tonal estiveram entre os melhores desempenhos na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o maior \textit{F1-score} neste conjunto (acurácia de 95,35\% e \textit{F1-score} de 96,55\%), embora várias técnicas de realce tonal tenham empatado no mesmo patamar de acurácia (95,35\%), o que impede afirmar, com os dados disponíveis, a superioridade de uma delas sobre as demais. Nesse mesmo patamar situam-se combinações híbridas como \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (95,35\% nas quatro variantes avaliadas).
 
 Em contrapartida, as técnicas baseadas em suavização e desfoque reduziram consideravelmente o desempenho: o \textbf{\textit{Gaussian Blur}}, por exemplo, alcançou apenas 67,44\% de acurácia, abaixo inclusive do resultado obtido com as imagens originais sem tratamento (93,02\%).
 
@@ -133,7 +137,7 @@ Nesta etapa, realiza-se a otimização de parâmetros de pré-processamento em u
 \subsection{Metodologia Experimental}
 
 \subsubsection{Conjunto de Dados}
-Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), composto por imagens de isoladores de linhas de transmissão. O acervo inclui anotações automáticas para detecção de objetos, totalizando 779 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
+Utilizou-se o mesmo conjunto de dados DRNPW descrito na Seção \ref{sec:conjuntos_de_dados_avaliados}, disponibilizado pela CPFL e composto por imagens de isoladores de linhas de transmissão capturadas por drones. O acervo inclui anotações automáticas para detecção de objetos, totalizando 779 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
 
 \subsubsection{Estratégia de Pré-Processamento}
 A técnica de pré-processamento selecionada foi o \textit{ContrastEnhancement}, que utiliza a biblioteca PIL (\textit{Python Imaging Library}) para ajustar o contraste das imagens. A intensidade da transformação é controlada por uma variável: valores de \texttt{factor} menores que 1,0 reduzem o contraste, enquanto valores maiores que 1,0 o aumentam. O hiperparâmetro otimizado foi exclusivamente o \texttt{factor}, definido na faixa de 0,5 a 1,611.

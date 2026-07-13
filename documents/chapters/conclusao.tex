@@ -18,6 +18,8 @@ O principal desafio foi a limitação na quantidade e na disponibilidade de dado
 
 Outra limitação foi o alto custo computacional para encontrar os melhores hiperparâmetros. A metodologia proposta permite criar diversos \textit{pipelines}, combinando várias técnicas de processamento em etapas sequenciais. Diante dessa flexibilidade, otimizar todos os parâmetros simultaneamente, testando cada combinação possível, leva à explosão combinatória, fenômeno em que o número de combinações cresce exponencialmente a cada nova variável. Na prática, isso exige um poder de processamento que inviabiliza a avaliação exaustiva em tempo hábil.
 
+Há ainda duas limitações de ordem metodológica que devem ser explicitadas. A primeira diz respeito à avaliação estatística: por restrições de recurso computacional, os experimentos não foram repetidos com múltiplas sementes aleatórias, de modo que as diferenças de desempenho entre técnicas próximas devem ser interpretadas como tendências, e não como resultados de significância estatística comprovada. A segunda refere-se ao tempo de processamento: embora definido como uma das métricas da metodologia, ele não foi medido de forma sistemática nos experimentos, ficando o seu levantamento, sobretudo em dispositivos embarcados, indicado como trabalho futuro.
+
 \section{Sugestões para Pesquisas Futuras}
 A partir das limitações apontadas e dos resultados obtidos, sugerem-se os seguintes encaminhamentos para trabalhos futuros:
 
