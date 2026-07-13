@@ -165,11 +165,13 @@ Para cada valor do \texttt{factor}, o fluxo executou os seguintes passos:
     \item registro do valor que produziu a maior acurácia.
 \end{enumerate}
 
+Cabe registrar uma limitação desse protocolo: a seleção do melhor valor do \texttt{factor} utilizou a acurácia medida sobre o conjunto de teste, e não sobre o de validação. Como o mesmo conjunto orienta a seleção e a avaliação, a estimativa de desempenho do fator escolhido tende a ser otimista. O experimento de busca aleatória, apresentado adiante, adota a acurácia de validação como critério de seleção; essa diferença de protocolo deve ser considerada na comparação entre os dois métodos.
+
 \subsection{Fundamentação Teórica do Método Selecionado}
 
 A busca em grade é um método consolidado na literatura para o ajuste de parâmetros em espaços discretos e de dimensão reduzida. Seus principais aspectos são:
 \begin{itemize}
-    \item \textbf{Espaço de busca:} a busca foi realizada de forma uniforme, testando valores entre 0,5 e 1,611 em 5 etapas.
+    \item \textbf{Espaço de busca:} o intervalo de 0,5 a 1,611 foi definido de forma operacional, pela discretização em 5 valores igualmente espaçados, cobrindo desde a atenuação moderada até o realce moderado de contraste. O limite superior não decorre de um critério físico ou perceptual; o refinamento do intervalo em torno da região mais favorável é indicado como desdobramento ao final desta seção.
     \item \textbf{Custo computacional:} embora a busca em grade seja ineficiente em cenários com muitas variáveis, essa limitação não é relevante neste caso, em que há apenas uma variável.
     \item \textbf{Reprodutibilidade:} por ser determinística, a técnica oferece maior reprodutibilidade do que métodos como o \textit{random search} ou a otimização bayesiana.
 \end{itemize}
@@ -195,6 +197,9 @@ O ciclo de otimização avaliou os 5 valores do \texttt{factor} definidos, com o
     \end{tabular}
     \fonte{Autor.}
 \end{table}
+
+% VERIFICAR no código se as métricas foram de fato consolidadas com average='weighted'. A coincidência exata entre recall e acurácia em todas as linhas é propriedade matemática do recall ponderado, o que sustenta a afirmação abaixo.
+As métricas de precisão, \textit{recall} e \textit{F1-score} da Tabela \ref{tab:resultados_grid_search} foram consolidadas por média ponderada pela frequência das classes (\textit{weighted average}), razão pela qual o \textit{recall} ponderado coincide numericamente com a acurácia em todas as linhas. A precisão sistematicamente inferior ao \textit{recall} indica que os acertos se concentram na classe majoritária, comportamento esperado diante do desbalanceamento do conjunto e do orçamento reduzido de treinamento, e recomenda cautela na leitura dos valores absolutos.
 
 \indent A análise dos resultados permite as seguintes observações:
 \begin{itemize}
@@ -227,7 +232,8 @@ O experimento preservou as características da abordagem em grade: o redimension
 
 \subsubsection{Estratégia de Otimização Estocástica}
 
-Diferentemente da busca em grade, com valores espaçados de forma regular, este experimento empregou a busca aleatória. O método consiste em definir o intervalo do parâmetro (0,5 a 3,0) e selecionar valores por amostragem aleatória nesse intervalo. Foram realizadas 10 tentativas (\textit{trials}) independentes.
+% NOTA DE VERIFICAÇÃO: versões anteriores do texto mencionavam 10 tentativas, mas a Tabela \ref{tab:resultados_random_search} apresenta 5. O valor abaixo foi alinhado à tabela. Caso existam registros das demais tentativas, completar a tabela e atualizar este parágrafo.
+Diferentemente da busca em grade, com valores espaçados de forma regular, este experimento empregou a busca aleatória. O método consiste em definir o intervalo do parâmetro (0,5 a 3,0) e selecionar valores por amostragem aleatória nesse intervalo. Foram realizadas 5 tentativas (\textit{trials}) independentes.
 
 \subsection{Fundamentação Teórica do Método de Busca Estocástica}
 

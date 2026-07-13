@@ -11,6 +11,8 @@ No \textit{dataset} DRNPW, composto por imagens de drones com forte poluição v
 
 Por fim, a etapa de otimização de parâmetros evidenciou o impacto de pequenas variações no desempenho das redes. Ao comparar a busca em grade (\textit{Grid Search}) com a busca aleatória (\textit{Random Search}), observou-se concordância na identificação do ponto ótimo, localizado em torno de fatores de realce entre 1,3 e 1,4. Além de consolidar os ganhos em relação ao uso da imagem original, com 90\% de acurácia, os resultados evidenciaram a estabilidade do modelo nessa faixa. Constatou-se, ainda, que níveis excessivos de contraste distorcem a imagem e introduzem artefatos que prejudicam o aprendizado.
 
+Os valores absolutos aqui reportados não devem ser comparados diretamente aos resultados do estado da arte revisado no capítulo de trabalhos relacionados, como o mAP de 93,8\% obtido com o YOLOv7 modificado por \citeonline{zheng2022improved} ou o AP de 98,18\% do CSPD-YOLO de \citeonline{liu2021}. Aqueles estudos tratam de tarefas de detecção de objetos, empregam arquiteturas profundas otimizadas para o problema e utilizam conjuntos de dados distintos, ao passo que este trabalho adota deliberadamente uma CNN rasa de referência em tarefa de classificação, com o propósito de isolar e ordenar o efeito do pré-processamento. A contribuição situa-se, portanto, na caracterização do impacto relativo das técnicas de tratamento de imagem, e não na maximização do desempenho absoluto do classificador.
+
 \section{Limitações e Desafios Encontrados}
 Apesar dos resultados obtidos, o trabalho enfrentou desafios inerentes à combinação entre a inspeção aérea automatizada e os fluxos de aprendizado profundo.
 
