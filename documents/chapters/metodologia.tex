@@ -53,14 +53,14 @@ A dificuldade dessa etapa é baixa, de caráter essencialmente conceitual e de p
 \subsection{Selecionar dataset com imagens rotuladas}
 A etapa ``Selecionar dataset com imagens rotuladas'' é uma das que mais impactam a qualidade e a confiabilidade dos resultados. Nessa fase escolhe-se um conjunto de dados adequado, com imagens de cadeias de isoladores e anotações que indiquem a presença ou a ausência de falhas. O dataset deve apresentar diversidade suficiente em condições de iluminação, ângulos de captura, tipos de isoladores e variações de falhas, de modo a favorecer a capacidade de generalização dos modelos.
 
-A qualidade, a quantidade e a diversidade dos dados influenciam diretamente o desempenho e a generalização dos modelos de aprendizado de máquina; sem dados adequados e bem rotulados, o processamento subsequente fica comprometido. Como observa \citeonline{Shorten2019}, a robustez de um modelo depende da riqueza de seu conjunto de treinamento.
+A qualidade, a quantidade e a diversidade dos dados influenciam diretamente o desempenho e a generalização dos modelos de aprendizado de máquina; sem dados adequados e bem rotulados, o processamento subsequente fica comprometido. Como observa \citeonline{shorten2019survey}, a robustez de um modelo depende da riqueza de seu conjunto de treinamento.
 
 A dificuldade dessa etapa pode ser alta, devido à escassez de datasets públicos específicos para detecção de falhas em isoladores e à necessidade de anotação manual precisa. Caso o dataset selecionado se mostre inadequado, as alternativas incluem a busca por outros datasets, a combinação de múltiplos conjuntos ou a construção de um dataset próprio por meio da coleta e da anotação manual de imagens.
 
 \subsection{Dataset está balanceado?}
 O bloco de decisão ``Dataset está balanceado?'' verifica se as classes de interesse (isoladores com falha e sem falha) estão adequadamente representadas no dataset. Essa verificação identifica desbalanceamentos que poderiam comprometer o treinamento, levando o modelo a favorecer a classe majoritária.
 
-O balanceamento é especialmente relevante na detecção de falhas, em que costuma haver muito mais amostras de isoladores saudáveis do que defeituosos. Segundo \citeonline{He2009}, essa assimetria pode gerar modelos enviesados, com alta acurácia geral, mas baixa capacidade de detectar as falhas, que são o objetivo principal do sistema.
+O balanceamento é especialmente relevante na detecção de falhas, em que costuma haver muito mais amostras de isoladores saudáveis do que defeituosos. Segundo \citeonline{he2009learning}, essa assimetria pode gerar modelos enviesados, com alta acurácia geral, mas baixa capacidade de detectar as falhas, que são o objetivo principal do sistema.
 
 A dificuldade dessa etapa é baixa e envolve principalmente a análise estatística da distribuição das classes. Se o dataset estiver desbalanceado, o fluxo segue para a aplicação de filtros e balanceamento; caso contrário, prossegue diretamente para o pré-processamento.
 
@@ -83,16 +83,16 @@ Esta seção descreve as etapas de processamento de imagens que visam otimizar o
 \end{figure}
 
 \subsection{Aplicar técnicas básicas: normalização, recorte, ruído}
-No bloco ``Aplicar técnicas básicas: normalização, recorte, ruído'', as imagens passam por processamentos essenciais ao desempenho dos modelos. Entre eles estão a normalização (padronização dos valores de pixel para escalas como [0,1] ou Z-score) \cite{Sharma2024}, o redimensionamento e o recorte (ajuste das imagens às dimensões de entrada do modelo e extração de regiões de interesse) \cite{Sharma2024} e a redução de ruído (com filtros como o de mediana ou o gaussiano) \cite{Sharma2024}.
+No bloco ``Aplicar técnicas básicas: normalização, recorte, ruído'', as imagens passam por processamentos essenciais ao desempenho dos modelos. Entre eles estão a normalização (padronização dos valores de pixel para escalas como [0,1] ou Z-score) \cite{sharma2024deep}, o redimensionamento e o recorte (ajuste das imagens às dimensões de entrada do modelo e extração de regiões de interesse) \cite{sharma2024deep} e a redução de ruído (com filtros como o de mediana ou o gaussiano) \cite{sharma2024deep}.
 
-Conforme \citeonline{Sharma2024}, essas operações ``melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições''. A normalização favorece a convergência estável durante o treinamento, enquanto o recorte adequado direciona a atenção do modelo para as regiões mais relevantes da imagem.
+Conforme \citeonline{sharma2024deep}, essas operações ``melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições''. A normalização favorece a convergência estável durante o treinamento, enquanto o recorte adequado direciona a atenção do modelo para as regiões mais relevantes da imagem.
 
 A dificuldade dessa etapa é baixa a média, pois são técnicas bem estabelecidas na literatura. Se o desempenho do modelo piorar após a aplicação dessas técnicas, revisam-se os parâmetros ou a ordem de aplicação em busca de um equilíbrio adequado.
 
 \subsection{Aplicar data augmentation}
 O bloco ``Aplicar data augmentation'' expande artificialmente o dataset por meio de transformações que preservam as características essenciais das imagens, mas introduzem variabilidade capaz de melhorar a generalização do modelo. Entre as transformações usuais estão rotações, espelhamentos, ajustes de brilho e contraste, mudanças de escala e translações, que simulam diferentes condições de captura.
 
-O data augmentation é especialmente útil quando o dataset é limitado ou desbalanceado, por aumentar o número de amostras disponíveis para treinamento. Como aponta \citeonline{Shorten2019}, técnicas de aumento de dados são importantes para a robustez de modelos de aprendizado profundo.
+O data augmentation é especialmente útil quando o dataset é limitado ou desbalanceado, por aumentar o número de amostras disponíveis para treinamento. Como aponta \citeonline{shorten2019survey}, técnicas de aumento de dados são importantes para a robustez de modelos de aprendizado profundo.
 
 A dificuldade dessa etapa é baixa a média, mas exige cuidado para não aplicar transformações que alterem características importantes para a detecção de falhas. Se o data augmentation degradar o desempenho, revisam-se os tipos e as intensidades das transformações.
 
@@ -197,7 +197,7 @@ Esta seção descreve o treinamento dos modelos de rede neural com os dados proc
 \subsection{Treinar modelo com dados processados}
 O bloco ``Treinar modelo com dados processados'' é a etapa central de aprendizado do sistema. Nela, a arquitetura previamente selecionada e configurada é treinada com os dados resultantes das etapas de processamento de imagem. O objetivo é que o modelo aprenda a identificar e a classificar as falhas nas imagens de isoladores, ajustando seus pesos de modo a minimizar a função de custo e a otimizar as métricas de desempenho definidas.
 
-Como explica \citeonline{Braga2011}, o treinamento é a etapa em que o neurônio artificial aprende a associar entradas a saídas desejadas. Além de detectar falhas, os modelos treinados também servem para avaliar o impacto dos diferentes processamentos aplicados nas etapas anteriores.
+Como explica \citeonline{braga2011redes}, o treinamento é a etapa em que o neurônio artificial aprende a associar entradas a saídas desejadas. Além de detectar falhas, os modelos treinados também servem para avaliar o impacto dos diferentes processamentos aplicados nas etapas anteriores.
 
 O treinamento consiste em alimentar a rede com as imagens processadas, calcular o erro entre as predições e os rótulos verdadeiros e atualizar os pesos por retropropagação. Durante o processo, é importante monitorar métricas como a função de custo e a acurácia de treinamento e de validação, a fim de identificar problemas como overfitting ou underfitting.
 
