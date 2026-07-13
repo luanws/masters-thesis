@@ -92,7 +92,7 @@ A Figura \ref{fig:desembacamento} ilustra o processo de desembaçamento, onde a 
 \end{figure}
 
 \subsection{Detecção de Bordas}
-A detecção de bordas identifica limites e formas nas imagens, sendo uma etapa fundamental em muitas tarefas de visão computacional. Redes neurais, como redes de codificação-decodificação, foram desenvolvidas para detectar bordas com alta precisão, superando detectores tradicionais como Canny em imagens ruidosas \cite{yu1994edge}. Métodos inspirados em mecanismos biológicos, como redes com atenção seletiva, melhoraram a extração de características globais, resultando em mapas de bordas mais robustos \cite{chen2022edge}. Essas abordagens são essenciais para pré-processar imagens, fornecendo informações estruturais que facilitam a segmentação e o reconhecimento de objetos \cite{yu1994edge}.
+A detecção de bordas identifica limites e formas nas imagens, sendo uma etapa fundamental em muitas tarefas de visão computacional. Redes neurais, como redes de codificação-decodificação, foram desenvolvidas para detectar bordas com alta precisão, alcançando desempenho comparável ao de detectores tradicionais como o Canny em imagens ruidosas \cite{yu1994edge}. Métodos inspirados em mecanismos biológicos, como redes com atenção seletiva, melhoraram a extração de características globais, resultando em mapas de bordas mais robustos \cite{chen2022edge}. Essas abordagens são essenciais para pré-processar imagens, fornecendo informações estruturais que facilitam a segmentação e o reconhecimento de objetos \cite{yu1994edge}.
 
 A Figura \ref{fig:deteccao_de_bordas} ilustra o processo de detecção de bordas, onde as bordas da imagem original (à esquerda) são destacadas na imagem processada (à direita).
 
@@ -274,7 +274,7 @@ As funções de custo são responsáveis por medir o quão distante a saída pre
 
 \subsubsection{Erro Médio Quadrático (MSE)}
 
-O Erro Médio Quadrático (MSE) é uma das funções mais comuns em regressão, penalizando fortemente grandes erros e sendo sensível a outliers \cite{chicco2021advantages}. Ele é definido como a Equação~\ref{eq:mse}:
+O Erro Médio Quadrático (MSE) é uma das funções mais comuns em regressão, penalizando fortemente grandes erros e sendo sensível a outliers \cite{goodfellow2016deep}. Ele é definido como a Equação~\ref{eq:mse}:
 
 \begin{equation}
     MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
