@@ -48,11 +48,13 @@ Como variável independente, foram avaliadas diferentes técnicas de manipulaç�
 O fluxo de execução incluiu o pré-processamento de todas as imagens (submetidas às variantes listadas e redimensionadas para $512 \times 512$ \textit{pixels}), o treinamento das arquiteturas por 50 épocas com partições de validação e a avaliação por meio do \textit{F1-score}, da acurácia, do recall e da precisão.
 
 \subsection{Resultados e Discussões da Avaliação}
-As métricas obtidas evidenciam comportamentos distintos conforme a natureza das peças e das anomalias de cada conjunto de dados.
+As métricas obtidas evidenciam comportamentos distintos conforme o tipo de elemento elétrico inspecionado e a natureza do defeito de cada conjunto de dados. A seguir, os resultados são organizados por cenário de aplicação: a classificação de defeitos estruturais em isoladores de linhas de transmissão (CPLID) e a inspeção aérea de isoladores em ambiente operacional real (DRNPW).
 
-\subsubsection{Desempenho no \textit{Dataset} CPLID}
+\subsubsection{Desempenho na Classificação de Defeitos Estruturais em Isoladores de Linhas de Transmissão (CPLID)}
 
-As métricas indicam que as estratégias baseadas no aumento do intervalo tonal obtiveram bom desempenho na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o melhor resultado neste conjunto (acurácia de 95,35\% e \textit{F1-score} de 96,55\%). Resultados próximos foram obtidos por combinações híbridas, como \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (95,35\% em todas as quatro variantes avaliadas).
+O CPLID (\textit{Chinese Power Line Insulator Dataset}) reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, majoritariamente cerâmicos, capturadas por drones. Nesse conjunto, o defeito de interesse é de natureza estrutural, associado à ausência de disco (\textit{missing cap}) e a fraturas no corpo do isolador, condições que comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
+
+Para esse tipo de defeito estrutural, as métricas indicam que as estratégias baseadas no aumento do intervalo tonal obtiveram bom desempenho na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o melhor resultado neste conjunto (acurácia de 95,35\% e \textit{F1-score} de 96,55\%). Resultados próximos foram obtidos por combinações híbridas, como \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (95,35\% em todas as quatro variantes avaliadas).
 
 Em contrapartida, as técnicas baseadas em suavização e desfoque reduziram consideravelmente o desempenho: o \textbf{\textit{Gaussian Blur}}, por exemplo, alcançou apenas 67,44\% de acurácia, abaixo inclusive do resultado obtido com as imagens originais sem tratamento (93,02\%).
 
@@ -87,9 +89,11 @@ Os valores obtidos são apresentados da Figura \ref{fig:cplid_acc} à Figura \re
 \end{figure}
 
 
-\subsubsection{Desempenho no \textit{Dataset} DRNPW}
+\subsubsection{Desempenho na Inspeção Aérea de Isoladores em Ambiente Operacional Real (DRNPW)}
 
-No DRNPW, cujas imagens apresentam fundos com forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A abordagem \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} apresentou o melhor desempenho, com 83,33\% de acurácia e 75,76\% de \textit{F1-score}. Filtros como o \textbf{\textit{Median Blur}} e técnicas adaptativas (\textbf{CLAHE} e suas combinações) mantiveram desempenho aceitável, com acurácia em torno de 80,00\% e \textit{F1-score} próximo de 71,11\%.
+O DRNPW reúne imagens de isoladores capturadas por drones em condições operacionais reais de inspeção de infraestrutura elétrica, disponibilizadas pela CPFL. Diferentemente do CPLID, os isoladores aparecem sobre fundos heterogêneos e com forte poluição visual, cenário que reproduz a dificuldade de campo em distinguir o componente elétrico do ambiente ao seu redor.
+
+Nesse cenário, cujas imagens apresentam fundos com forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A abordagem \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} apresentou o melhor desempenho, com 83,33\% de acurácia e 75,76\% de \textit{F1-score}. Filtros como o \textbf{\textit{Median Blur}} e técnicas adaptativas (\textbf{CLAHE} e suas combinações) mantiveram desempenho aceitável, com acurácia em torno de 80,00\% e \textit{F1-score} próximo de 71,11\%.
 
 A técnica \textbf{\textit{Gray Scale}}, que suprime a informação de cor, apresentou os piores resultados neste conjunto, com 63,33\% de acurácia e 49,12\% de \textit{F1-score} na validação.
 
@@ -125,7 +129,13 @@ Os valores obtidos são apresentados da Figura \ref{fig:drnpw_acc} à Figura \re
 
 \subsection{Conclusão da Avaliação Analítica}
 
-Os resultados indicam que as operações baseadas na ampliação do contraste contribuem de forma consistente para o desempenho da CNN nos cenários avaliados. As técnicas simples de realce de contraste (\textit{Contrast Enhancement}) destacaram-se nos casos em que as falhas se limitam à estrutura física do material isolador (CPLID), com resultados superiores aos da amostra de controle original. Já para os objetos inseridos em fundos heterogêneos e ruidosos, como no DRNPW (imagens de drones), as abordagens híbridas que combinam realce de contraste e equalização de histograma foram mais eficazes, enquanto as técnicas que suprimem a informação de cor apresentaram os piores resultados.
+Os resultados indicam que as operações baseadas na ampliação do contraste contribuem de forma consistente para o desempenho da CNN nos cenários elétricos avaliados, embora a técnica mais adequada dependa do tipo de elemento inspecionado e da natureza do defeito.
+
+Para a triagem de defeitos estruturais em cadeias de isoladores de linhas de transmissão (disco ausente e fraturas, no CPLID), o realce de contraste simples (\textit{Contrast Enhancement}) foi a estratégia de maior êxito, superando inclusive a amostra de controle sem tratamento. Esse resultado é coerente com a natureza do defeito, cujas assinaturas visuais se concentram na estrutura física do isolador e são realçadas pela ampliação do intervalo tonal.
+
+Já para a inspeção aérea de isoladores em ambiente operacional real, com fundos heterogêneos e poluídos (DRNPW), as abordagens híbridas que combinam realce de contraste e equalização de histograma mostraram-se mais eficazes, por reforçarem o contraste entre o componente e o fundo. Nesse cenário, as técnicas que suprimem a informação de cor (\textit{Gray Scale}) ou que suavizam as texturas (\textit{Gaussian Blur} e demais desfoques) apresentaram os piores resultados, por descartarem informação relevante à identificação do defeito.
+
+Em síntese, o método mostrou-se mais promissor na classificação de defeitos estruturais em isoladores cerâmicos de linhas de transmissão captados por drone, cenário em que atingiu as maiores métricas (acurácia de 95,35\% e \textit{F1-score} de 96,55\% no CPLID), enquanto a inspeção em ambiente com forte poluição visual permanece como o caso mais desafiador.
 
 \section{Otimização de Parâmetros de Pré-Processamento em Visão Computacional}
 
