@@ -168,6 +168,15 @@ O bloco ``Montar modelo de classificação'' é executado quando a tarefa é a c
 
 A configuração inclui a definição das camadas finais com um número de neurônios igual ao número de classes, a escolha de funções de ativação apropriadas (como a softmax, na classificação multiclasse) e a seleção de funções de perda adequadas (como a entropia cruzada). Também envolve a definição das métricas de avaliação relevantes, como acurácia, precisão, recall e F1-score.
 
+Nesse tipo de modelo, a função de perda usualmente adotada é a entropia cruzada categórica, definida pela Equação~\ref{eq:perda_classificacao}:
+
+\begin{equation}
+    L_{\text{class}} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})
+    \label{eq:perda_classificacao}
+\end{equation}
+
+em que $N$ é o número de amostras, $C$ o número de classes, $y_{i,c}$ o rótulo verdadeiro (igual a 1 se a amostra $i$ pertence à classe $c$ e 0 caso contrário) e $\hat{y}_{i,c}$ a probabilidade prevista de a amostra $i$ pertencer à classe $c$.
+
 A dificuldade dessa etapa é média e exige conhecimento sobre arquiteturas de rede neural para classificação. Se o modelo não apresentar desempenho satisfatório, ajustam-se a arquitetura ou os hiperparâmetros, ou revisa-se o pré-processamento dos dados.
 
 \subsection{Montar modelo de detecção}
@@ -175,12 +184,30 @@ O bloco ``Montar modelo de detecção'' é executado quando a tarefa é a detec�
 
 Essa configuração é mais complexa e envolve arquiteturas especializadas como YOLO e R-CNN. Inclui a definição de hiperparâmetros, a configuração de múltiplas escalas e o equilíbrio entre precisão de localização e de classificação. Entre as métricas de avaliação estão o mAP (mean Average Precision) e o IoU (Intersection over Union).
 
+Nesse tipo de modelo, a função de perda é composta, combinando a perda de localização das bounding boxes, a perda de confiança (presença ou ausência de objeto) e a perda de classificação, conforme a Equação~\ref{eq:perda_deteccao}:
+
+\begin{equation}
+    L_{\text{det}} = \lambda_{\text{loc}} L_{\text{loc}} + \lambda_{\text{conf}} L_{\text{conf}} + \lambda_{\text{cls}} L_{\text{cls}}
+    \label{eq:perda_deteccao}
+\end{equation}
+
+em que $L_{\text{loc}}$, $L_{\text{conf}}$ e $L_{\text{cls}}$ são, respectivamente, as perdas de localização, de confiança e de classificação, e $\lambda_{\text{loc}}$, $\lambda_{\text{conf}}$ e $\lambda_{\text{cls}}$ são pesos que equilibram a contribuição de cada termo.
+
 A dificuldade dessa etapa é alta, dada a complexidade das arquiteturas de detecção e a necessidade de dados rotulados com informações de localização. Se o desempenho não for satisfatório, ajustam-se os hiperparâmetros, modificam-se os limiares de confiança ou revisa-se a estratégia de aumento de dados.
 
 \subsection{Montar modelo de regressão}
 O bloco ``Montar modelo de regressão'' é executado quando a tarefa é a regressão. Nessa etapa configura-se um modelo capaz de predizer valores contínuos relacionados ao estado dos isoladores, como o grau de degradação, a probabilidade de falha ou índices de severidade.
 
 A configuração inclui camadas finais com ativação linear (ou outra apropriada a saídas contínuas), funções de perda para regressão (como MSE ou MAE) e métricas de avaliação como R², RMSE ou MAE. Essa abordagem pode ser útil quando se deseja uma avaliação mais detalhada do estado dos isoladores.
+
+Nesse tipo de modelo, a função de perda mais comum é o erro médio quadrático (MSE), definido pela Equação~\ref{eq:perda_regressao}:
+
+\begin{equation}
+    L_{\text{reg}} = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2
+    \label{eq:perda_regressao}
+\end{equation}
+
+em que $N$ é o número de amostras, $y_i$ o valor real e $\hat{y}_i$ o valor previsto pelo modelo.
 
 A dificuldade dessa etapa é média, semelhante à da classificação, mas com considerações específicas para saídas contínuas. Se as predições não forem adequadas, normalizam-se as variáveis de saída, ajusta-se a função de perda ou modifica-se a arquitetura da rede.
 
