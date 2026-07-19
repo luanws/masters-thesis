@@ -144,7 +144,7 @@ Nesta etapa, realiza-se a otimização de parâmetros de pré-processamento em u
 \subsection{Metodologia Experimental}
 
 \subsubsection{Conjunto de Dados}
-Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), composto por imagens de isoladores de linhas de transmissão. O acervo inclui anotações automáticas para detecção de objetos, totalizando 779 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
+Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), composto por imagens de isoladores de linhas de transmissão. O acervo inclui anotações automáticas para detecção de objetos, totalizando 585 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
 
 \subsubsection{Estratégia de Pré-Processamento}
 A técnica de pré-processamento selecionada foi o \textit{ContrastEnhancement}, que utiliza a biblioteca PIL (\textit{Python Imaging Library}) para ajustar o contraste das imagens. A intensidade da transformação é controlada por uma variável: valores de \texttt{factor} menores que 1,0 reduzem o contraste, enquanto valores maiores que 1,0 o aumentam. O hiperparâmetro otimizado foi exclusivamente o \texttt{factor}, definido na faixa de 0,5 a 1,611.
@@ -234,7 +234,7 @@ O experimento preservou as características da abordagem em grade: o redimension
 
 \subsubsection{Estratégia de Otimização Estocástica}
 
-Diferentemente da busca em grade, com valores espaçados de forma regular, este experimento empregou a busca aleatória. O método consiste em definir o intervalo do parâmetro (0,5 a 3,0) e selecionar valores por amostragem aleatória nesse intervalo. Foram realizadas 10 tentativas (\textit{trials}) independentes.
+Diferentemente da busca em grade, com valores espaçados de forma regular, este experimento empregou a busca aleatória. O método consiste em definir o intervalo do parâmetro (0,5 a 3,0) e selecionar valores por amostragem aleatória nesse intervalo. Foram realizadas 5 tentativas (\textit{trials}) independentes.
 
 \subsection{Fundamentação Teórica do Método de Busca Estocástica}
 
@@ -271,7 +271,7 @@ A partir dos valores amostrados do hiperparâmetro \texttt{factor}, avaliou-se o
 
 \indent A análise dos resultados, em comparação com o experimento anterior, permite as seguintes observações:
 \begin{itemize}
-    \item \textbf{Ponto ótimo:} o melhor desempenho foi obtido com o fator de 1,4364 (Tentativa 1), com 85,06\% de acurácia e a menor \textit{loss} registrada (4,1418). Esse resultado reforça a indicação anterior de que valores um pouco acima de 1,0 favorecem o desempenho do modelo.
+    \item \textbf{Ponto ótimo:} o melhor desempenho foi obtido com o fator de 1,4364 (Tentativa 1), com 85,06\% de acurácia (a maior entre as tentativas) e \textit{loss} de validação de 4,1418, praticamente equivalente à das demais tentativas. Esse resultado reforça a indicação anterior de que valores um pouco acima de 1,0 favorecem o desempenho do modelo.
     \item \textbf{Sensibilidade a contrastes elevados:} valores de contraste muito altos degradaram o desempenho, com queda para 71,26\% no fator 2,3300 (o menor da análise) e para 79,31\% no fator 2,8768. Contrastes excessivos introduzem distorções que dificultam a classificação.
     \item \textbf{Comportamento em contrastes reduzidos:} com fator de 0,8900, inferior a 1,0, o modelo manteve desempenho razoável (78,16\%), o que indica estabilidade da arquitetura mesmo com atenuação parcial das texturas.
     \item \textbf{Robustez computacional:} todos os ensaios foram concluídos sem instabilidades numéricas ou interrupções no treinamento.
