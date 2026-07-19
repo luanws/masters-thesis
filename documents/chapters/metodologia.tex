@@ -2,16 +2,7 @@
 \label{chap:metodologia}
 % Nesta seção, serão definidas as métricas específicas que serão utilizadas para avaliar a eficácia dos processamentos de imagem no estudo.
 
-A metodologia proposta neste estudo tem como objetivo desenvolver um procedimento sistemático para comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem aplicadas à detecção e classificação de falhas em cadeias de isoladores. O processo é estruturado e iterativo, conforme o fluxograma da Figura \ref{fig:fluxograma_metodologia}.
-
-\begin{figure}[H]
-    \centering
-    \caption{\label{fig:fluxograma_metodologia}Fluxograma da metodologia de processamento de imagens}
-    \includegraphics[width=0.5\textwidth]{img/metodologia.png}
-    \fonte{Autor.}
-\end{figure}
-
-O fluxograma da Figura \ref{fig:fluxograma_metodologia} apresenta uma visão geral das etapas da metodologia. Para facilitar a compreensão do fluxo e das relações entre as fases, a Figura \ref{fig:fluxograma_geral} reúne, em um único diagrama, os fluxogramas das etapas detalhadas nas seções seguintes.
+A metodologia proposta neste estudo tem como objetivo desenvolver um procedimento sistemático para comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem aplicadas à detecção e classificação de falhas em cadeias de isoladores. Em uma visão geral, o processo é estruturado, iterativo e modular, organizado nas etapas principais apresentadas no fluxograma da Figura \ref{fig:fluxograma_geral}.
 
 \begin{figure}[H]
     \centering
@@ -20,13 +11,22 @@ O fluxograma da Figura \ref{fig:fluxograma_metodologia} apresenta uma visão ger
     \fonte{Autor.}
 \end{figure}
 
-A metodologia foi organizada de forma iterativa e modular. O caráter iterativo é dado pelos ciclos de ``Avaliação e ajustes'', que retroalimentam as fases de ``Pré-processamento'' e de ``Escolha e construção do modelo'', permitindo o refinamento contínuo das técnicas e dos parâmetros a cada iteração. A divisão em módulos (``Seleção e validação do dataset'', ``Pré-processamento'', ``Ajuste de parâmetros'', ``Escolha e construção do modelo'', ``Treinamento'' e ``Avaliação e ajustes'') facilita a identificação e a correção de problemas em cada etapa de forma isolada, sem comprometer o restante do processo.
+Conforme a Figura \ref{fig:fluxograma_geral}, o fluxo parte do bloco ``Início'' e percorre, em sequência, as etapas de ``Seleção e validação do dataset'', ``Pré-processamento'', ``Ajuste de parâmetros'', ``Escolha e construção do modelo'' e ``Treinamento'', até a ``Avaliação e ajustes'', encerrando em ``Conclusões e recomendações''. O caráter iterativo é dado pelos ciclos de ``Avaliação e ajustes'', que retroalimentam as fases de ``Pré-processamento'' e de ``Escolha e construção do modelo'', permitindo o refinamento contínuo das técnicas e dos parâmetros a cada iteração. A divisão em módulos facilita a identificação e a correção de problemas em cada etapa de forma isolada, sem comprometer o restante do processo.
 
-A seguir, cada fase é detalhada em uma seção específica, da definição das métricas e da preparação dos dados às estratégias de aprimoramento e à avaliação final dos resultados.
+Cada uma dessas etapas principais desdobra-se em um conjunto de operações e decisões, detalhado no fluxograma da Figura \ref{fig:fluxograma_metodologia}, no qual os blocos individuais aparecem agrupados segundo as etapas do fluxo geral apresentado na Figura \ref{fig:fluxograma_geral}.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:fluxograma_metodologia}Fluxograma detalhado da metodologia de processamento de imagens}
+    \includegraphics[width=0.5\textwidth]{img/metodologia.png}
+    \fonte{Autor.}
+\end{figure}
+
+Nas seções seguintes, cada etapa do fluxo geral é detalhada individualmente, com o respectivo fluxograma, da definição das métricas e da preparação dos dados às estratégias de aprimoramento e à avaliação final dos resultados.
 
 \section{Início e Definição de Métricas}
 
-Esta seção trata do ponto de partida da metodologia, incluindo a inicialização do ambiente e a definição das métricas utilizadas para avaliar o desempenho ao longo do processo.
+Esta seção trata do ponto de partida da metodologia, correspondente ao bloco ``Início'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), incluindo a inicialização do ambiente e a definição das métricas utilizadas para avaliar o desempenho ao longo do processo.
 
 \subsection{Início}
 O bloco ``Início'' corresponde ao ponto de partida da metodologia. Sua função é inicializar o ambiente computacional e os recursos necessários, garantindo que as ferramentas de software e as bibliotecas utilizadas estejam configuradas e acessíveis antes das etapas de definição de métricas, coleta e processamento dos dados. Embora simples, essa etapa contribui para a organização do fluxo de trabalho e para a reprodutibilidade do experimento.
@@ -35,7 +35,7 @@ A dificuldade dessa etapa é baixa, limitando-se à configuração inicial do pr
 
 \section{Seleção e Validação do Dataset}
 
-Esta seção descreve a seleção, a validação e a preparação dos dados que servem de base para a metodologia. O fluxograma dessa etapa é apresentado na Figura \ref{fig:fluxograma_selecao_dataset} e cobre desde a definição das métricas até o balanceamento dos dados.
+Esta seção detalha a etapa ``Seleção e validação do dataset'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), descrevendo a seleção, a validação e a preparação dos dados que servem de base para a metodologia. O fluxograma dessa etapa é apresentado na Figura \ref{fig:fluxograma_selecao_dataset} e cobre desde a definição das métricas até o balanceamento dos dados.
 
 \begin{figure}[H]
     \centering
@@ -74,7 +74,7 @@ A dificuldade dessa etapa varia de média a alta, conforme o grau de desbalancea
 
 \section{Pré-processamento}
 
-Esta seção descreve as etapas de processamento de imagens que visam otimizar os dados de entrada para melhorar o desempenho dos modelos de rede neural. O fluxograma da Figura \ref{fig:fluxograma_preprocessamento} ilustra as decisões e operações dessa fase.
+Esta seção detalha a etapa ``Pré-processamento'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), que abrange os processamentos de imagens voltados a otimizar os dados de entrada para melhorar o desempenho dos modelos de rede neural. O fluxograma da Figura \ref{fig:fluxograma_preprocessamento} ilustra as decisões e operações dessa fase.
 
 \begin{figure}[H]
     \centering
@@ -120,7 +120,7 @@ A dificuldade dessa etapa é baixa, por ser uma abordagem direta. O sucesso é a
 
 \section{Ajuste de Parâmetros}
 
-Esta seção descreve a otimização automática dos parâmetros das técnicas de processamento de imagem. O fluxograma da Figura \ref{fig:fluxograma_ajuste_parametros} apresenta o fluxo de ajuste automático dos parâmetros.
+Esta seção detalha a etapa ``Ajuste de parâmetros'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), dedicada à otimização automática dos parâmetros das técnicas de processamento de imagem. O fluxograma da Figura \ref{fig:fluxograma_ajuste_parametros} apresenta o fluxo de ajuste automático dos parâmetros.
 
 \begin{figure}[H]
     \centering
@@ -140,7 +140,7 @@ O sucesso é avaliado de forma quantitativa: a melhora nas métricas de desempen
 
 \section{Escolha e Construção do Modelo}
 
-Esta seção descreve a seleção e a configuração das arquiteturas de rede neural utilizadas para avaliar a eficácia das técnicas de processamento de imagem. O fluxograma da Figura \ref{fig:fluxograma_escolha_modelo} ilustra as decisões envolvidas na escolha e na montagem do modelo.
+Esta seção detalha a etapa ``Escolha e construção do modelo'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), que trata da seleção e da configuração das arquiteturas de rede neural utilizadas para avaliar a eficácia das técnicas de processamento de imagem. O fluxograma da Figura \ref{fig:fluxograma_escolha_modelo} ilustra as decisões envolvidas na escolha e na montagem do modelo.
 
 \begin{figure}[H]
     \centering
@@ -186,7 +186,7 @@ A dificuldade dessa etapa é média, semelhante à da classificação, mas com c
 
 \section{Treinamento}
 
-Esta seção descreve o treinamento dos modelos de rede neural com os dados processados. O fluxograma da Figura \ref{fig:fluxograma_treinamento} apresenta as atividades dessa etapa.
+Esta seção detalha a etapa ``Treinamento'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), referente ao treinamento dos modelos de rede neural com os dados processados. O fluxograma da Figura \ref{fig:fluxograma_treinamento} apresenta as atividades dessa etapa.
 
 \begin{figure}[H]
     \centering
@@ -208,7 +208,7 @@ A redução progressiva da função de custo e o aumento das métricas de desemp
 
 \section{Avaliação e Ajustes}
 
-Esta seção descreve a avaliação dos resultados e os mecanismos de ajuste que permitem a melhoria iterativa da metodologia. O fluxograma da Figura \ref{fig:fluxograma_avaliacao} ilustra o ciclo de avaliação e ajustes.
+Esta seção detalha a etapa ``Avaliação e ajustes'' do fluxo geral (Figura \ref{fig:fluxograma_geral}), que trata da avaliação dos resultados e dos mecanismos de ajuste que permitem a melhoria iterativa da metodologia, incluindo o ciclo de retroalimentação que retorna às etapas anteriores. O fluxograma da Figura \ref{fig:fluxograma_avaliacao} ilustra o ciclo de avaliação e ajustes.
 
 \begin{figure}[H]
     \centering
