@@ -255,15 +255,15 @@ A partir dos valores amostrados do hiperparâmetro \texttt{factor}, avaliou-se o
     \centering
     \caption{\label{tab:resultados_random_search}Resumo experimental das tentativas de busca aleatória sobre o fator de contraste}
     \vspace{0.2cm}
-    \begin{tabular}{cccc}
+    \begin{tabular}{ccc}
         \hline
-        \textbf{Tentativa} & \textbf{Fator (\texttt{factor})} & \textbf{Acurácia (Validação)} & \textbf{Loss (Validação)} \\
+        \textbf{Tentativa} & \textbf{Fator (\texttt{factor})} & \textbf{Acurácia (Validação)} \\
         \hline
-        1 & 1,4364 & 0,8506 & 4,1418 \\
-        2 & 2,8768 & 0,7931 & 4,1455 \\
-        3 & 2,3300 & 0,7126 & 4,1499 \\
-        4 & 1,9966 & 0,8046 & 4,1416 \\
-        5 & 0,8900 & 0,7816 & 4,1480 \\
+        1 & 1,4364 & 0,8506 \\
+        2 & 2,8768 & 0,7931 \\
+        3 & 2,3300 & 0,7126 \\
+        4 & 1,9966 & 0,8046 \\
+        5 & 0,8900 & 0,7816 \\
         \hline
     \end{tabular}
     \fonte{Autor.}
@@ -271,7 +271,7 @@ A partir dos valores amostrados do hiperparâmetro \texttt{factor}, avaliou-se o
 
 \indent A análise dos resultados, em comparação com o experimento anterior, permite as seguintes observações:
 \begin{itemize}
-    \item \textbf{Ponto ótimo:} o melhor desempenho foi obtido com o fator de 1,4364 (Tentativa 1), com 85,06\% de acurácia (a maior entre as tentativas) e \textit{loss} de validação de 4,1418, praticamente equivalente à das demais tentativas. Esse resultado reforça a indicação anterior de que valores um pouco acima de 1,0 favorecem o desempenho do modelo.
+    \item \textbf{Ponto ótimo:} o melhor desempenho foi obtido com o fator de 1,4364 (Tentativa 1), com 85,06\% de acurácia, a maior entre as tentativas. Esse resultado reforça a indicação anterior de que valores um pouco acima de 1,0 favorecem o desempenho do modelo.
     \item \textbf{Sensibilidade a contrastes elevados:} valores de contraste muito altos degradaram o desempenho, com queda para 71,26\% no fator 2,3300 (o menor da análise) e para 79,31\% no fator 2,8768. Contrastes excessivos introduzem distorções que dificultam a classificação.
     \item \textbf{Comportamento em contrastes reduzidos:} com fator de 0,8900, inferior a 1,0, o modelo manteve desempenho razoável (78,16\%), o que indica estabilidade da arquitetura mesmo com atenuação parcial das texturas.
     \item \textbf{Robustez computacional:} todos os ensaios foram concluídos sem instabilidades numéricas ou interrupções no treinamento.
