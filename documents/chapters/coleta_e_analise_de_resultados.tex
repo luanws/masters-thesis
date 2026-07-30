@@ -464,7 +464,7 @@ Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \te
     \fonte{Autor.}
 \end{table}
 
-Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:cplid_yolo_acc} à Figura \ref{fig:cplid_yolo_recall}, e os obtidos com o YOLOv8n-cls, da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}.
+Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:cplid_yolo_acc} à Figura \ref{fig:cplid_yolo_recall}, com as técnicas ordenadas de forma crescente conforme a métrica correspondente.
 
 \begin{figure}[H]
     \centering
@@ -493,6 +493,8 @@ Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:cplid_yolo
     \caption{Recall das diferentes estratégias de pré-processamento com o YOLOv8n - CPLID.}
     \label{fig:cplid_yolo_recall}
 \end{figure}
+
+A ordenação das barras evidencia a amplitude reduzida dos resultados do detector neste conjunto: entre a pior e a melhor técnica há pouco mais de 23 pontos percentuais de acurácia, e nenhuma configuração se aproxima dos valores registrados pela CNN. Os gráficos de precisão apresentam os menores valores entre as quatro métricas, comportamento esperado quando parte expressiva das predições se concentra na classe majoritária. Os valores obtidos com o YOLOv8n-cls, por sua vez, são apresentados da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}.
 
 \begin{figure}[H]
     \centering
@@ -623,7 +625,7 @@ Repete-se aqui a inversão observada no CPLID, de forma ainda mais acentuada: a 
     \fonte{Autor.}
 \end{table}
 
-Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:drnpw_yolo_acc} à Figura \ref{fig:drnpw_yolo_recall}, e os obtidos com o YOLOv8n-cls, da Figura \ref{fig:drnpw_yolocls_acc} à Figura \ref{fig:drnpw_yolocls_recall}.
+Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:drnpw_yolo_acc} à Figura \ref{fig:drnpw_yolo_recall}.
 
 \begin{figure}[H]
     \centering
@@ -652,6 +654,8 @@ Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:drnpw_yolo
     \caption{Recall das diferentes estratégias de pré-processamento com o YOLOv8n - DRNPW.}
     \label{fig:drnpw_yolo_recall}
 \end{figure}
+
+Diferentemente do que ocorre no CPLID, os gráficos do DRNPW não exibem um agrupamento nítido de técnicas próximo ao topo: os valores de acurácia distribuem-se de forma quase contínua entre 53,33\% e 83,33\%, e a diferença entre técnicas adjacentes corresponde, em diversos casos, a uma única imagem do conjunto de teste. Os valores obtidos com o YOLOv8n-cls são apresentados da Figura \ref{fig:drnpw_yolocls_acc} à Figura \ref{fig:drnpw_yolocls_recall}.
 
 \begin{figure}[H]
     \centering
