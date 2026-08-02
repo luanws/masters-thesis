@@ -316,13 +316,12 @@ O modelo avaliado é o YOLOv8n-cls, variante da família YOLO dedicada à classi
         Otimizador                  & automático \\
         Taxa de aprendizado inicial & $0{,}01$ \\
         Épocas                      & 50 \\
-        Tempo médio por combinação  & 9 min \\
         \hline
     \end{tabular}
     \fonte{Autor.}
 \end{table}
 
-O treinamento foi executado integralmente em CPU, em um processador Intel Xeon E5-1650 v4 de 3,60 GHz, uma vez que a unidade gráfica do hospedeiro não estava disponível ao ambiente de execução. Essa restrição não altera a qualidade final do modelo, mas limita, na prática, a experimentação com resoluções ou lotes maiores. Ao todo, a varredura compreendeu 28 treinamentos completos, correspondentes a 2 conjuntos de dados e 14 técnicas de pré-processamento.
+Ao todo, a varredura compreendeu 28 treinamentos completos, correspondentes a 2 conjuntos de dados e 14 técnicas de pré-processamento, todos conduzidos com a mesma configuração e o mesmo número de épocas, de modo que a única variável entre as execuções é a técnica de pré-processamento aplicada às imagens de entrada.
 
 Cabe registrar que os dois conjuntos de dados possuem exatamente uma anotação por imagem, o que os caracteriza, na prática, como problemas de classificação, mesmo quando os rótulos estão expressos em formato de caixa delimitadora. Essa característica torna a tarefa do YOLOv8n-cls idêntica à da CNN e dispensa qualquer conversão das predições para efeito de comparação.
 
