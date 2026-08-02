@@ -1,7 +1,7 @@
 \chapter{Coleta e Análise de Resultados}
 \label{chap:coleta_e_analise}
 
-Este capítulo apresenta os resultados obtidos com a aplicação da metodologia proposta. Inicia-se com a avaliação do impacto de diferentes técnicas de pré-processamento no desempenho de uma CNN e segue com a otimização de parâmetros de pré-processamento por busca em grade e por busca aleatória. Ao final, apresentam-se experimentos adicionais em que a mesma varredura de pré-processamentos é repetida com arquiteturas da família YOLO, de modo a verificar em que medida os resultados obtidos dependem do modelo empregado.
+Este capítulo apresenta os resultados obtidos com a aplicação da metodologia proposta. Inicia-se com a avaliação do impacto de diferentes técnicas de pré-processamento no desempenho de uma CNN e segue com a otimização de parâmetros de pré-processamento por busca em grade e por busca aleatória. Ao final, apresenta-se um experimento adicional em que a mesma varredura de pré-processamentos é repetida com o modelo de classificação da família YOLO, de modo a verificar em que medida os resultados obtidos dependem do modelo empregado.
 
 \section{Avaliação de Técnicas de Pré-Processamento em Redes Neurais Convolucionais para Classificação de Imagens}
 
@@ -288,74 +288,43 @@ Para trabalhos futuros, sugerem-se os seguintes encaminhamentos:
 \end{itemize}
 
 
-\section{Experimentos Adicionais com Arquiteturas YOLO}
+\section{Experimento Adicional com a Arquitetura YOLOv8n-cls}
 \label{sec:experimentos_yolo}
 
 As avaliações apresentadas nas seções anteriores empregaram uma única arquitetura de modelagem, a CNN clássica descrita no início deste capítulo. Essa escolha é adequada ao propósito de isolar o pré-processamento como variável independente, mas deixa em aberto uma questão pertinente: os efeitos observados decorrem das características das imagens ou da arquitetura utilizada para avaliá-las. Como a metodologia proposta trata a etapa de modelagem como um bloco substituível, é possível repetir a varredura de pré-processamentos trocando apenas esse bloco e verificar se o comportamento se mantém.
 
-Esta seção apresenta os experimentos adicionais conduzidos com esse objetivo, utilizando duas arquiteturas da família YOLO (\textit{You Only Look Once}), em sua versão v8 \cite{jocher2023yolov8}. Os resultados aqui reportados complementam, e não substituem, as análises anteriores: os conjuntos de dados, as 14 técnicas de pré-processamento e o número de épocas de treinamento foram mantidos, de modo que a única variável alterada em relação à avaliação inicial é o modelo.
+Esta seção apresenta o experimento adicional conduzido com esse objetivo, utilizando o modelo de classificação da família YOLO (\textit{You Only Look Once}), em sua versão v8 \cite{jocher2023yolov8}. Os resultados aqui reportados complementam, e não substituem, as análises anteriores: os conjuntos de dados, as 14 técnicas de pré-processamento e o número de épocas de treinamento foram mantidos, de modo que a única variável alterada em relação à avaliação inicial é o modelo.
 
-\subsection{Modelos Avaliados}
+\subsection{Modelo Avaliado}
 
-Foram avaliadas duas arquiteturas adicionais:
-
-\begin{itemize}
-    \item \textbf{YOLOv8n (detecção):} modelo de detecção de objetos, que prediz simultaneamente a classe e a localização espacial dos elementos presentes na imagem. Corresponde ao encaminhamento de estender o método a arquiteturas de detecção, permitindo verificar o desempenho do realce de contraste em um objetivo de aprendizado distinto do de classificação.
-    \item \textbf{YOLOv8n-cls (classificação):} modelo da mesma família, porém em modo de classificação pura, sem predição de caixas delimitadoras. Sua inclusão tem finalidade de controle: mantém a arquitetura de extração de características do detector e a tarefa da CNN, o que permite separar o efeito da família de modelos do efeito do objetivo de detecção.
-\end{itemize}
-
-Ambos partiram de pesos pré-treinados no conjunto COCO \cite{lin2014microsoft}, prática usual de transferência de aprendizado nessa família de modelos. A Tabela \ref{tab:yolo_config} resume a configuração adotada.
+O modelo avaliado é o YOLOv8n-cls, variante da família YOLO dedicada à classificação de imagens, sem predição de caixas delimitadoras. Sua escolha permite confrontar uma arquitetura consolidada e pré-treinada com a CNN construída no âmbito deste trabalho, preservando exatamente a mesma tarefa e o mesmo protocolo de avaliação, de forma que a comparação incida sobre a arquitetura e não sobre o objetivo de aprendizado. Os pesos iniciais provêm do conjunto COCO \cite{lin2014microsoft}, prática usual de transferência de aprendizado nessa família de modelos. A Tabela \ref{tab:yolo_config} resume a configuração adotada.
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:yolo_config}Configuração dos modelos adicionais avaliados}
+    \caption{\label{tab:yolo_config}Configuração do modelo adicional avaliado}
     \vspace{0.2cm}
     \small
-    \begin{tabular}{lcc}
+    \begin{tabular}{lc}
         \hline
-        \textbf{Parâmetro} & \textbf{YOLOv8n} & \textbf{YOLOv8n-cls} \\
+        \textbf{Parâmetro} & \textbf{YOLOv8n-cls} \\
         \hline
-        Tarefa                     & Detecção            & Classificação \\
-        Pesos iniciais             & \texttt{yolov8n.pt} & \texttt{yolov8n-cls.pt} \\
-        Parâmetros treináveis      & 3.066.494           & 1.437.442 \\
-        Resolução de entrada       & $640 \times 640$    & $224 \times 224$ \\
-        Tamanho do lote            & 16                  & 16 \\
-        Otimizador                 & automático          & automático \\
-        Taxa de aprendizado inicial & $0{,}01$           & $0{,}01$ \\
-        Épocas                     & 50                  & 50 \\
-        Tempo médio por combinação & 97 min              & 9 min \\
+        Tarefa                      & Classificação \\
+        Pesos iniciais              & \texttt{yolov8n-cls.pt} \\
+        Parâmetros treináveis       & 1.437.442 \\
+        Resolução de entrada        & $224 \times 224$ \\
+        Tamanho do lote             & 16 \\
+        Otimizador                  & automático \\
+        Taxa de aprendizado inicial & $0{,}01$ \\
+        Épocas                      & 50 \\
+        Tempo médio por combinação  & 9 min \\
         \hline
     \end{tabular}
     \fonte{Autor.}
 \end{table}
 
-O treinamento foi executado integralmente em CPU, em um processador Intel Xeon E5-1650 v4 de 3,60 GHz, uma vez que a unidade gráfica do hospedeiro não estava disponível ao ambiente de execução. Essa restrição não altera a qualidade final dos modelos, mas explica a diferença de custo entre as duas arquiteturas: o detector é cerca de dez vezes mais oneroso que o classificador, em razão da resolução de entrada mais alta e da cabeça de predição de caixas. Ao todo, as varreduras compreenderam 56 treinamentos completos, correspondentes a 2 modelos, 2 conjuntos de dados e 14 técnicas de pré-processamento.
+O treinamento foi executado integralmente em CPU, em um processador Intel Xeon E5-1650 v4 de 3,60 GHz, uma vez que a unidade gráfica do hospedeiro não estava disponível ao ambiente de execução. Essa restrição não altera a qualidade final do modelo, mas limita, na prática, a experimentação com resoluções ou lotes maiores. Ao todo, a varredura compreendeu 28 treinamentos completos, correspondentes a 2 conjuntos de dados e 14 técnicas de pré-processamento.
 
-\subsection{Compatibilização entre Detecção e Classificação}
-
-Os dois conjuntos de dados possuem exatamente uma anotação por imagem, o que os caracteriza, na prática, como problemas de classificação, mesmo quando os rótulos estão expressos em formato de caixa delimitadora. Para que o desempenho do detector fosse comparável ao dos classificadores sob as mesmas métricas, a saída do YOLOv8n foi reduzida a um único rótulo por imagem, adotando-se a classe da caixa de maior confiança. Imagens sem qualquer detecção recebem um rótulo adicional, \texttt{SEM DETECCAO}, contabilizado como erro.
-
-Nessa redução, empregou-se um limiar de confiança de 0,001, em vez do valor padrão de 0,25. Com o limiar padrão, o modelo não produzia detecção alguma na maior parte das imagens de teste, e as métricas seriam nulas por efeito do limiar, e não por ausência de capacidade preditiva. Cabe registrar que esse procedimento é permissivo com o detector, pois desconsidera a correção da localização da caixa e avalia apenas o rótulo predito.
-
-A qualidade da localização propriamente dita foi verificada em separado, por meio do mAP50 (\textit{mean Average Precision} com limiar de IoU de 0,5), apresentado na Tabela \ref{tab:yolo_map}.
-
-\begin{table}[H]
-    \centering
-    \caption{\label{tab:yolo_map}Faixa de mAP50 do YOLOv8n entre as 14 técnicas de pré-processamento}
-    \vspace{0.2cm}
-    \small
-    \begin{tabular}{lcc}
-        \hline
-        \textbf{Conjunto de dados} & \textbf{mAP50 mínimo} & \textbf{mAP50 máximo} \\
-        \hline
-        CPLID & 0,0644 & 0,1272 \\
-        DRNPW & 0,0014 & 0,0537 \\
-        \hline
-    \end{tabular}
-    \fonte{Autor.}
-\end{table}
-
-Considerando que detectores de uso prático costumam apresentar mAP50 superior a 0,6, os valores obtidos situam-se de cerca de cinco a mais de quatrocentas vezes abaixo desse patamar, o que indica que a localização espacial das falhas não foi efetivamente aprendida em nenhuma das combinações avaliadas. As métricas de classificação reportadas a seguir devem, portanto, ser lidas como o desempenho do rótulo predito, e não como evidência de capacidade de detecção.
+Cabe registrar que os dois conjuntos de dados possuem exatamente uma anotação por imagem, o que os caracteriza, na prática, como problemas de classificação, mesmo quando os rótulos estão expressos em formato de caixa delimitadora. Essa característica torna a tarefa do YOLOv8n-cls idêntica à da CNN e dispensa qualquer conversão das predições para efeito de comparação.
 
 \subsection{Critério de Referência e Definição das Métricas}
 
@@ -365,38 +334,7 @@ As métricas foram calculadas com média ponderada pelo suporte de cada classe, 
 
 \subsection{Resultados no CPLID}
 
-As Tabelas \ref{tab:cplid_yolo} e \ref{tab:cplid_yolocls} apresentam os resultados obtidos pelo YOLOv8n e pelo YOLOv8n-cls no CPLID.
-
-\begin{table}[H]
-    \centering
-    \caption{\label{tab:cplid_yolo}Desempenho do YOLOv8n por técnica de pré-processamento - CPLID}
-    \vspace{0.2cm}
-    \small
-    \begin{tabular}{lcccc}
-        \hline
-        \textbf{Pré-processamento} & \textbf{Acurácia (\%)} & \textbf{Precisão (\%)} & \textbf{Recall (\%)} & \textbf{F1 (\%)} \\
-        \hline
-        \textit{Adaptive Threshold} & 65,12 & 42,40 & 65,12 & 51,36 \\
-        CLAHE & 65,12 & 42,40 & 65,12 & 51,36 \\
-        CLAHE e \textit{Contrast Enh.} & 55,81 & 31,15 & 55,81 & 39,99 \\
-        \textit{Contrast Enhancement} & 67,44 & 48,17 & 67,44 & 56,20 \\
-        \textit{Contrast Enh.} e CLAHE & 72,09 & 51,97 & 72,09 & 60,40 \\
-        \textit{Contrast Enh.} e \textit{Eq. Histogram} & 65,12 & 42,40 & 65,12 & 51,36 \\
-        \textit{Denoise} & 72,09 & 51,97 & 72,09 & 60,40 \\
-        \textit{Edge Detection} & 67,44 & 45,48 & 67,44 & 54,33 \\
-        \textit{Equalize Histogram} & \textbf{79,07} & 62,52 & 79,07 & \textbf{69,83} \\
-        \textit{Eq. Histogram} e \textit{Contrast Enh.} & 76,74 & 58,90 & 76,74 & 66,65 \\
-        \textit{Gaussian Blur} & 76,74 & 58,90 & 76,74 & 66,65 \\
-        \textit{Gray Scale} & \textbf{79,07} & 62,52 & 79,07 & \textbf{69,83} \\
-        \textit{Median Blur} & 74,42 & 55,38 & 74,42 & 63,50 \\
-        \textit{Original Image} & 65,12 & 42,40 & 65,12 & 51,36 \\
-        \hline
-        Média & 70,10 & 49,76 & 70,10 & 58,09 \\
-        Piso majoritário & 74,42 & & & \\
-        \hline
-    \end{tabular}
-    \fonte{Autor.}
-\end{table}
+A Tabela \ref{tab:cplid_yolocls} apresenta os resultados obtidos pelo YOLOv8n-cls no CPLID.
 
 \begin{table}[H]
     \centering
@@ -429,72 +367,42 @@ As Tabelas \ref{tab:cplid_yolo} e \ref{tab:cplid_yolocls} apresentam os resultad
     \fonte{Autor.}
 \end{table}
 
-No CPLID, o YOLOv8n obteve acurácia média de 70,10\% e o YOLOv8n-cls, de 66,28\%, ambas inferiores ao piso majoritário de 74,42\% e à média de 84,55\% obtida pela CNN. O detector superou o piso em 4 das 14 técnicas avaliadas, e o classificador da mesma família, em apenas 1. O melhor resultado individual entre as duas arquiteturas coube ao YOLOv8n-cls com \textit{Gray Scale} (81,40\% de acurácia e 74,93\% de \textit{F1-score}), valor ainda distante dos 95,35\% alcançados pela CNN com o realce simples de contraste.
+No CPLID, o YOLOv8n-cls obteve acurácia média de 66,28\%, valor inferior tanto ao piso majoritário de 74,42\% quanto à média de 84,55\% registrada pela CNN. O modelo superou o piso em apenas 1 das 14 técnicas avaliadas. O melhor resultado individual ocorreu com o \textit{Gray Scale}, com 81,40\% de acurácia e 74,93\% de \textit{F1-score}, ainda assim distante dos 95,35\% alcançados pela CNN com o realce simples de contraste.
 
-Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \textit{Gray Scale} ocupava a quinta pior posição neste conjunto (76,74\% de acurácia), bem abaixo da amostra de controle sem tratamento. Para as duas arquiteturas YOLO, foi a técnica de melhor desempenho, com 79,07\% no YOLOv8n, valor empatado com o \textit{Equalize Histogram}, e 81,40\% no YOLOv8n-cls. De forma simétrica, as combinações de realce de contraste que lideraram a avaliação com a CNN ficaram entre as piores para o YOLOv8n-cls, caso de CLAHE e \textit{Contrast Enhancement} (51,16\%). A Tabela \ref{tab:cplid_comparativo} consolida a comparação entre as três arquiteturas.
+Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \textit{Gray Scale} ocupava a quinta pior posição neste conjunto, com 76,74\% de acurácia, bem abaixo da amostra de controle sem tratamento. Para o YOLOv8n-cls, foi a técnica de melhor desempenho. De forma simétrica, as combinações de realce de contraste que lideraram a avaliação com a CNN ficaram entre as piores para o YOLOv8n-cls, caso de CLAHE e \textit{Contrast Enhancement}, com 51,16\%. A Tabela \ref{tab:cplid_comparativo} consolida a comparação entre as duas arquiteturas.
 
 \begin{table}[H]
     \centering
     \caption{\label{tab:cplid_comparativo}Comparação entre as arquiteturas avaliadas - CPLID}
     \vspace{0.2cm}
-    \footnotesize
-    \begin{tabular}{lcccccc}
+    \small
+    \begin{tabular}{lcccc}
         \hline
-        \textbf{Pré-processamento} & \multicolumn{3}{c}{\textbf{Acurácia (\%)}} & \multicolumn{3}{c}{\textbf{F1-score (\%)}} \\
-        & CNN & YOLO & YOLOCLS & CNN & YOLO & YOLOCLS \\
+        \textbf{Pré-processamento} & \multicolumn{2}{c}{\textbf{Acurácia (\%)}} & \multicolumn{2}{c}{\textbf{F1-score (\%)}} \\
+        & CNN & YOLOv8n-cls & CNN & YOLOv8n-cls \\
         \hline
-        \textit{Adaptive Threshold} & 67,44 & 65,12 & 55,81 & 80,56 & 51,36 & 46,65 \\
-        CLAHE & 90,70 & 65,12 & 60,47 & 94,12 & 51,36 & 49,07 \\
-        CLAHE e \textit{Contrast Enh.} & 95,35 & 55,81 & 51,16 & 95,35 & 39,99 & 43,67 \\
-        \textit{Contrast Enhancement} & 95,35 & 67,44 & 58,14 & 96,55 & 56,20 & 57,07 \\
-        \textit{Contrast Enh.} e CLAHE & 93,02 & 72,09 & 69,77 & 92,94 & 60,40 & 65,08 \\
-        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 95,35 & 65,12 & 62,79 & 95,16 & 51,36 & 58,35 \\
-        \textit{Denoise} & 67,44 & 72,09 & 72,09 & 80,56 & 60,40 & 60,40 \\
-        \textit{Edge Detection} & 74,42 & 67,44 & 67,44 & 85,33 & 54,33 & 54,33 \\
-        \textit{Equalize Histogram} & 88,37 & 79,07 & 72,09 & 92,54 & 69,83 & 66,25 \\
-        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 93,02 & 76,74 & 74,42 & 93,08 & 66,65 & 68,76 \\
-        \textit{Gaussian Blur} & 67,44 & 76,74 & 74,42 & 80,56 & 66,65 & 71,06 \\
-        \textit{Gray Scale} & 76,74 & 79,07 & 81,40 & 85,29 & 69,83 & 74,93 \\
-        \textit{Median Blur} & 86,05 & 74,42 & 67,44 & 88,46 & 63,50 & 64,78 \\
-        \textit{Original Image} & 93,02 & 65,12 & 60,47 & 95,08 & 51,36 & 49,07 \\
+        \textit{Adaptive Threshold} & 67,44 & 55,81 & 80,56 & 46,65 \\
+        CLAHE & 90,70 & 60,47 & 94,12 & 49,07 \\
+        CLAHE e \textit{Contrast Enh.} & 95,35 & 51,16 & 95,35 & 43,67 \\
+        \textit{Contrast Enhancement} & 95,35 & 58,14 & 96,55 & 57,07 \\
+        \textit{Contrast Enh.} e CLAHE & 93,02 & 69,77 & 92,94 & 65,08 \\
+        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 95,35 & 62,79 & 95,16 & 58,35 \\
+        \textit{Denoise} & 67,44 & 72,09 & 80,56 & 60,40 \\
+        \textit{Edge Detection} & 74,42 & 67,44 & 85,33 & 54,33 \\
+        \textit{Equalize Histogram} & 88,37 & 72,09 & 92,54 & 66,25 \\
+        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 93,02 & 74,42 & 93,08 & 68,76 \\
+        \textit{Gaussian Blur} & 67,44 & 74,42 & 80,56 & 71,06 \\
+        \textit{Gray Scale} & 76,74 & 81,40 & 85,29 & 74,93 \\
+        \textit{Median Blur} & 86,05 & 67,44 & 88,46 & 64,78 \\
+        \textit{Original Image} & 93,02 & 60,47 & 95,08 & 49,07 \\
         \hline
-        Média & 84,55 & 70,10 & 66,28 & 89,68 & 58,09 & 59,25 \\
+        Média & 84,55 & 66,28 & 89,68 & 59,25 \\
         \hline
     \end{tabular}
     \fonte{Autor.}
 \end{table}
 
-Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:cplid_yolo_acc} à Figura \ref{fig:cplid_yolo_recall}, com as técnicas ordenadas de forma crescente conforme a métrica correspondente.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/CPLID/Acurácia.jpg}
-    \caption{Acurácia das diferentes estratégias de pré-processamento com o YOLOv8n - CPLID.}
-    \label{fig:cplid_yolo_acc}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/CPLID/F1 score.jpg}
-    \caption{F1-Score das diferentes estratégias de pré-processamento com o YOLOv8n - CPLID.}
-    \label{fig:cplid_yolo_f1}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/CPLID/Precisão.jpg}
-    \caption{Precisão das diferentes estratégias de pré-processamento com o YOLOv8n - CPLID.}
-    \label{fig:cplid_yolo_precisao}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/CPLID/Recall.jpg}
-    \caption{Recall das diferentes estratégias de pré-processamento com o YOLOv8n - CPLID.}
-    \label{fig:cplid_yolo_recall}
-\end{figure}
-
-A ordenação das barras evidencia a amplitude reduzida dos resultados do detector neste conjunto: entre a pior e a melhor técnica há pouco mais de 23 pontos percentuais de acurácia, e nenhuma configuração se aproxima dos valores registrados pela CNN. Os gráficos de precisão apresentam os menores valores entre as quatro métricas, comportamento esperado quando parte expressiva das predições se concentra na classe majoritária. Os valores obtidos com o YOLOv8n-cls, por sua vez, são apresentados da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}.
+Os valores obtidos são apresentados da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}, com as técnicas ordenadas de forma crescente conforme a métrica correspondente.
 
 \begin{figure}[H]
     \centering
@@ -526,38 +434,7 @@ A ordenação das barras evidencia a amplitude reduzida dos resultados do detect
 
 \subsection{Resultados no DRNPW}
 
-As Tabelas \ref{tab:drnpw_yolo} e \ref{tab:drnpw_yolocls} apresentam os resultados obtidos no DRNPW.
-
-\begin{table}[H]
-    \centering
-    \caption{\label{tab:drnpw_yolo}Desempenho do YOLOv8n por técnica de pré-processamento - DRNPW}
-    \vspace{0.2cm}
-    \small
-    \begin{tabular}{lcccc}
-        \hline
-        \textbf{Pré-processamento} & \textbf{Acurácia (\%)} & \textbf{Precisão (\%)} & \textbf{Recall (\%)} & \textbf{F1 (\%)} \\
-        \hline
-        \textit{Adaptive Threshold} & \textbf{83,33} & 69,44 & 83,33 & \textbf{75,76} \\
-        CLAHE & 70,00 & 66,96 & 70,00 & 68,44 \\
-        CLAHE e \textit{Contrast Enh.} & 76,67 & 63,45 & 76,67 & 69,43 \\
-        \textit{Contrast Enhancement} & 76,67 & 58,78 & 76,67 & 66,54 \\
-        \textit{Contrast Enh.} e CLAHE & 70,00 & 61,92 & 70,00 & 65,71 \\
-        \textit{Contrast Enh.} e \textit{Eq. Histogram} & 53,33 & 28,44 & 53,33 & 37,10 \\
-        \textit{Denoise} & 63,33 & 43,68 & 63,33 & 51,70 \\
-        \textit{Edge Detection} & 73,33 & 53,78 & 73,33 & 62,05 \\
-        \textit{Equalize Histogram} & 70,00 & 49,00 & 70,00 & 57,65 \\
-        \textit{Eq. Histogram} e \textit{Contrast Enh.} & 66,67 & 44,44 & 66,67 & 53,33 \\
-        \textit{Gaussian Blur} & 66,67 & 44,44 & 66,67 & 53,33 \\
-        \textit{Gray Scale} & 80,00 & 64,00 & 80,00 & 71,11 \\
-        \textit{Median Blur} & 73,33 & 53,78 & 73,33 & 62,05 \\
-        \textit{Original Image} & 73,33 & 53,78 & 73,33 & 62,05 \\
-        \hline
-        Média & 71,19 & 53,99 & 71,19 & 61,16 \\
-        Piso majoritário & 73,33 & & & \\
-        \hline
-    \end{tabular}
-    \fonte{Autor.}
-\end{table}
+A Tabela \ref{tab:drnpw_yolocls} apresenta os resultados obtidos no DRNPW.
 
 \begin{table}[H]
     \centering
@@ -590,72 +467,42 @@ As Tabelas \ref{tab:drnpw_yolo} e \ref{tab:drnpw_yolocls} apresentam os resultad
     \fonte{Autor.}
 \end{table}
 
-No DRNPW, as três arquiteturas apresentaram desempenho médio muito próximo do piso majoritário de 73,33\%: 73,81\% para a CNN, 71,19\% para o YOLOv8n e 71,43\% para o YOLOv8n-cls. O melhor resultado individual das arquiteturas YOLO, 83,33\% de acurácia e 75,76\% de \textit{F1-score} com \textit{Adaptive Threshold}, iguala numericamente o melhor resultado da CNN neste conjunto, obtido com a combinação de realce de contraste e equalização de histograma. Trata-se, contudo, de uma coincidência de valores que reflete o mesmo número de acertos em um conjunto de teste de apenas 30 imagens.
+No DRNPW, o YOLOv8n-cls obteve acurácia média de 71,43\%, ante 73,81\% da CNN e um piso majoritário de 73,33\%. As duas arquiteturas permaneceram, portanto, na vizinhança imediata do piso, e a vantagem média da CNN, de 2,38 pontos percentuais, corresponde a menos de uma imagem por combinação em um conjunto de teste de 30 imagens. O melhor resultado individual, 83,33\% de acurácia e 75,76\% de \textit{F1-score} com \textit{Adaptive Threshold}, iguala numericamente o melhor resultado da CNN neste conjunto, obtido com a combinação de realce de contraste e equalização de histograma. Trata-se, contudo, de uma coincidência de valores que reflete o mesmo número de acertos em um conjunto de teste reduzido.
 
-Repete-se aqui a inversão observada no CPLID, de forma ainda mais acentuada: a combinação \textit{Contrast Enhancement} e \textit{Equalize Histogram}, que foi a de melhor desempenho para a CNN neste conjunto, foi a de pior desempenho para as duas arquiteturas YOLO, com 53,33\% de acurácia. A Tabela \ref{tab:drnpw_comparativo} consolida a comparação.
+Repete-se aqui a inversão observada no CPLID, de forma ainda mais acentuada: a combinação \textit{Contrast Enhancement} e \textit{Equalize Histogram}, que foi a de melhor desempenho para a CNN neste conjunto, foi a de pior desempenho para o YOLOv8n-cls, com 53,33\% de acurácia. A Tabela \ref{tab:drnpw_comparativo} consolida a comparação.
 
 \begin{table}[H]
     \centering
     \caption{\label{tab:drnpw_comparativo}Comparação entre as arquiteturas avaliadas - DRNPW}
     \vspace{0.2cm}
-    \footnotesize
-    \begin{tabular}{lcccccc}
+    \small
+    \begin{tabular}{lcccc}
         \hline
-        \textbf{Pré-processamento} & \multicolumn{3}{c}{\textbf{Acurácia (\%)}} & \multicolumn{3}{c}{\textbf{F1-score (\%)}} \\
-        & CNN & YOLO & YOLOCLS & CNN & YOLO & YOLOCLS \\
+        \textbf{Pré-processamento} & \multicolumn{2}{c}{\textbf{Acurácia (\%)}} & \multicolumn{2}{c}{\textbf{F1-score (\%)}} \\
+        & CNN & YOLOv8n-cls & CNN & YOLOv8n-cls \\
         \hline
-        \textit{Adaptive Threshold} & 73,33 & 83,33 & 83,33 & 62,05 & 75,76 & 75,76 \\
-        CLAHE & 80,00 & 70,00 & 73,33 & 71,11 & 68,44 & 62,05 \\
-        CLAHE e \textit{Contrast Enh.} & 70,00 & 76,67 & 80,00 & 57,65 & 69,43 & 71,11 \\
-        \textit{Contrast Enhancement} & 63,33 & 76,67 & 76,67 & 49,12 & 66,54 & 66,54 \\
-        \textit{Contrast Enh.} e CLAHE & 80,00 & 70,00 & 76,67 & 71,11 & 65,71 & 66,54 \\
-        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 83,33 & 53,33 & 53,33 & 75,76 & 37,10 & 37,10 \\
-        \textit{Denoise} & 76,67 & 63,33 & 63,33 & 66,54 & 51,70 & 51,70 \\
-        \textit{Edge Detection} & 66,67 & 73,33 & 73,33 & 53,33 & 62,05 & 62,05 \\
-        \textit{Equalize Histogram} & 80,00 & 70,00 & 70,00 & 71,11 & 57,65 & 57,65 \\
-        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 76,67 & 66,67 & 66,67 & 66,54 & 53,33 & 53,33 \\
-        \textit{Gaussian Blur} & 76,67 & 66,67 & 63,33 & 66,54 & 53,33 & 51,70 \\
-        \textit{Gray Scale} & 63,33 & 80,00 & 80,00 & 49,12 & 71,11 & 71,11 \\
-        \textit{Median Blur} & 80,00 & 73,33 & 73,33 & 71,11 & 62,05 & 62,05 \\
-        \textit{Original Image} & 63,33 & 73,33 & 66,67 & 49,12 & 62,05 & 58,67 \\
+        \textit{Adaptive Threshold} & 73,33 & 83,33 & 62,05 & 75,76 \\
+        CLAHE & 80,00 & 73,33 & 71,11 & 62,05 \\
+        CLAHE e \textit{Contrast Enh.} & 70,00 & 80,00 & 57,65 & 71,11 \\
+        \textit{Contrast Enhancement} & 63,33 & 76,67 & 49,12 & 66,54 \\
+        \textit{Contrast Enh.} e CLAHE & 80,00 & 76,67 & 71,11 & 66,54 \\
+        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 83,33 & 53,33 & 75,76 & 37,10 \\
+        \textit{Denoise} & 76,67 & 63,33 & 66,54 & 51,70 \\
+        \textit{Edge Detection} & 66,67 & 73,33 & 53,33 & 62,05 \\
+        \textit{Equalize Histogram} & 80,00 & 70,00 & 71,11 & 57,65 \\
+        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 76,67 & 66,67 & 66,54 & 53,33 \\
+        \textit{Gaussian Blur} & 76,67 & 63,33 & 66,54 & 51,70 \\
+        \textit{Gray Scale} & 63,33 & 80,00 & 49,12 & 71,11 \\
+        \textit{Median Blur} & 80,00 & 73,33 & 71,11 & 62,05 \\
+        \textit{Original Image} & 63,33 & 66,67 & 49,12 & 58,67 \\
         \hline
-        Média & 73,81 & 71,19 & 71,43 & 62,87 & 61,16 & 60,53 \\
+        Média & 73,81 & 71,43 & 62,87 & 60,53 \\
         \hline
     \end{tabular}
     \fonte{Autor.}
 \end{table}
 
-Os valores obtidos com o YOLOv8n são apresentados da Figura \ref{fig:drnpw_yolo_acc} à Figura \ref{fig:drnpw_yolo_recall}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/DRNPW/Acurácia.jpg}
-    \caption{Acurácia das diferentes estratégias de pré-processamento com o YOLOv8n - DRNPW.}
-    \label{fig:drnpw_yolo_acc}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/DRNPW/F1 score.jpg}
-    \caption{F1-Score das diferentes estratégias de pré-processamento com o YOLOv8n - DRNPW.}
-    \label{fig:drnpw_yolo_f1}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/DRNPW/Precisão.jpg}
-    \caption{Precisão das diferentes estratégias de pré-processamento com o YOLOv8n - DRNPW.}
-    \label{fig:drnpw_yolo_precisao}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/coleta_e_analise_de_resultados/preprocessing/YOLO/DRNPW/Recall.jpg}
-    \caption{Recall das diferentes estratégias de pré-processamento com o YOLOv8n - DRNPW.}
-    \label{fig:drnpw_yolo_recall}
-\end{figure}
-
-Diferentemente do que ocorre no CPLID, os valores de acurácia no DRNPW cobrem quase toda a faixa disponível: as 14 técnicas distribuem-se por oito níveis distintos, que correspondem a praticamente todos os múltiplos de $1/30$ entre 63,33\% e 83,33\%, além do valor isolado de 53,33\%. Como cada imagem do conjunto de teste equivale a 3,33 pontos percentuais, a diferença entre técnicas vizinhas corresponde, na maior parte dos casos, a um único acerto. Os valores obtidos com o YOLOv8n-cls são apresentados da Figura \ref{fig:drnpw_yolocls_acc} à Figura \ref{fig:drnpw_yolocls_recall}.
+Diferentemente do que ocorre no CPLID, os valores de acurácia no DRNPW cobrem quase toda a faixa disponível: as 14 técnicas distribuem-se por oito níveis distintos, que correspondem a praticamente todos os múltiplos de $1/30$ entre 63,33\% e 83,33\%, além do valor isolado de 53,33\%. Como cada imagem do conjunto de teste equivale a 3,33 pontos percentuais, a diferença entre técnicas vizinhas corresponde, na maior parte dos casos, a um único acerto. Os valores obtidos são apresentados da Figura \ref{fig:drnpw_yolocls_acc} à Figura \ref{fig:drnpw_yolocls_recall}.
 
 \begin{figure}[H]
     \centering
@@ -685,9 +532,9 @@ Diferentemente do que ocorre no CPLID, os valores de acurácia no DRNPW cobrem q
     \label{fig:drnpw_yolocls_recall}
 \end{figure}
 
-\subsection{Discussão dos Experimentos Adicionais}
+\subsection{Discussão do Experimento Adicional}
 
-A comparação entre as três arquiteturas, resumida na Tabela \ref{tab:resumo_modelos}, permite três observações principais.
+A comparação entre as duas arquiteturas, resumida na Tabela \ref{tab:resumo_modelos}, permite três observações principais.
 
 \begin{table}[H]
     \centering
@@ -699,12 +546,10 @@ A comparação entre as três arquiteturas, resumida na Tabela \ref{tab:resumo_m
         \textbf{Conjunto} & \textbf{Modelo} & \textbf{Acurácia média (\%)} & \textbf{Acima do piso} \\
         \hline
         CPLID & CNN & 84,55 & 10/14 \\
-        CPLID & YOLOv8n & 70,10 & 4/14 \\
         CPLID & YOLOv8n-cls & 66,28 & 1/14 \\
         CPLID & \textit{Piso majoritário} & \textit{74,42} & \\
         \hline
         DRNPW & CNN & 73,81 & 8/14 \\
-        DRNPW & YOLOv8n & 71,19 & 4/14 \\
         DRNPW & YOLOv8n-cls & 71,43 & 5/14 \\
         DRNPW & \textit{Piso majoritário} & \textit{73,33} & \\
         \hline
@@ -712,20 +557,18 @@ A comparação entre as três arquiteturas, resumida na Tabela \ref{tab:resumo_m
     \fonte{Autor.}
 \end{table}
 
-A primeira observação diz respeito ao DRNPW, no qual nenhuma das três arquiteturas se distanciou do piso majoritário. As três médias situam-se na vizinhança imediata desse valor, entre 2,14 pontos percentuais abaixo dele, no caso do YOLOv8n, e 0,48 ponto acima, no caso da CNN, o que indica limitação de dados, e não de arquitetura. O conjunto declara 70 categorias, das quais apenas 59 aparecem no treinamento. Das 468 imagens de treino, 335 pertencem a uma única categoria, e diversas classes contam com um ou dois exemplos. Sob esse grau de desbalanceamento, nenhuma escolha de modelo é capaz de compensar a ausência de amostras nas classes de cauda.
+A primeira observação diz respeito ao DRNPW, no qual nenhuma das duas arquiteturas se distanciou do piso majoritário. As duas médias situam-se na vizinhança imediata desse valor, 1,91 ponto percentual abaixo dele no caso do YOLOv8n-cls e 0,48 ponto acima no caso da CNN, o que indica limitação de dados, e não de arquitetura. O conjunto declara 70 categorias, das quais apenas 59 aparecem no treinamento. Das 468 imagens de treino, 335 pertencem a uma única categoria, e diversas classes contam com um ou dois exemplos. Sob esse grau de desbalanceamento, nenhuma escolha de modelo é capaz de compensar a ausência de amostras nas classes de cauda.
 
-A segunda observação refere-se ao CPLID, no qual apenas a CNN superou o piso majoritário de forma consistente. Uma explicação plausível está na relação entre a capacidade do modelo e o volume de dados disponível: com 678 imagens de treinamento e duas classes, a CNN clássica, com apenas duas camadas convolucionais e uma camada densa de 8 unidades, dispõe de capacidade compatível com o problema, ao passo que arquiteturas com milhões de parâmetros, ainda que pré-treinadas, tendem a convergir para soluções degeneradas nesse regime de poucos dados.
+A segunda observação refere-se ao CPLID, no qual apenas a CNN superou o piso majoritário de forma consistente. Uma explicação plausível está na relação entre a capacidade do modelo e o volume de dados disponível: com 678 imagens de treinamento e duas classes, a CNN clássica, com apenas duas camadas convolucionais e uma camada densa de 8 unidades, dispõe de capacidade compatível com o problema, ao passo que uma arquitetura com mais de um milhão de parâmetros, ainda que pré-treinada, tende a convergir para soluções degeneradas nesse regime de poucos dados. Reforça essa leitura o fato de a acurácia do YOLOv8n-cls coincidir exatamente com o piso majoritário em duas das 14 técnicas do CPLID e em três das 14 do DRNPW, o que é compatível com a predição sistemática da classe mais frequente.
 
-A terceira observação decorre da comparação entre o YOLOv8n e o YOLOv8n-cls. A hipótese inicial era de que o desempenho inferior do detector se devesse ao objetivo de detecção, mais exigente que o de classificação. O YOLOv8n-cls foi incluído justamente para testar essa hipótese, e o resultado não a sustenta: no CPLID, o desempenho médio não melhorou ao eliminar a predição de caixas, tendo inclusive recuado de 70,10\% para 66,28\%. Reforça essa leitura o fato de as duas arquiteturas produzirem resultados numericamente idênticos nas quatro métricas em 2 das 14 técnicas no CPLID e em 9 das 14 no DRNPW. Tratando-se de arquiteturas distintas, com resoluções de entrada diferentes e treinadas em execuções independentes, a coincidência até a última casa decimal indica que ambas convergiram para a mesma predição degenerada, tipicamente a de responder sempre a classe majoritária, e não que tenham aprendido representações equivalentes.
+A terceira observação diz respeito à inversão na ordem de mérito das técnicas de pré-processamento, verificada nos dois conjuntos. Agrupando as 14 técnicas em simples e híbridas, a CNN obteve com as híbridas média de acurácia 13,49 pontos percentuais superior à das simples no CPLID e 5,17 pontos superior no DRNPW. Com o YOLOv8n-cls o sinal se inverte nos dois conjuntos, com as híbridas ficando 2,44 e 3,16 pontos abaixo das simples. Esse comportamento é coerente com o fato de o modelo partir de pesos pré-treinados no COCO, cujas estatísticas de cor e contraste são as de fotografias naturais: transformações que se afastam dessa distribuição, como o realce agressivo de contraste, tendem a degradar a utilidade dos filtros já aprendidos, ao passo que a CNN, treinada a partir de pesos aleatórios, ajusta seus filtros à distribuição efetivamente apresentada. A escolha do pré-processamento, portanto, não é independente do modelo e do seu regime de inicialização, o que reforça a necessidade de tratá-los conjuntamente, conforme prevê a estrutura iterativa da metodologia proposta.
 
-Por fim, a inversão na ordem de mérito das técnicas de pré-processamento, observada nos dois conjuntos, merece registro. Agrupando as 14 técnicas em simples e híbridas, a CNN obteve com as híbridas média de acurácia 13,49 pontos percentuais superior à das simples no CPLID e 5,17 pontos superior no DRNPW. Nas arquiteturas YOLO o sinal se inverte nos quatro casos, com as híbridas ficando de 2,44 a 6,33 pontos abaixo das simples. Esse comportamento é coerente com o fato de os modelos YOLO partirem de pesos pré-treinados no COCO, cujas estatísticas de cor e contraste são as de fotografias naturais: transformações que se afastam dessa distribuição, como o realce agressivo de contraste, tendem a degradar a utilidade dos filtros já aprendidos, ao passo que a CNN, treinada do zero, ajusta seus filtros à distribuição efetivamente apresentada. A escolha do pré-processamento, portanto, não é independente do modelo e do seu regime de inicialização, o que reforça a necessidade de tratá-los conjuntamente, conforme prevê a estrutura iterativa da metodologia proposta.
-
-\subsection{Limitações dos Experimentos Adicionais}
+\subsection{Limitações do Experimento Adicional}
 
 A interpretação dos resultados desta seção está sujeita a quatro limitações, aqui registradas para delimitar o alcance das conclusões.
 
 \begin{itemize}
-    \item \textbf{Assincronia entre as execuções:} as varreduras do YOLOv8n e do YOLOv8n-cls foram executadas em uma única campanha, ao passo que os resultados da CNN provêm de execuções realizadas ao longo de um período mais extenso. A comparação, portanto, não controla eventuais diferenças de ambiente entre as campanhas.
+    \item \textbf{Assincronia entre as execuções:} a varredura do YOLOv8n-cls foi executada em uma única campanha, ao passo que os resultados da CNN provêm de execuções realizadas ao longo de um período mais extenso. A comparação, portanto, não controla eventuais diferenças de ambiente entre as campanhas.
     \item \textbf{Heterogeneidade na definição das métricas:} parte dos resultados da CNN no CPLID foi gerada antes da padronização da média ponderada, o que afeta as colunas de precisão e \textit{F1-score} desses registros. A acurácia não é afetada por essa mudança, razão pela qual a comparação entre arquiteturas privilegia essa métrica.
     \item \textbf{Dimensão dos conjuntos de teste:} com 43 imagens no CPLID e 30 no DRNPW, cada acerto isolado corresponde a 2,3 e 3,3 pontos percentuais de acurácia, respectivamente. Diferenças de poucos pontos entre modelos situam-se dentro da variação atribuível a duas ou três imagens.
     \item \textbf{Efeito da média ponderada:} por premiar o acerto na classe majoritária, a média ponderada atenua a percepção do desbalanceamento. A adoção de métricas como o \textit{F1-score} macro ou a acurácia balanceada distinguiria com maior clareza o modelo que aprendeu daquele que apenas replica a classe dominante, e constitui encaminhamento natural para a continuidade destes experimentos.
@@ -733,7 +576,7 @@ A interpretação dos resultados desta seção está sujeita a quatro limitaçõ
 
 \subsection{Síntese da Etapa}
 
-Os experimentos adicionais cumpriram a função de verificar a generalidade das conclusões obtidas com a CNN. Nos dois conjuntos avaliados, as arquiteturas YOLO não superaram a CNN clássica: no CPLID, a diferença é expressiva, com 84,55\% de acurácia média contra 70,10\% e 66,28\%. No DRNPW, as três arquiteturas permanecem estatisticamente indistinguíveis do piso majoritário.
+O experimento adicional cumpriu a função de verificar a generalidade das conclusões obtidas com a CNN. Nos dois conjuntos avaliados, o YOLOv8n-cls não superou a CNN clássica. No CPLID, a diferença é expressiva, com 84,55\% de acurácia média contra 66,28\%. No DRNPW, as duas arquiteturas permanecem estatisticamente indistinguíveis do piso majoritário.
 
 Dois resultados desta etapa têm valor metodológico. O primeiro é a constatação de que, em regime de poucos dados e forte desbalanceamento, o aumento da capacidade do modelo não compensa as limitações do conjunto de dados, o que confirma o diagnóstico de que a escassez de amostras anotadas é o fator mais restritivo nesse domínio. O segundo é a evidência de que a ordem de mérito das técnicas de pré-processamento depende da arquitetura e da forma de inicialização dos pesos, de modo que a seleção do pré-processamento deve ser conduzida em conjunto com a escolha do modelo, e não como etapa independente.
 
