@@ -88,7 +88,8 @@ No bloco ``Aplicar técnicas básicas: normalização, recorte, ruído'', as ima
 
 Conforme \citeonline{sharma2024deep}, essas operações ``melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições''. A normalização favorece a convergência estável durante o treinamento, enquanto o recorte adequado direciona a atenção do modelo para as regiões mais relevantes da imagem.
 
-A dificuldade dessa etapa é baixa a média, pois são técnicas bem estabelecidas na literatura. Se o desempenho do modelo piorar após a aplicação dessas técnicas, revisam-se os parâmetros ou a ordem de aplicação em busca de um equilíbrio adequado.
+% [ERRO PROPOSITAL - FACIL] Concordancia na voz passiva sintetica: "revisa-se os parametros" (deveria ser "revisam-se").
+A dificuldade dessa etapa é baixa a média, pois são técnicas bem estabelecidas na literatura. Se o desempenho do modelo piorar após a aplicação dessas técnicas, revisa-se os parâmetros ou a ordem de aplicação em busca de um equilíbrio adequado.
 
 \subsection{Aplicar data augmentation}
 O bloco ``Aplicar data augmentation'' expande artificialmente o dataset por meio de transformações que preservam as características essenciais das imagens, mas introduzem variabilidade capaz de melhorar a generalização do modelo. Entre as transformações usuais estão rotações, espelhamentos, ajustes de brilho e contraste, mudanças de escala e translações, que simulam diferentes condições de captura.
@@ -166,12 +167,14 @@ A dificuldade dessa etapa é baixa, por se tratar de uma decisão conceitual bas
 \subsection{Montar modelo de classificação}
 O bloco ``Montar modelo de classificação'' é executado quando a tarefa é a classificação. Nessa etapa configura-se uma rede neural para classificar imagens de isoladores em categorias discretas (por exemplo, ``com falha'' e ``sem falha'' ou diferentes tipos de falha).
 
-A configuração inclui a definição das camadas finais com um número de neurônios igual ao número de classes, a escolha de funções de ativação apropriadas (como a softmax, na classificação multiclasse) e a seleção de funções de perda adequadas (como a entropia cruzada). Também envolve a definição das métricas de avaliação relevantes, como acurácia, precisão, recall e F1-score.
+% [ERRO PROPOSITAL - MEDIO] Funcao de ativacao incorreta: para classificacao multiclasse usa-se softmax, nao sigmoide (contradiz a secao de regras gerais da revisao bibliografica).
+A configuração inclui a definição das camadas finais com um número de neurônios igual ao número de classes, a escolha de funções de ativação apropriadas (como a sigmoide, na classificação multiclasse) e a seleção de funções de perda adequadas (como a entropia cruzada). Também envolve a definição das métricas de avaliação relevantes, como acurácia, precisão, recall e F1-score.
 
 Nesse tipo de modelo, a função de perda usualmente adotada é a entropia cruzada categórica, definida pela Equação~\ref{eq:perda_classificacao}:
 
+% [ERRO PROPOSITAL - DIFICIL] Sinal negativo suprimido na entropia cruzada categorica; contradiz a Equacao \ref{eq:categorical_crossentropy} da revisao bibliografica, que traz o sinal correto.
 \begin{equation}
-    L_{\text{class}} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})
+    L_{\text{class}} = \frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})
     \label{eq:perda_classificacao}
 \end{equation}
 
@@ -254,7 +257,8 @@ A dificuldade dessa etapa é moderada e reside sobretudo na interpretação corr
 \subsection{Desempenho satisfatório?}
 O bloco de decisão ``Desempenho satisfatório?'' verifica se os resultados atendem aos critérios de sucesso estabelecidos. A decisão baseia-se nos valores das métricas definidas (acurácia, F1-score e tempo) comparados a limiares ou benchmarks predefinidos.
 
-Pode-se estabelecer, por exemplo, que o sistema deve atingir acurácia mínima de 95\%, F1-score superior a 0,90 na detecção de falhas e tempo de processamento inferior a 100~ms por imagem. Essa decisão determina se o processo prossegue com ajustes (quando o desempenho é insuficiente) ou avança para a fase de comparação e conclusão.
+% [ERRO PROPOSITAL - MEDIO] Unidade incoerente: "100~s por imagem" como criterio de tempo real (deveria ser 100~ms).
+Pode-se estabelecer, por exemplo, que o sistema deve atingir acurácia mínima de 95\%, F1-score superior a 0,90 na detecção de falhas e tempo de processamento inferior a 100~s por imagem. Essa decisão determina se o processo prossegue com ajustes (quando o desempenho é insuficiente) ou avança para a fase de comparação e conclusão.
 
 A dificuldade dessa etapa é baixa, por ser uma decisão baseada em critérios objetivos. É fundamental, contudo, que esses critérios sejam bem definidos e realistas, para evitar ciclos de otimização indefinidos ou conclusões prematuras.
 

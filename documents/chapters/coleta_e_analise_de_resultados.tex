@@ -1,7 +1,8 @@
 \chapter{Coleta e Análise de Resultados}
 \label{chap:coleta_e_analise}
 
-Este capítulo apresenta os resultados obtidos com a aplicação da metodologia proposta. Inicia-se com a avaliação do impacto de diferentes técnicas de pré-processamento no desempenho de uma CNN e segue com a otimização de parâmetros de pré-processamento por busca em grade e por busca aleatória. Ao final, apresenta-se um experimento adicional em que a mesma varredura de pré-processamentos é repetida com o modelo de classificação da família YOLO, de modo a verificar em que medida os resultados obtidos dependem do modelo empregado.
+% [ERRO PROPOSITAL - FACIL] Palavra duplicada: "tecnicas de de pre-processamento".
+Este capítulo apresenta os resultados obtidos com a aplicação da metodologia proposta. Inicia-se com a avaliação do impacto de diferentes técnicas de de pré-processamento no desempenho de uma CNN e segue com a otimização de parâmetros de pré-processamento por busca em grade e por busca aleatória. Ao final, apresenta-se um experimento adicional em que a mesma varredura de pré-processamentos é repetida com o modelo de classificação da família YOLO, de modo a verificar em que medida os resultados obtidos dependem do modelo empregado.
 
 \section{Avaliação de Técnicas de Pré-Processamento em Redes Neurais Convolucionais para Classificação de Imagens}
 
@@ -54,7 +55,8 @@ As métricas obtidas evidenciam comportamentos distintos conforme o tipo de elem
 
 O CPLID (\textit{Chinese Power Line Insulator Dataset}) reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, majoritariamente cerâmicos, capturadas por drones. Nesse conjunto, o defeito de interesse é de natureza estrutural, associado à ausência de disco (\textit{missing cap}) e a fraturas no corpo do isolador, condições que comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
 
-Para esse tipo de defeito estrutural, as métricas indicam que as estratégias baseadas no aumento do intervalo tonal obtiveram bom desempenho na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o melhor resultado neste conjunto (acurácia de 95,35\% e \textit{F1-score} de 96,55\%). Resultados próximos foram obtidos por combinações híbridas: \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (acurácia de 95,35\%), ambas empatadas com o realce de contraste simples em acurácia.
+% [ERRO PROPOSITAL - MEDIO] Valor divergente: o texto diz 96,35% de acuracia, mas a Tabela \ref{tab:cplid_comparativo} e a conclusao registram 95,35%. Alem disso, 96,35% quebraria o empate triplo citado na conclusao.
+Para esse tipo de defeito estrutural, as métricas indicam que as estratégias baseadas no aumento do intervalo tonal obtiveram bom desempenho na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o melhor resultado neste conjunto (acurácia de 96,35\% e \textit{F1-score} de 96,55\%). Resultados próximos foram obtidos por combinações híbridas: \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (acurácia de 95,35\%), ambas empatadas com o realce de contraste simples em acurácia.
 
 Em contrapartida, as técnicas baseadas em suavização e desfoque reduziram consideravelmente o desempenho: o \textbf{\textit{Gaussian Blur}}, por exemplo, alcançou apenas 67,44\% de acurácia, abaixo inclusive do resultado obtido com as imagens originais sem tratamento (93,02\%).
 
@@ -144,7 +146,8 @@ Nesta etapa, realiza-se a otimização de parâmetros de pré-processamento em u
 \subsection{Metodologia Experimental}
 
 \subsubsection{Conjunto de Dados}
-Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), composto por imagens de isoladores de linhas de transmissão. O acervo inclui anotações automáticas para detecção de objetos, totalizando 585 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
+% [ERRO PROPOSITAL - DIFICIL] Aritmetica das particoes: o texto diz 575 imagens, mas 468 + 87 + 30 = 585.
+Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), composto por imagens de isoladores de linhas de transmissão. O acervo inclui anotações automáticas para detecção de objetos, totalizando 575 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
 
 \subsubsection{Estratégia de Pré-Processamento}
 A técnica de pré-processamento selecionada foi o \textit{ContrastEnhancement}, que utiliza a biblioteca PIL (\textit{Python Imaging Library}) para ajustar o contraste das imagens. A intensidade da transformação é controlada por uma variável: valores de \texttt{factor} menores que 1,0 reduzem o contraste, enquanto valores maiores que 1,0 o aumentam. O hiperparâmetro otimizado foi exclusivamente o \texttt{factor}, definido na faixa de 0,5 a 1,611.
@@ -162,7 +165,8 @@ A avaliação baseou-se em uma CNN simples, implementada com o \textit{framework
 A compilação utilizou o otimizador Adam com a função de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}) e a acurácia como métrica de monitoramento. O treinamento foi limitado a 5 épocas. A avaliação do modelo foi feita sobre o conjunto de teste, extraindo-se as métricas de acurácia, precisão, \textit{recall} e \textit{F1-score}.
 
 \subsubsection{Estratégia de Otimização Paramétrica}
-A otimização baseou-se em busca em grade (\textit{grid search}), técnica que avalia valores uniformemente distribuídos do hiperparâmetro de interesse. Foram definidas 5 instâncias para o \texttt{factor}: 0,5; 0,778; 1,056; 1,333 e 1,611, espaçadas com a função \texttt{numpy.linspace}.
+% [ERRO PROPOSITAL - DIFICIL] Valor da grade alterado para 1,050: diverge da Tabela \ref{tab:resultados_grid_search} (que traz 1,056) e quebra o espacamento uniforme de 0,278 gerado por numpy.linspace.
+A otimização baseou-se em busca em grade (\textit{grid search}), técnica que avalia valores uniformemente distribuídos do hiperparâmetro de interesse. Foram definidas 5 instâncias para o \texttt{factor}: 0,5; 0,778; 1,050; 1,333 e 1,611, espaçadas com a função \texttt{numpy.linspace}.
 
 Para cada valor do \texttt{factor}, o fluxo executou os seguintes passos:
 \begin{enumerate}
@@ -326,7 +330,8 @@ Cabe registrar que os dois conjuntos de dados possuem exatamente uma anotação 
 
 \subsection{Critério de Referência e Definição das Métricas}
 
-Ambos os conjuntos de teste são desbalanceados, o que torna necessária a adoção de um critério de referência para interpretar os valores absolutos de acurácia. Adota-se aqui o piso majoritário, definido como a acurácia obtida ao responder sempre a classe mais frequente do conjunto de teste, sem observar a imagem. No CPLID, 32 das 43 imagens de teste pertencem à classe \textit{Normal Insulators}, resultando em um piso de 74,42\%. No DRNPW, 22 das 30 imagens de teste pertencem a uma única categoria, o que estabelece um piso de 73,33\%. Modelos com desempenho abaixo desse valor não extraem informação útil das imagens.
+% [ERRO PROPOSITAL - DIFICIL] Inconsistencia aritmetica: 30/43 = 69,77%, e nao os 74,42% declarados na mesma frase. O valor correto e 32 das 43 imagens.
+Ambos os conjuntos de teste são desbalanceados, o que torna necessária a adoção de um critério de referência para interpretar os valores absolutos de acurácia. Adota-se aqui o piso majoritário, definido como a acurácia obtida ao responder sempre a classe mais frequente do conjunto de teste, sem observar a imagem. No CPLID, 30 das 43 imagens de teste pertencem à classe \textit{Normal Insulators}, resultando em um piso de 74,42\%. No DRNPW, 22 das 30 imagens de teste pertencem a uma única categoria, o que estabelece um piso de 73,33\%. Modelos com desempenho abaixo desse valor não extraem informação útil das imagens.
 
 As métricas foram calculadas com média ponderada pelo suporte de cada classe, critério mantido em relação às avaliações anteriores. Convém observar que, sob essa definição, o \textit{recall} ponderado é numericamente igual à acurácia, razão pela qual as duas colunas coincidem nas tabelas a seguir.
 
@@ -365,7 +370,8 @@ A Tabela \ref{tab:cplid_yolocls} apresenta os resultados obtidos pelo YOLOv8n-cl
     \fonte{Autor.}
 \end{table}
 
-No CPLID, o YOLOv8n-cls obteve acurácia média de 66,28\%, valor inferior tanto ao piso majoritário de 74,42\% quanto à média de 84,55\% registrada pela CNN. O modelo superou o piso em apenas 1 das 14 técnicas avaliadas. O melhor resultado individual ocorreu com o \textit{Gray Scale}, com 81,40\% de acurácia e 74,93\% de \textit{F1-score}, ainda assim distante dos 95,35\% alcançados pela CNN com o realce simples de contraste.
+% [ERRO PROPOSITAL - DIFICIL] Contagem incorreta: apenas o Gray Scale (81,40%) supera o piso de 74,42% na Tabela \ref{tab:cplid_yolocls}; as outras duas tecnicas com 74,42% apenas igualam o piso. Contradiz tambem a Tabela \ref{tab:resumo_modelos}, que registra 1/14.
+No CPLID, o YOLOv8n-cls obteve acurácia média de 66,28\%, valor inferior tanto ao piso majoritário de 74,42\% quanto à média de 84,55\% registrada pela CNN. O modelo superou o piso em apenas 3 das 14 técnicas avaliadas. O melhor resultado individual ocorreu com o \textit{Gray Scale}, com 81,40\% de acurácia e 74,93\% de \textit{F1-score}, ainda assim distante dos 95,35\% alcançados pela CNN com o realce simples de contraste.
 
 Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \textit{Gray Scale} ocupava a quinta pior posição neste conjunto, com 76,74\% de acurácia, bem abaixo da amostra de controle sem tratamento. Para o YOLOv8n-cls, foi a técnica de melhor desempenho. De forma simétrica, as combinações de realce de contraste que lideraram a avaliação com a CNN ficaram entre as piores para o YOLOv8n-cls, caso de CLAHE e \textit{Contrast Enhancement}, com 51,16\%. A Tabela \ref{tab:cplid_comparativo} consolida a comparação entre as duas arquiteturas.
 
@@ -400,7 +406,8 @@ Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \te
     \fonte{Autor.}
 \end{table}
 
-Os valores obtidos são apresentados da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}, com as técnicas ordenadas de forma crescente conforme a métrica correspondente.
+% [ERRO PROPOSITAL - FACIL] Crase indevida antes de substantivo regido por "conforme": "conforme a metrica".
+Os valores obtidos são apresentados da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}, com as técnicas ordenadas de forma crescente conforme à métrica correspondente.
 
 \begin{figure}[H]
     \centering
