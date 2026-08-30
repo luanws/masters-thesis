@@ -563,173 +563,228 @@ Chamo a atencao para a frase final, que evita um mal-entendido comum: os modelos
 DICA: nao ler os sete cartoes um a um, agrupar em "definir, medir, combinar e otimizar".`);
 }
 
+// ---------------------------------------------------------------------------
+// Fluxogramas da metodologia: as mesmas figuras usadas na dissertação
+// ---------------------------------------------------------------------------
+const MET = {
+  geral: ["metodologia - geral.png", 1719 / 3840],
+  completo: ["metodologia.png", 1368 / 3836],
+  e1: ["metodologia - 1 - seleção e validação do dataset.png", 1949 / 3840],
+  e2: ["metodologia - 2 - pré-processamento.png", 3571 / 3840],
+  e3: ["metodologia - 3 - ajustes de parâmetros.png", 3840 / 2630],
+  e4: ["metodologia - 4 - escolha e construção do modelo.png", 3840 / 1846],
+  e5: ["metodologia - 5 - treinamento.png", 3840 / 1034],
+  e6: ["metodologia - 6 - avaliação.png", 3189 / 3840],
+};
+
+function fluxo(chave) {
+  const p = path.join(REPO, "documents", "img", MET[chave][0]);
+  return "image/png;base64," + fs.readFileSync(p).toString("base64");
+}
+
+// Coloca a figura respeitando a proporção original, dada a altura (ou a largura).
+// Retorna a largura efetiva ocupada.
+function figFluxo(s, chave, x, y, { h, w }) {
+  const r = MET[chave][1];
+  const hh = h !== undefined ? h : w / r;
+  const ww = h !== undefined ? h * r : w;
+  s.addShape(pres.ShapeType.roundRect, {
+    x: x - 0.08, y: y - 0.08, w: ww + 0.16, h: hh + 0.16, rectRadius: 0.04,
+    fill: { color: C.white }, line: { color: C.surfaceAlt, width: 0.75 },
+  });
+  s.addImage({ data: fluxo(chave), x, y, w: ww, h: hh });
+  return ww;
+}
+
+function figLabel(s, x, y, w, texto, opts = {}) {
+  s.addText(texto, {
+    x, y, w, h: 0.24, margin: 0, align: opts.align || "center",
+    fontFace: F.body, fontSize: opts.size || 10.5, bold: true,
+    color: opts.color || C.teal,
+  });
+}
+
 // ===========================================================================
-// SLIDE 9 - Metodologia visao geral
+// SLIDE 9 - Fluxograma geral
 // ===========================================================================
 {
   const s = lightSlide();
   title(s, "Metodologia", "Fluxo estruturado, iterativo e modular");
 
+  figFluxo(s, "geral", 0.5, 1.18, { h: 3.8 });
+
   const etapas = [
-    ["1", "Seleção e validação\ndo dataset"],
+    ["1", "Seleção e validação do dataset"],
     ["2", "Pré-processamento"],
-    ["3", "Ajuste de\nparâmetros"],
-    ["4", "Escolha e construção\ndo modelo"],
+    ["3", "Ajuste de parâmetros"],
+    ["4", "Escolha e construção do modelo"],
     ["5", "Treinamento"],
-    ["6", "Avaliação\ne ajustes"],
+    ["6", "Avaliação e ajustes"],
   ];
-  const bw = 1.36, gap = 0.155;
   etapas.forEach((e, i) => {
-    const x = M + i * (bw + gap);
-    card(s, x, 1.62, bw, 1.35, { fill: i === 5 ? C.night : C.surface, line: i === 5 ? C.night : C.surfaceAlt });
-    bubble(s, x + bw / 2 - 0.19, 1.76, 0.38, e[0], { fill: i === 5 ? C.amber : C.teal, size: 10.5, color: i === 5 ? C.night : C.white });
+    const col = i % 2, row = Math.floor(i / 2);
+    const x = 2.5 + col * 3.6, y = 1.3 + row * 0.72;
+    card(s, x, y, 3.4, 0.62, { flat: true });
+    bubble(s, x + 0.14, y + 0.13, 0.36, e[0], { fill: i === 5 ? C.amber : C.teal, size: 10, color: i === 5 ? C.night : C.white });
     s.addText(e[1], {
-      x: x + 0.06, y: 2.2, w: bw - 0.12, h: 0.68, margin: 0, align: "center",
-      fontFace: F.body, fontSize: 10.5, bold: true, color: i === 5 ? C.white : C.ink,
-      lineSpacingMultiple: 0.95,
+      x: x + 0.6, y, w: 2.72, h: 0.62, margin: 0, valign: "middle",
+      fontFace: F.body, fontSize: 11, bold: true, color: C.ink, lineSpacingMultiple: 0.95,
     });
-    if (i < 5) {
-      s.addText("›", {
-        x: x + bw, y: 2.05, w: gap, h: 0.3, margin: 0, align: "center",
-        fontFace: F.body, fontSize: 14, bold: true, color: C.mutedLight,
-      });
-    }
   });
 
-  s.addShape(pres.ShapeType.line, {
-    x: M + 0.68, y: 3.28, w: 8.0, h: 0,
-    line: { color: C.amber, width: 1.5, dashType: "dash", endArrowType: "triangle" },
-  });
-  s.addText("Retroalimentação: a avaliação devolve o fluxo ao pré-processamento e à escolha do modelo", {
-    x: M, y: 3.34, w: 8.9, h: 0.3, margin: 0, align: "center",
-    fontFace: F.body, fontSize: 10.5, italic: true, color: C.amber,
+  card(s, 2.5, 3.5, 7.0, 0.62, { fill: C.night, line: C.night });
+  s.addText("A avaliação retroalimenta o pré-processamento e a escolha do modelo, e o ciclo se repete até o critério de desempenho ser atendido.", {
+    x: 2.72, y: 3.5, w: 6.6, h: 0.62, margin: 0, valign: "middle",
+    fontFace: F.body, fontSize: 11, color: C.white, lineSpacingMultiple: 1.0,
   });
 
   const props = [
     ["Modular", "Cada bloco é substituível sem refazer os demais"],
-    ["Iterativo", "O ciclo se repete até o critério de desempenho ser atendido"],
+    ["Iterativo", "O ciclo se repete até o critério ser atendido"],
     ["Reprodutível", "Métricas fixadas antes de qualquer experimento"],
   ];
   props.forEach((p, i) => {
-    const x = M + i * 3.05;
+    const x = 2.5 + i * 2.38;
     s.addText(p[0], {
-      x, y: 3.85, w: 2.85, h: 0.28, margin: 0,
-      fontFace: F.body, fontSize: 12.5, bold: true, color: C.teal,
+      x, y: 4.3, w: 2.2, h: 0.26, margin: 0,
+      fontFace: F.body, fontSize: 11.5, bold: true, color: C.teal,
     });
     s.addText(p[1], {
-      x, y: 4.15, w: 2.85, h: 0.6, margin: 0,
-      fontFace: F.body, fontSize: 11, color: C.ink, lineSpacingMultiple: 1.05,
+      x, y: 4.56, w: 2.24, h: 0.56, margin: 0,
+      fontFace: F.body, fontSize: 9.5, color: C.ink, lineSpacingMultiple: 1.05,
     });
   });
 
   footer(s, "Metodologia");
   s.addNotes(
-`[07:15 - 08:45 | 90s] METODOLOGIA, VISAO GERAL
-A metodologia proposta e um fluxo de seis etapas: selecao e validacao do dataset, pre-processamento, ajuste de parametros, escolha e construcao do modelo, treinamento e, por fim, avaliacao e ajustes.
-A seta tracejada e o elemento que distingue a proposta de um roteiro linear: a avaliacao retroalimenta o pre-processamento e a escolha do modelo. O fluxo so termina quando o criterio de desempenho definido no inicio e atendido.
-Tres propriedades sustentam a proposta. Modular, cada bloco pode ser trocado sem refazer os demais, e e exatamente isso que permite o experimento com uma segunda arquitetura que mostro adiante. Iterativo, o ciclo se repete. E reprodutivel, porque as metricas sao fixadas antes de qualquer experimento, o que evita escolher a metrica depois de ver o resultado.`);
+`[07:15 - 08:15 | 60s] METODOLOGIA, FLUXO GERAL
+Este e o fluxograma geral da metodologia proposta, o mesmo da dissertacao. O fluxo parte do bloco Inicio e percorre seis etapas: selecao e validacao do dataset, pre-processamento, ajuste de parametros, escolha e construcao do modelo, treinamento e avaliacao e ajustes, encerrando em conclusoes e recomendacoes.
+O que distingue a proposta de um roteiro linear e o retorno a esquerda do diagrama: a avaliacao retroalimenta o pre-processamento e a escolha do modelo, e o ciclo se repete ate o criterio de desempenho ser atendido.
+Tres propriedades sustentam a proposta. Modular, cada bloco pode ser trocado sem refazer os demais, e e isso que permite o experimento com uma segunda arquitetura que mostro adiante. Iterativo, o ciclo se repete. E reprodutivel, porque as metricas sao fixadas antes de qualquer experimento.
+DICA: este slide e o mapa. Os proximos abrem cada etapa, entao nao se alongar aqui.`);
 }
 
 // ===========================================================================
-// SLIDE 10 - Etapas 1 a 3
+// SLIDE 10 - Fluxograma detalhado completo
 // ===========================================================================
 {
   const s = lightSlide();
-  title(s, "Metodologia · etapas 1 a 3", "Do dado bruto ao parâmetro ajustado");
+  title(s, "Metodologia", "O fluxograma detalhado, do início às conclusões");
 
-  const blocos = [
-    ["1", "Seleção e validação do dataset", [
-      "Definição prévia das métricas: acurácia, F1-score e tempo",
-      "Escolha de conjunto rotulado com diversidade de captura",
-      "Verificação de balanceamento entre classes",
-      "Filtragem e balanceamento quando necessário",
-    ]],
-    ["2", "Pré-processamento", [
-      "Técnicas básicas: normalização, recorte e redução de ruído",
-      "Data augmentation em tempo de treino",
-      "Decisão: aplicar técnicas isoladas ou combiná-las",
-      "Geração de pipelines híbridos em sequência",
-    ]],
-    ["3", "Ajuste de parâmetros", [
-      "Substituição da busca manual por busca automática",
-      "Grid search, random search, otimização bayesiana",
-      "Espaço de busca definido por faixa de valores",
-      "Registro das medições para reprodutibilidade",
-    ]],
+  figFluxo(s, "completo", 0.55, 1.15, { h: 3.82 });
+
+  const leitura = [
+    ["Seis agrupamentos", "Cada moldura do diagrama corresponde a uma das seis etapas do fluxo geral, e reúne as operações e decisões daquela etapa."],
+    ["Quatro pontos de decisão", "Dataset está balanceado? · Combinar técnicas? · Tipo de tarefa · Desempenho satisfatório? Cada um abre ramos distintos do fluxo."],
+    ["O laço à esquerda", "Quando o desempenho não satisfaz, o bloco Ajustar processamentos e modelo devolve o fluxo ao pré-processamento, e não ao início."],
   ];
-
-  blocos.forEach((b, i) => {
-    const x = M + i * 3.05;
-    card(s, x, 1.45, 2.85, 2.8, { flat: true });
-    bubble(s, x + 0.22, 1.65, 0.42, b[0], { fill: C.teal, size: 11 });
-    s.addText(b[1], {
-      x: x + 0.72, y: 1.63, w: 2.0, h: 0.45, margin: 0,
-      fontFace: F.body, fontSize: 12, bold: true, color: C.ink, valign: "middle",
+  leitura.forEach((l, i) => {
+    const y = 1.3 + i * 1.14;
+    card(s, 2.5, y, 7.0, 1.0, { flat: true });
+    bubble(s, 2.68, y + 0.26, 0.46, String(i + 1), { fill: i === 2 ? C.amber : C.teal, color: i === 2 ? C.night : C.white });
+    s.addText(l[0], {
+      x: 3.3, y: y + 0.12, w: 6.0, h: 0.28, margin: 0,
+      fontFace: F.body, fontSize: 12.5, bold: true, color: C.ink,
     });
-    bullets(s, b[2], { x: x + 0.24, y: 2.2, w: 2.42, h: 1.9, size: 10.5, gap: 6 });
+    s.addText(l[1], {
+      x: 3.3, y: y + 0.4, w: 6.05, h: 0.5, margin: 0,
+      fontFace: F.body, fontSize: 10.5, color: C.muted, lineSpacingMultiple: 1.05,
+    });
+  });
+
+  s.addText("Caminho percorrido neste trabalho: dataset desbalanceado, técnicas isoladas e combinadas, tarefa de classificação e busca automática de parâmetros.", {
+    x: 2.5, y: 4.76, w: 7.0, h: 0.34, margin: 0,
+    fontFace: F.body, fontSize: 10.5, bold: true, italic: true, color: C.amber,
   });
 
   footer(s, "Metodologia");
   s.addNotes(
-`[08:45 - 10:00 | 75s] ETAPAS 1 A 3
-Na etapa 1 ha uma decisao de ordem importante: as metricas sao definidas antes da selecao do conjunto de dados. Adotamos acuracia, F1-score e tempo de processamento. O F1-score entra porque os conjuntos sao desbalanceados e a acuracia sozinha esconde esse problema. Ainda nesta etapa verifica-se o balanceamento e, se necessario, aplicam-se filtros.
-A etapa 2 e o nucleo do trabalho. Aplicam-se as tecnicas basicas, o data augmentation, e entao vem o ponto de decisao: usar as tecnicas isoladas ou combina-las em pipeline. As duas alternativas foram avaliadas nos experimentos.
-A etapa 3 substitui o ajuste manual dos parametros por busca automatica. A metodologia admite grid search, random search e otimizacao bayesiana. Os dois primeiros foram implementados neste trabalho.`);
+`[08:15 - 09:30 | 75s] FLUXOGRAMA DETALHADO
+Esta e a versao detalhada do fluxograma, tambem reproduzida da dissertacao. Ela nao precisa ser lida bloco a bloco agora, os proximos dois slides ampliam cada etapa. O que interessa neste momento sao tres leituras de conjunto.
+Primeira, as molduras. Cada uma corresponde a uma das seis etapas do fluxo geral e reune as operacoes daquela etapa.
+Segunda, os losangos, que sao os quatro pontos de decisao do metodo: se o dataset esta balanceado, se as tecnicas serao combinadas, qual o tipo de tarefa e se o desempenho e satisfatorio. Sao esses quatro pontos que tornam a metodologia um procedimento de decisao, e nao uma receita fixa.
+Terceira, a linha longa a esquerda do diagrama, que e o laco de retroalimentacao. Quando o desempenho nao satisfaz, o bloco Ajustar processamentos e modelo devolve o fluxo ao pre-processamento, e nao ao inicio.
+No caso deste trabalho, o caminho percorrido foi: dataset desbalanceado, os dois ramos de combinacao de tecnicas, tarefa de classificacao e busca automatica de parametros.
+DICA: use o ponteiro para percorrer o diagrama de cima para baixo enquanto fala.`);
 }
 
 // ===========================================================================
-// SLIDE 11 - Etapas 4 a 6
+// SLIDE 11 - Fluxogramas das etapas 1 a 3
+// ===========================================================================
+{
+  const s = lightSlide();
+  title(s, "Metodologia · etapas 1 a 3", "Dataset, pré-processamento e parâmetros");
+
+  figLabel(s, 0.75, 1.28, 1.75, "1 · Seleção e validação");
+  figFluxo(s, "e1", 0.86, 1.58, { h: 3.0 });
+
+  figLabel(s, 2.95, 1.28, 3.0, "2 · Pré-processamento");
+  figFluxo(s, "e2", 3.05, 1.58, { h: 3.0 });
+
+  figLabel(s, 6.45, 1.28, 3.2, "3 · Ajuste de parâmetros");
+  figFluxo(s, "e3", 6.72, 2.25, { h: 1.8 });
+
+  card(s, 0.5, 4.76, 9.0, 0.5, { fill: C.night, line: C.night });
+  s.addText("As métricas são definidas antes da seleção dos dados, e a decisão Combinar técnicas? é o que gera as 14 variantes avaliadas, 10 simples e 4 híbridas.", {
+    x: 0.75, y: 4.76, w: 8.5, h: 0.5, margin: 0, valign: "middle",
+    fontFace: F.body, fontSize: 10.5, color: C.white,
+  });
+
+  footer(s, "Metodologia");
+  s.addNotes(
+`[09:30 - 10:30 | 60s] ETAPAS 1 A 3
+Aqui estao ampliados os fluxogramas das tres primeiras etapas.
+Na etapa 1, a ordem importa: as metricas sao definidas antes da selecao do conjunto de dados, e nao depois de ver os resultados. Adotamos acuracia, F1-score e tempo. Em seguida verifica-se o balanceamento e, se necessario, aplicam-se filtros, e as duas ramificacoes convergem para as tecnicas basicas.
+Na etapa 2 esta o ponto de decisao central do trabalho: combinar tecnicas ou nao. Pelo ramo Nao avaliam-se tecnicas isoladas, pelo ramo Sim gera-se um pipeline em sequencia. Percorri os dois ramos, e e dai que saem as 14 variantes, dez simples e quatro hibridas.
+A etapa 3 substitui o ajuste manual por busca automatica. A metodologia preve grade, aleatoria, bayesiana e metodos populacionais, e implementei as duas primeiras sobre o fator de contraste.
+DICA: apontar o losango da etapa 2, ele e a origem das 14 tecnicas que aparecem nos resultados.`);
+}
+
+// ===========================================================================
+// SLIDE 12 - Fluxogramas das etapas 4 a 6
 // ===========================================================================
 {
   const s = lightSlide();
   title(s, "Metodologia · etapas 4 a 6", "Modelo, treinamento e ciclo de ajuste");
 
-  const blocos = [
-    ["4", "Escolha e construção do modelo", [
-      "Seleção da arquitetura: CNN, ResNet ou YOLO",
-      "Decisão pelo tipo de tarefa: classificação, detecção ou regressão",
-      "Configuração de camadas finais, ativação e função de perda",
-    ]],
-    ["5", "Treinamento", [
-      "Treino com os dados processados na etapa anterior",
-      "Monitoramento da função de custo e das métricas de validação",
-      "Diagnóstico de sobreajuste e de não convergência",
-    ]],
-    ["6", "Avaliação e ajustes", [
-      "Cálculo das métricas definidas na etapa 1",
-      "Decisão: desempenho satisfatório ou novo ciclo de ajuste",
-      "Comparação final entre técnicas e arquiteturas",
-    ]],
+  figLabel(s, 0.5, 1.24, 4.3, "4 · Escolha e construção do modelo", { align: "left" });
+  figFluxo(s, "e4", 0.6, 1.54, { w: 4.2 });
+
+  figLabel(s, 0.5, 3.72, 4.3, "5 · Treinamento", { align: "left" });
+  figFluxo(s, "e5", 0.6, 4.02, { w: 4.2 });
+
+  figLabel(s, 5.2, 1.24, 2.8, "6 · Avaliação e ajustes", { align: "left" });
+  figFluxo(s, "e6", 5.3, 1.54, { h: 3.3 });
+
+  const notas = [
+    ["Etapa 4", "Ramo percorrido: classificação, pois os conjuntos têm uma anotação por imagem"],
+    ["Etapa 5", "28 treinamentos completos por arquitetura na varredura final"],
+    ["Etapa 6", "O ramo Não devolve o fluxo às etapas 2 e 4, e é o que torna o método iterativo"],
   ];
-
-  blocos.forEach((b, i) => {
-    const x = M + i * 3.05;
-    card(s, x, 1.45, 2.85, 2.55, { flat: true });
-    bubble(s, x + 0.22, 1.65, 0.42, b[0], { fill: i === 2 ? C.amber : C.teal, size: 11, color: i === 2 ? C.night : C.white });
-    s.addText(b[1], {
-      x: x + 0.72, y: 1.63, w: 2.0, h: 0.45, margin: 0,
-      fontFace: F.body, fontSize: 12, bold: true, color: C.ink, valign: "middle",
+  notas.forEach((n, i) => {
+    const y = 1.54 + i * 1.12;
+    s.addText(n[0], {
+      x: 8.3, y, w: 1.45, h: 0.24, margin: 0,
+      fontFace: F.body, fontSize: 10.5, bold: true, color: i === 2 ? C.amber : C.teal,
     });
-    bullets(s, b[2], { x: x + 0.24, y: 2.2, w: 2.42, h: 1.7, size: 10.5, gap: 6 });
-  });
-
-  card(s, M, 4.28, 8.9, 0.82, { fill: C.night, line: C.night });
-  s.addText("Se o desempenho não atende ao critério, o fluxo retorna às etapas 2 e 4, e não ao início. É esse ciclo curto que permite refazer a seleção do pré-processamento a cada troca de modelo ou de dataset.", {
-    x: M + 0.3, y: 4.4, w: 8.3, h: 0.6, margin: 0,
-    fontFace: F.body, fontSize: 12, color: C.white, valign: "middle", lineSpacingMultiple: 1.05,
+    s.addText(n[1], {
+      x: 8.3, y: y + 0.26, w: 1.45, h: 0.8, margin: 0,
+      fontFace: F.body, fontSize: 9, color: C.ink, lineSpacingMultiple: 1.05,
+    });
   });
 
   footer(s, "Metodologia");
   s.addNotes(
-`[10:00 - 11:15 | 75s] ETAPAS 4 A 6
-Na etapa 4 escolhe-se a arquitetura e define-se o tipo de tarefa. A metodologia contempla classificacao, deteccao e regressao, cada uma com sua funcao de perda e suas metricas. Neste trabalho a tarefa e de classificacao, porque os dois conjuntos possuem exatamente uma anotacao por imagem.
-A etapa 5 e o treinamento propriamente dito, com monitoramento da funcao de custo e das metricas de validacao para diagnosticar sobreajuste.
-A etapa 6 fecha o ciclo. Calculam-se as metricas definidas la na etapa 1 e decide-se: se o desempenho atende ao criterio, segue-se para a comparacao final. Se nao atende, o fluxo volta.
-E o ponto da faixa preta e o mais relevante do ponto de vista metodologico: o retorno e para as etapas 2 e 4, nao para o inicio. E esse ciclo curto que permite refazer a selecao do pre-processamento sempre que o modelo ou o conjunto de dados mudam, o que os resultados mostraram ser necessario.`);
+`[10:30 - 11:15 | 45s] ETAPAS 4 A 6
+Na etapa 4 escolhe-se a arquitetura e decide-se o tipo de tarefa, entre regressao, deteccao e classificacao. O ramo percorrido foi o da classificacao, porque os dois conjuntos possuem exatamente uma anotacao por imagem, o que os caracteriza como problemas de classificacao mesmo quando o rotulo esta em formato de caixa delimitadora.
+A etapa 5 e o treinamento, com monitoramento da funcao de custo e das metricas de validacao. Na varredura final foram 28 treinamentos completos por arquitetura.
+A etapa 6 fecha o ciclo. Pelo ramo Sim, comparam-se modelos e tecnicas e chega-se as conclusoes. Pelo ramo Nao, ajustam-se processamentos e modelo, e o fluxo volta as etapas 2 e 4.
+E esse retorno que permite refazer a selecao do pre-processamento sempre que o modelo ou o conjunto de dados mudam, e os resultados a seguir mostram que isso e necessario.
+DICA: terminar no ramo Nao da etapa 6, ele e a ponte para a secao de resultados.`);
 }
 
 // ===========================================================================
-// SLIDE 12 - Datasets
+// SLIDE 13 - Datasets
 // ===========================================================================
 {
   const s = lightSlide();
@@ -788,7 +843,7 @@ O ponto critico esta na faixa inferior, e vou retomar isso na discussao dos resu
 }
 
 // ===========================================================================
-// SLIDE 13 - Protocolo
+// SLIDE 14 - Protocolo
 // ===========================================================================
 {
   const s = lightSlide();
@@ -849,7 +904,7 @@ No total, 14 tecnicas por dois conjuntos por duas arquiteturas, com todo o resto
 }
 
 // ===========================================================================
-// SLIDE 14 - Metricas e piso majoritario
+// SLIDE 15 - Metricas e piso majoritario
 // ===========================================================================
 {
   const s = lightSlide();
@@ -897,7 +952,7 @@ DICA: este slide protege o restante da apresentacao de questionamento da banca. 
 }
 
 // ===========================================================================
-// SLIDE 15 - Resultados CPLID
+// SLIDE 16 - Resultados CPLID
 // ===========================================================================
 {
   const s = lightSlide();
@@ -923,7 +978,7 @@ DICA: nao ler as 14 barras. Use as miniaturas acima das barras, elas mostram o e
 }
 
 // ===========================================================================
-// SLIDE 16 - Resultados DRNPW
+// SLIDE 17 - Resultados DRNPW
 // ===========================================================================
 {
   const s = lightSlide();
@@ -947,7 +1002,7 @@ DICA: se o tempo estiver apertado, esta e a ressalva a manter e o resto a resumi
 }
 
 // ===========================================================================
-// SLIDE 17 - Simples vs hibridas
+// SLIDE 18 - Simples vs hibridas
 // ===========================================================================
 {
   const s = lightSlide();
@@ -999,7 +1054,7 @@ Essa e a primeira resposta do trabalho: combinar compensa, mas nao existe combin
 }
 
 // ===========================================================================
-// SLIDE 18 - Grid search
+// SLIDE 19 - Grid search
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1052,7 +1107,7 @@ Faco tres ressalvas, todas registradas na dissertacao. A primeira, esse maximo e
 }
 
 // ===========================================================================
-// SLIDE 19 - Random search
+// SLIDE 20 - Random search
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1116,7 +1171,7 @@ O que se confirma nas duas buscas e o comportamento nas extremidades: contraste 
 }
 
 // ===========================================================================
-// SLIDE 20 - Por que um segundo modelo
+// SLIDE 21 - Por que um segundo modelo
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1179,7 +1234,7 @@ DICA: enfatizar que este experimento e um teste da propria metodologia, nao apen
 }
 
 // ===========================================================================
-// SLIDE 21 - Resultados YOLO
+// SLIDE 22 - Resultados YOLO
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1237,7 +1292,7 @@ DICA: este slide da o resumo, os dois seguintes trazem a varredura completa. Nao
 }
 
 // ===========================================================================
-// SLIDE 22 - Varredura do YOLOv8n-cls no CPLID
+// SLIDE 23 - Varredura do YOLOv8n-cls no CPLID
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1261,7 +1316,7 @@ DICA: se possivel, volte um slide para comparar as duas ordens lado a lado antes
 }
 
 // ===========================================================================
-// SLIDE 23 - Varredura do YOLOv8n-cls no DRNPW
+// SLIDE 24 - Varredura do YOLOv8n-cls no DRNPW
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1285,7 +1340,7 @@ Convem lembrar a granularidade: cada imagem de teste vale 3,33 pontos percentuai
 }
 
 // ===========================================================================
-// SLIDE 22 - Inversao da ordem de merito
+// SLIDE 25 - Inversao da ordem de merito
 // ===========================================================================
 {
   const s = darkSlide();
@@ -1357,7 +1412,7 @@ A consequencia pratica e direta: a selecao do pre-processamento nao e independen
 }
 
 // ===========================================================================
-// SLIDE 23 - Conclusoes
+// SLIDE 26 - Conclusoes
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1398,7 +1453,7 @@ A sintese e a frase final: tratar bem a imagem bruta e tao relevante quanto esco
 }
 
 // ===========================================================================
-// SLIDE 24 - Limitacoes
+// SLIDE 27 - Limitacoes
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1439,7 +1494,7 @@ Registro ainda que as metricas ponderadas nao distinguem bem o modelo que aprend
 }
 
 // ===========================================================================
-// SLIDE 25 - Trabalhos futuros
+// SLIDE 28 - Trabalhos futuros
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1477,7 +1532,7 @@ Substituir a busca em grade pela otimizacao bayesiana, que permite explorar vari
 }
 
 // ===========================================================================
-// SLIDE 26 - Contribuicoes
+// SLIDE 29 - Contribuicoes
 // ===========================================================================
 {
   const s = lightSlide();
@@ -1517,7 +1572,7 @@ Junto com ela ficam quatro entregas: o procedimento reprodutivel, a evidencia em
 }
 
 // ===========================================================================
-// SLIDE 27 - Encerramento
+// SLIDE 30 - Encerramento
 // ===========================================================================
 {
   const s = darkSlide();
