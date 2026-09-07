@@ -126,7 +126,7 @@ Esse cuidado com o tratamento inicial reflete-se diretamente no desempenho das R
 
 \subsection{Trabalhos Correlatos e Lacunas da Literatura}
 
-Os trabalhos que avaliam o efeito do pré-processamento sobre modelos convolucionais não convergem para uma conclusão única. Revisões sistemáticas da área registram tanto ganhos atribuídos ao tratamento prévio da imagem quanto situações em que esse tratamento é neutro ou prejudicial, e associam o resultado às características do conjunto de dados e da arquitetura empregada \cite{Salvi2021, sciencedirect2023normalization}.
+Os trabalhos que avaliam o efeito do pré-processamento sobre modelos convolucionais não convergem para uma conclusão única. Revisões da área registram que a integração de etapas de pré-processamento ao fluxo de aprendizado profundo costuma elevar o desempenho em relação à rede isolada \cite{Salvi2021, sciencedirect2023normalization}. Estudos comparativos controlados, porém, encontram o resultado oposto em determinados conjuntos, com desempenho superior sobre as imagens sem tratamento \cite{rodrigues2020comparing, ozturk2018histopathological}.
 
 Por um lado, diversos estudos relatam ganhos expressivos de acurácia a partir de pré-processamentos elaborados. Por exemplo, uma abordagem que encadeia a localização do isolador por Faster RCNN, a remoção do fundo por segmentação e a descrição morfológica do defeito sobre a imagem binarizada relatou \textit{recall} de 0,98 na localização dos isoladores e acurácia de 0,98 na identificação do defeito, em imagens com fundo complexo \cite{zhang2022}. De forma semelhante, arquiteturas baseadas no \textit{framework} YOLO (YOLOv7) mostraram-se eficientes para detectar pequenos defeitos na isolação quando aliadas a ajustes de arquitetura voltados a mecanismos de atenção \cite{zheng2022improved}.
 
@@ -294,11 +294,11 @@ Mais do que os resultados obtidos, a principal contribuição deste trabalho est
 
 \bibitem{sciencedirect2023normalization} P. K. Mall, P. K. Singh, S. Srivastav, V. Narayan, M. Paprzycki, T. Jaworska, and M. Ganzha, ``A comprehensive review of deep neural networks for medical image processing: Recent developments and future opportunities,'' \textit{Healthcare Analytics}, vol. 4, art. 100216, Dec. 2023, doi: 10.1016/j.health.2023.100216.
 
+\bibitem{rodrigues2020comparing} L. F. Rodrigues, M. C. Naldi, and J. F. Mari, ``Comparing convolutional neural networks and preprocessing techniques for HEp-2 cell classification in immunofluorescence images,'' \textit{Computers in Biology and Medicine}, vol. 116, art. 103542, Jan. 2020, doi: 10.1016/j.compbiomed.2019.103542.
+
 \bibitem{zhang2022} Z. Zhang, S. Huang, Y. Li, H. Li, and H. Hao, ``Image detection of insulator defects based on morphological processing and deep learning,'' \textit{Energies}, vol. 15, no. 7, art. 2465, Mar. 2022, doi: 10.3390/en15072465.
 
 \bibitem{zheng2022improved} J. Zheng, H. Wu, H. Zhang, Z. Wang, and W. Xu, ``Insulator-defect detection algorithm based on improved YOLOv7,'' \textit{Sensors}, vol. 22, no. 22, art. 8801, Nov. 2022, doi: 10.3390/s22228801.
-
-\bibitem{rodrigues2020comparing} L. F. Rodrigues, M. C. Naldi, and J. F. Mari, ``Comparing convolutional neural networks and preprocessing techniques for HEp-2 cell classification in immunofluorescence images,'' \textit{Computers in Biology and Medicine}, vol. 116, art. 103542, Jan. 2020, doi: 10.1016/j.compbiomed.2019.103542.
 
 \bibitem{liu2021} C. Liu, Y. Wu, J. Liu, Z. Sun, and H. Xu, ``Insulator faults detection in aerial images from high-voltage transmission lines based on deep learning model,'' \textit{Applied Sciences}, vol. 11, no. 10, art. 4647, May 2021, doi: 10.3390/app11104647.
 
