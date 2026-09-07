@@ -1,0 +1,12 @@
+{
+  "name": "defesa-slides",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Apresentacao de defesa gerada a partir dos dados e figuras da dissertacao",
+  "scripts": {
+    "build": "node build.js defesa.pptx"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
