@@ -115,7 +115,7 @@ Entre as técnicas fundamentais destacam-se o casamento de histogramas, que ajus
 
 O ajuste de contraste é especialmente crítico no contexto de isoladores. Enquanto a \textit{Contrast Limited Adaptive Histogram Equalization} (CLAHE) evita a amplificação excessiva de ruído ao subdividir a imagem para correção localizada \cite{pizer1987adaptive}, a equalização global favorece a separação nítida das bordas do material cerâmico ou vítreo deteriorado. Contudo, intervenções muito agressivas podem eliminar texturas importantes, como as que caracterizam pequenas fraturas ou contaminações na superfície do equipamento, efeito observado em imagens histopatológicas quando se acrescenta limiarização adaptativa e filtragem de mediana ao realce \cite{ozturk2018histopathological}.
 
-Esse cuidado reflete-se no desempenho das Redes Neurais Convolucionais (CNNs). Diferentemente das redes \textit{Feed-Forward}, as CNNs preservam a estrutura espacial da imagem por convoluções com \textit{kernels} locais, reduzem a dimensionalidade via \textit{MaxPooling} e extraem mapas hierárquicos de textura e contraste \cite{LeCun2015}, conforme ilustrado na Fig. \ref{fig:cnn}. Sua capacidade de identificar anomalias depende, contudo, da representatividade dos dados de entrada.
+Esse cuidado reflete-se no desempenho das Redes Neurais Convolucionais (CNNs). Diferentemente das redes \textit{Feed-Forward}, as CNNs preservam a estrutura espacial da imagem por convoluções com \textit{kernels} locais, reduzem a dimensionalidade via \textit{Max-Pooling} e extraem mapas hierárquicos de textura e contraste \cite{LeCun2015}, conforme ilustrado na Fig. \ref{fig:cnn}. Sua capacidade de identificar anomalias depende, contudo, da representatividade dos dados de entrada.
 
 \begin{figure}[H]
     \centering
@@ -179,22 +179,22 @@ Como os dois conjuntos de teste são desbalanceados, adota-se o piso majoritári
 
 \subsection{Avaliação no \textit{Dataset} CPLID}
 
-Devido à menor poluição visual do fundo dessas imagens, as técnicas baseadas no realce direto da iluminação apresentaram os melhores resultados do conjunto. O uso isolado do filtro \textbf{\textit{Contrast Enhancement}} alcançou 95,35\% de acurácia e 96,55\% de \textit{F1-score}, e a acurácia foi igualada por duas combinações híbridas, CLAHE seguido de \textit{Contrast Enhancement} e \textit{Contrast Enhancement} seguido de \textit{Equalize Histogram}, esta última com 95,16\% de \textit{F1-score}.
+Devido à menor poluição visual do fundo dessas imagens, as técnicas baseadas no realce direto da iluminação apresentaram os melhores resultados do conjunto. O uso isolado do filtro \textit{Contrast Enhancement} alcançou 95,35\% de acurácia e 96,55\% de \textit{F1-score}, e a acurácia foi igualada por duas combinações híbridas, CLAHE seguido de \textit{Contrast Enhancement} e \textit{Contrast Enhancement} seguido de \textit{Equalize Histogram}, esta última com 95,16\% de \textit{F1-score}.
 
 Cabe uma ressalva sobre a magnitude desse ganho. A amostra de controle, sem tratamento, já alcança 93,02\%: a diferença para o melhor pré-processamento é de 41 acertos contra 40, em 43 imagens. Uma única imagem separa as duas condições, dentro da flutuação esperada para um conjunto desse tamanho, o que não sustenta a superioridade do realce de contraste sobre a imagem original neste cenário.
 
-O efeito no sentido oposto, esse sim, aparece com clareza. Filtros de desfoque, em especial o \textbf{\textit{Gaussian Blur}}, atenuaram as bordas das anomalias e levaram o desempenho a 67,44\%, 25,58 pontos abaixo da imagem original e abaixo do próprio piso majoritário. Em fundos de baixa poluição visual, portanto, o pré-processamento tem margem estreita para ajudar e ampla para prejudicar, e a utilidade prática da metodologia está em descartar as transformações destrutivas antes do treinamento. O desempenho das 14 variações testadas é apresentado na Fig. \ref{fig:cplid_acc}.
+O efeito no sentido oposto, esse sim, aparece com clareza. Filtros de desfoque, em especial o \textit{Gaussian Blur}, atenuaram as bordas das anomalias e levaram o desempenho a 67,44\%, 25,58 pontos abaixo da imagem original e abaixo do próprio piso majoritário. Em fundos de baixa poluição visual, portanto, o pré-processamento tem margem estreita para ajudar e ampla para prejudicar, e a utilidade prática da metodologia está em descartar as transformações destrutivas antes do treinamento. O desempenho das 14 variações testadas é apresentado na Fig. \ref{fig:cplid_acc}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.46\textwidth]{img/cplid_acc.jpg}
-    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no \textit{dataset} CPLID.}
+    \includegraphics[width=0.46\textwidth]{img/cplid_acc.png}
+    \caption{Acurácia das estratégias de pré-processamento no \textit{dataset} CPLID. A barra destacada é a imagem sem tratamento e a linha tracejada marca o piso majoritário. CE abrevia \textit{Contrast Enhancement}.}
     \label{fig:cplid_acc}
 \end{figure}
 
 \subsection{Avaliação no \textit{Dataset} DRNPW}
 
-No conjunto de imagens obtidas por drones (DRNPW), a forte presença de fundos com vegetação e estruturas metálicas reduziu a eficácia das técnicas simples que funcionaram bem no CPLID. O melhor resultado veio de uma abordagem híbrida: \textbf{\textit{Contrast Enhancement} seguido de \textit{Equalize Histogram}}. Essa combinação alcançou 83,33\% de acurácia e 75,76\% de \textit{F1-score}, isolando de forma eficiente os objetos de interesse do fundo ruidoso.
+No conjunto de imagens obtidas por drones (DRNPW), a forte presença de fundos com vegetação e estruturas metálicas reduziu a eficácia das técnicas simples que funcionaram bem no CPLID. O melhor resultado veio de uma abordagem híbrida: \textit{Contrast Enhancement} seguido de \textit{Equalize Histogram}. Essa combinação alcançou 83,33\% de acurácia e 75,76\% de \textit{F1-score}, isolando de forma eficiente os objetos de interesse do fundo ruidoso.
 
 Conversões como a de tons de cinza (\textit{Gray Scale}) não lidaram bem com as variações tonais e compartilham o menor valor observado, 63,33\% de acurácia e 49,12\% de \textit{F1-score}, o que indica dependência da informação de cor para separar o componente do fundo. Em micrografias, por outro lado, a conversão para tons de cinza não degradou a acurácia \cite{pei2023robustness}. A divergência sugere que essa dependência decorre da complexidade do fundo da cena, e não constitui propriedade geral do classificador.
 
@@ -202,8 +202,8 @@ O contraste com o CPLID é o resultado mais relevante desta comparação. Aqui a
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.46\textwidth]{img/drnpw_acc.jpg}
-    \caption{Acurácia das diferentes estratégias de pré-processamento avaliadas no \textit{dataset} DRNPW.}
+    \includegraphics[width=0.46\textwidth]{img/drnpw_acc.png}
+    \caption{Acurácia das estratégias de pré-processamento no \textit{dataset} DRNPW. A barra destacada é a imagem sem tratamento e a linha tracejada marca o piso majoritário. CE abrevia \textit{Contrast Enhancement}.}
     \label{fig:drnpw_acc}
 \end{figure}
 
