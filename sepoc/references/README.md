@@ -12,10 +12,10 @@ dos arquivos segue a ordem da lista `thebibliography`.
 | `05_Salvi2021.pdf` | `Salvi2021` | Computers in Biology and Medicine, adicionado manualmente |
 | `06_yang2020hyperparameter.pdf` | `yang2020hyperparameter` | arXiv:2007.15745 |
 | `07_wang2023.pdf` | `wang2023` | MDPI Sustainability (acesso aberto) |
-| `08_eze2022deep.pdf` | `eze2022deep` | Journal of Big Data (acesso aberto) |
+| `08_maduako2022deep.pdf` | `maduako2022deep` | Journal of Big Data (acesso aberto) |
 | `09_liu2021.pdf` | `liu2021` | MDPI Applied Sciences (acesso aberto) |
-| `10_sharma2024deep.pdf` | `sharma2024deep` | Springer Artificial Intelligence Review (acesso aberto) |
-| `11_chen2023robustness.pdf` | `chen2023robustness` | Materials \& Design, adicionado manualmente |
+| `10_archana2024deep.pdf` | `archana2024deep` | Springer Artificial Intelligence Review (acesso aberto) |
+| `11_pei2023robustness.pdf` | `pei2023robustness` | Materials \& Design, adicionado manualmente |
 | `12_shorten2019survey.pdf` | `shorten2019survey` | Journal of Big Data (acesso aberto) |
 | `13_pizer1987adaptive.pdf` | `pizer1987adaptive` | relatório técnico UNC 86-013 (versão submetida ao CVGIP) |
 | `14_ozturk2018histopathological.pdf` | `ozturk2018histopathological` | Procedia Computer Science, adicionado manualmente |
