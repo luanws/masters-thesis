@@ -24,6 +24,5 @@ module.exports = () => {
   fala(s, `
 Começo pelos resultados da rede convolucional no CPLID, o cenário das cadeias cerâmicas de linhas de transmissão com defeito estrutural. O gráfico mostra a acurácia de cada técnica, em ordem crescente, com a imagem tratada acima de cada barra.
 No topo, três técnicas empataram em 95,35 por cento de acurácia, e todas ampliam o contraste: o realce de contraste simples, a combinação de CLAHE com realce e a combinação de realce com equalização de histograma. O realce simples teve ainda o maior F1-score do conjunto, 96,55 por cento, superando inclusive a imagem original sem tratamento, que alcançou 93,02 por cento de acurácia.
-Esse resultado é coerente com a natureza do defeito. As assinaturas visuais do disco ausente e da fratura se concentram na estrutura física do isolador e são realçadas pela ampliação do intervalo tonal.
 No outro extremo, as técnicas de suavização e desfoque reduziram consideravelmente o desempenho. O desfoque gaussiano ficou em apenas 67,44 por cento, abaixo da imagem original e abaixo do piso majoritário. Ou seja, um tratamento inadequado piorou o resultado em relação a não tratar a imagem.`);
 };
