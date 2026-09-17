@@ -64,14 +64,30 @@ function contarSlide() {
   return slideNo;
 }
 
+// Marca todo texto como pt-BR, para o corretor ortográfico do PowerPoint
+// reconhecer o idioma certo em vez de assumir inglês (padrão do pptxgenjs).
+function comIdiomaPadrao(s) {
+  const addTextOriginal = s.addText.bind(s);
+  s.addText = (text, options = {}) => {
+    const comLang = (t) => {
+      if (Array.isArray(t)) {
+        return t.map((run) => ({ ...run, options: { lang: "pt-BR", ...(run.options || {}) } }));
+      }
+      return t;
+    };
+    return addTextOriginal(comLang(text), { lang: "pt-BR", ...options });
+  };
+  return s;
+}
+
 function lightSlide() {
-  const s = pres.addSlide();
+  const s = comIdiomaPadrao(pres.addSlide());
   s.background = { color: C.white };
   return s;
 }
 
 function darkSlide() {
-  const s = pres.addSlide();
+  const s = comIdiomaPadrao(pres.addSlide());
   s.background = { color: C.night };
   return s;
 }
