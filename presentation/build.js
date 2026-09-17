@@ -390,27 +390,25 @@ O problema é que essas cadeias ficam expostas de forma contínua a condições 
 
   const falhas = [
     ["defeito_corrosao.jpg", "Corrosão", "Identificável em imagens de inspeção"],
-    ["defeito_contaminacao.jpg", "Contaminação superficial", "Relacionada aos flashovers por poluição"],
     ["defeito_disco_ausente.jpg", "Disco ausente e fraturas", "Comprometem a rigidez dielétrica da cadeia"],
   ];
   falhas.forEach((f, i) => {
-    const x = M + i * 3.05, lado = 2.85;
-    foto(s, f[0], x, 1.25, lado, lado);
+    const largura = 4.3, altura = 2.85, x = M + i * (largura + 0.3);
+    foto(s, f[0], x, 1.25, largura, altura);
     s.addText(f[1], {
-      x, y: 4.2, w: lado, h: 0.3, margin: 0,
-      fontFace: F.body, fontSize: 14, bold: true, color: i === 2 ? C.amber : C.teal,
+      x, y: 4.2, w: largura, h: 0.3, margin: 0,
+      fontFace: F.body, fontSize: 14, bold: true, color: i === 1 ? C.amber : C.teal,
     });
     s.addText(f[2], {
-      x, y: 4.5, w: lado, h: 0.3, margin: 0,
+      x, y: 4.5, w: largura, h: 0.3, margin: 0,
       fontFace: F.body, fontSize: 10.5, color: C.ink,
     });
   });
 
   footer(s, "Contexto elétrico", false, "Fotos ilustrativas de cadeias de isoladores");
   fala(s, `
-As falhas aparecem de diferentes formas. A literatura cita trincas, contaminação superficial, perfurações e rupturas, além de corrosões nas estruturas, que também podem ser identificadas por imagem.
-Um caso importante está ligado à poluição. Entre os defeitos citados na literatura estão os flashovers por poluição, isto é, a descarga elétrica que ocorre sobre a superfície isolante quando a rigidez dielétrica é rompida.
-Outro caso é o defeito estrutural das cadeias de discos cerâmicos, à direita, em que o disco está ausente ou fraturado. Essas condições comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
+As falhas aparecem de diferentes formas. A literatura cita trincas, contaminação superficial, perfurações e rupturas, além de corrosões nas estruturas, que também podem ser identificadas por imagem. À esquerda está um exemplo de corrosão.
+À direita está o defeito estrutural das cadeias de discos cerâmicos, em que o disco está ausente ou fraturado. Essas condições comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
 O ponto em comum é que todas essas falhas deixam uma assinatura visual. É isso que torna possível usar imagens para encontrá-las.`);
 }
 

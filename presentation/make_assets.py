@@ -62,7 +62,6 @@ torre_baixo = abrir(ISOOX / "ok" / "ok (1).JPG")                       # 4000x22
 torre_ceu = abrir(ISOOX / "ok" / "ok (10).JPG")                        # 4000x2250
 disco_oxidado = abrir(ISOOX / "oxidacao" / "oxid-um-ano (1).JPG")      # 3456x4608
 pino_enferrujado = abrir(ISOOX / "corrosao" / "corrosao (168).JPG")    # 4608x3456
-vidro_contaminado = abrir(ISOOX / "corrosao" / "corrosao (222).JPG")   # 4608x3456
 cplid = abrir(CPLID)                                                   # 1152x864
 # CPLID, Defective_Insulators/images/066.jpg (disco ausente, caixa anotada 826,410,885,467)
 cplid_defeito = abrir(HERE / "fontes" / "cplid_defeituoso_066.jpg")   # 1152x864
@@ -75,15 +74,15 @@ salvar(recorte(aerea_campo, (300, 250, 3700, 1831), (1290, 600)), "campo_faixa.j
 salvar(recorte(torre_baixo, (975, 0, 3225, 2250), (1200, 1200)), "cadeia_torre.jpg")
 salvar(recorte(disco_oxidado, (0, 700, 3456, 4156), (900, 900)), "defeito_oxidacao.jpg")
 
-# Slide 5: cada foto mostra o defeito da legenda
-salvar(recorte(pino_enferrujado, (1150, 0, 4606, 3456), (900, 900)), "defeito_corrosao.jpg")
-salvar(recorte(vidro_contaminado, (0, 0, 2400, 2400), (900, 900)), "defeito_contaminacao.jpg")
-cx, cy, r = (826 + 885) // 2, (410 + 467) // 2, 230
-disco = recorte(cplid_defeito, (cx - r, cy - r, cx + r, cy + r), (900, 900))
-esc = 900 / (2 * r)
-raio = 59 * esc * 0.75
-ImageDraw.Draw(disco).ellipse((r * esc - raio, r * esc - raio, r * esc + raio, r * esc + raio),
-                              outline=(232, 163, 23), width=8)
+# Slide 5: cada foto mostra o defeito da legenda (formato 3:2 dos cards)
+salvar(recorte(pino_enferrujado, (0, 0, 4608, 3072), (1290, 860)), "defeito_corrosao.jpg")
+x0, y0, x1, y1 = 826, 410, 885, 467                     # caixa anotada no CPLID
+caixa = (462, 208, 1152, 668)                           # 690x460 em torno do defeito
+disco = recorte(cplid_defeito, caixa, (1290, 860))
+esc = 1290 / (caixa[2] - caixa[0])
+cx, cy = ((x0 + x1) / 2 - caixa[0]) * esc, ((y0 + y1) / 2 - caixa[1]) * esc
+raio = (x1 - x0) * esc * 0.75
+ImageDraw.Draw(disco).ellipse((cx - raio, cy - raio, cx + raio, cy + raio), outline=(232, 163, 23), width=8)
 salvar(disco, "defeito_disco_ausente.jpg")
 salvar(cplid.resize((1200, 900), Image.LANCZOS), "cplid.jpg")
 salvar(recorte(aerea_campo, (700, 100, 3300, 2050), (1200, 900)), "campo.jpg")
