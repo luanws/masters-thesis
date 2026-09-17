@@ -1,6 +1,7 @@
 """Gera as imagens usadas em build.js (pasta presentation/assets).
 
-Fotos: inspeções por drone da CPFL (repositório drones-ia-cpfl) e uma imagem do CPLID.
+Fotos: inspeções por drone da CPFL (repositório drones-ia-cpfl) e imagens do CPLID
+(uma normal e uma defeituosa, esta copiada em presentation/fontes).
 Ilustrações: SVG desenhado aqui e rasterizado pelo LibreOffice (etapa pulada se ele não
 estiver instalado, mantendo os PNGs já gerados). A ilustração do impacto e as miniaturas
 do roteiro são desenhadas direto com a PIL.
@@ -59,9 +60,12 @@ aerea_corrosao = abrir(ISOOX / "corrosao" / "corrosao (10).JPG")      # 4000x225
 aerea_campo = abrir(ISOOX / "oxidacao" / "oxid-um-ano (10).JPG")       # 4000x2250
 torre_baixo = abrir(ISOOX / "ok" / "ok (1).JPG")                       # 4000x2250
 torre_ceu = abrir(ISOOX / "ok" / "ok (10).JPG")                        # 4000x2250
-pino_corroido = abrir(ISOOX / "corrosao" / "corrosao (1).JPG")         # 2448x3264
 disco_oxidado = abrir(ISOOX / "oxidacao" / "oxid-um-ano (1).JPG")      # 3456x4608
+pino_enferrujado = abrir(ISOOX / "corrosao" / "corrosao (168).JPG")    # 4608x3456
+vidro_contaminado = abrir(ISOOX / "corrosao" / "corrosao (222).JPG")   # 4608x3456
 cplid = abrir(CPLID)                                                   # 1152x864
+# CPLID, Defective_Insulators/images/066.jpg (disco ausente, caixa anotada 826,410,885,467)
+cplid_defeito = abrir(HERE / "fontes" / "cplid_defeituoso_066.jpg")   # 1152x864
 
 salvar(gradiente(aerea_corrosao.resize((1920, 1080), Image.LANCZOS), 0.93, 0.15), "capa.jpg")
 salvar(gradiente(torre_ceu.resize((1920, 1080), Image.LANCZOS), 0.9, 0.55), "encerramento.jpg")
@@ -69,9 +73,18 @@ salvar(recorte(aerea_corrosao, (1750, 0, 4000, 2250), (1100, 1100)), "aerea_reco
 salvar(recorte(cplid, (0, 164, 1152, 700), (1290, 600)), "cplid_faixa.jpg")
 salvar(recorte(aerea_campo, (300, 250, 3700, 1831), (1290, 600)), "campo_faixa.jpg")
 salvar(recorte(torre_baixo, (975, 0, 3225, 2250), (1200, 1200)), "cadeia_torre.jpg")
-salvar(recorte(pino_corroido, (0, 300, 2448, 2748), (900, 900)), "defeito_corrosao.jpg")
 salvar(recorte(disco_oxidado, (0, 700, 3456, 4156), (900, 900)), "defeito_oxidacao.jpg")
-salvar(recorte(cplid, (144, 0, 1008, 864), (900, 900)), "cplid_quadrado.jpg")
+
+# Slide 5: cada foto mostra o defeito da legenda
+salvar(recorte(pino_enferrujado, (1150, 0, 4606, 3456), (900, 900)), "defeito_corrosao.jpg")
+salvar(recorte(vidro_contaminado, (0, 0, 2400, 2400), (900, 900)), "defeito_contaminacao.jpg")
+cx, cy, r = (826 + 885) // 2, (410 + 467) // 2, 230
+disco = recorte(cplid_defeito, (cx - r, cy - r, cx + r, cy + r), (900, 900))
+esc = 900 / (2 * r)
+raio = 59 * esc * 0.75
+ImageDraw.Draw(disco).ellipse((r * esc - raio, r * esc - raio, r * esc + raio, r * esc + raio),
+                              outline=(232, 163, 23), width=8)
+salvar(disco, "defeito_disco_ausente.jpg")
 salvar(cplid.resize((1200, 900), Image.LANCZOS), "cplid.jpg")
 salvar(recorte(aerea_campo, (700, 100, 3300, 2050), (1200, 900)), "campo.jpg")
 

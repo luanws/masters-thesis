@@ -390,8 +390,8 @@ O problema é que essas cadeias ficam expostas de forma contínua a condições 
 
   const falhas = [
     ["defeito_corrosao.jpg", "Corrosão", "Identificável em imagens de inspeção"],
-    ["defeito_oxidacao.jpg", "Contaminação superficial", "Relacionada aos flashovers por poluição"],
-    ["cplid_quadrado.jpg", "Disco ausente e fraturas", "Comprometem a rigidez dielétrica da cadeia"],
+    ["defeito_contaminacao.jpg", "Contaminação superficial", "Relacionada aos flashovers por poluição"],
+    ["defeito_disco_ausente.jpg", "Disco ausente e fraturas", "Comprometem a rigidez dielétrica da cadeia"],
   ];
   falhas.forEach((f, i) => {
     const x = M + i * 3.05, lado = 2.85;
