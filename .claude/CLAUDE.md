@@ -76,3 +76,40 @@ Após a compilação bem-sucedida, o PDF fica em:
 
 - Dissertação → **`documents/out/main.pdf`**
 - Artigo SEPOC → **`sepoc/out/main.pdf`**
+
+# Servidor com os datasets e experimentos (SSH)
+
+Os dados usados nos experimentos da dissertação (imagens dos datasets, imagens pré-processadas, modelos treinados e métricas) ficam em um servidor Linux com GPU, acessível pela rede Tailscale.
+
+```bash
+ssh luanws@100.103.208.43
+```
+
+A autenticação é por chave, então dá para rodar comandos sem interação (`ssh -o BatchMode=yes luanws@100.103.208.43 '<comando>'`) e copiar arquivos com `scp`. O aviso sobre troca de chaves "post-quantum" que aparece na conexão pode ser ignorado.
+
+## Para que serve
+
+- Consultar as imagens originais dos datasets **CPLID** e **DRNPW** (por exemplo, para escolher fotos reais de defeitos para os slides da defesa).
+- Consultar resultados, modelos e imagens pré-processadas geradas pelo código dos experimentos.
+- Rodar os experimentos: o repositório `~/github/learn-datasets` contém o código (com seu próprio `CLAUDE.md` e `README.md`) e é executado dentro do container Docker `learn-datasets-dev`.
+
+## Onde estão os dados
+
+As pastas `datasets`, `preprocessed`, `models` e `results` de `~/github/learn-datasets` são pontos de montagem do container e aparecem vazias fora dele. No host, os dados ficam em:
+
+```
+/mnt/230c9dab-2698-418a-8c70-9a05d27c1fd6/srv/shared-learn-datasets/
+├── datasets/
+│   ├── CPLID/raw/Normal_Insulators/{images,labels}       (600 imagens)
+│   ├── CPLID/raw/Defective_Insulators/{images,labels}    (248 imagens, anotações VOC em labels/defect)
+│   └── DRNPW/  (raw, DRNPW_CLASSIFY, insulators, preprocesseds, preprocessing_samples, auto_annotated)
+├── preprocessed/  (CPLID, DRNPW)
+├── models/        (CPLID, DRNPW)
+└── results/       (CPLID, DRNPW)
+```
+
+Exemplo, copiando uma imagem para a máquina local:
+
+```bash
+scp luanws@100.103.208.43:/mnt/230c9dab-2698-418a-8c70-9a05d27c1fd6/srv/shared-learn-datasets/datasets/CPLID/raw/Defective_Insulators/images/066.jpg .
+```
