@@ -24,7 +24,8 @@ module.exports = () => {
     ["campo_faixa.jpg", "DRNPW", C.amber, [
       "Imagens de drones disponibilizadas pela CPFL",
       "Fundos heterogêneos com forte poluição visual",
-      "585 imagens, fortemente desbalanceado",
+      "585 imagens: 468 treino, 87 validação, 30 teste",
+      "Desbalanceado: 335 imagens de treino em uma única classe",
     ]],
   ];
   cenarios.forEach((c, i) => {
@@ -34,7 +35,7 @@ module.exports = () => {
       x, y: 3.42, w: 4.3, h: 0.36, margin: 0,
       fontFace: F.head, fontSize: 18, bold: true, color: c[2],
     });
-    bullets(s, c[3], { x: x + 0.02, y: 3.82, w: 4.25, h: 1.05, size: 11.5, gap: 3 });
+    bullets(s, c[3], { x: x + 0.02, y: 3.82, w: 4.25, h: 1.3, size: 10.5, gap: 3 });
   });
 
   footer(s, "Materiais", false, "Foto à direita: ilustrativa do cenário de campo");

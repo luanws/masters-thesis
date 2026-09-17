@@ -60,7 +60,7 @@ module.exports = () => {
   footer(s, "Materiais");
   fala(s, `
 O protocolo experimental isola uma única variável.
-Foi implementada uma rede neural convolucional clássica e padronizada, com duas camadas convolucionais de 32 filtros, max-pooling, uma camada densa de 8 unidades e saída softmax. O treinamento usou o otimizador Adam por 50 épocas, com data augmentation em tempo de treino e imagens de 512 por 512 pixels. Com o modelo fixo, a única variável entre as execuções é o pré-processamento aplicado às imagens. Depois, a mesma varredura foi repetida com uma segunda arquitetura.
+Foi implementada uma rede neural convolucional clássica e padronizada, com camadas convolucionais, max-pooling, uma camada densa e saída softmax. O treinamento usou o otimizador Adam, com data augmentation em tempo de treino e imagens redimensionadas para um tamanho fixo. Com o modelo fixo, a única variável entre as execuções é o pré-processamento aplicado às imagens. Depois, a mesma varredura foi repetida com uma segunda arquitetura.
 Para ler os resultados, é preciso um critério de referência, porque os dois conjuntos de teste são desbalanceados. Nesses casos, a acurácia sozinha pode ser enganosa, já que um modelo que sempre prevê a classe saudável alcança um valor alto sem detectar nenhuma falha. Esse critério é o piso majoritário: a acurácia obtida ao responder sempre a classe mais frequente, sem observar a imagem.
-No CPLID, 32 das 43 imagens de teste são de isoladores normais, o que dá um piso de 74,42 por cento. No DRNPW, o piso é de 73,33 por cento. Um modelo abaixo desse valor não extrai informação útil das imagens.`);
+No CPLID, a classe de isoladores normais domina o conjunto de teste, o que dá um piso de 74,42 por cento. No DRNPW, o piso é de 73,33 por cento. Um modelo abaixo desse valor não extrai informação útil das imagens.`);
 };
