@@ -284,14 +284,14 @@ Agradeço a presença da banca e passo à apresentação.`);
   title(s, "Roteiro", "Do sistema elétrico de volta ao sistema elétrico");
 
   const itens = [
-    ["1", "O problema elétrico", "Isoladores, falhas e inspeção", "defeito_corrosao.jpg"],
-    ["2", "A proposta", "Metodologia de processamento", "proc_contraste_q.jpg"],
-    ["3", "Resultados", "Dois cenários, dois modelos", "cplid_quadrado.jpg"],
-    ["4", "Impacto", "Vantagens para o sistema elétrico", "aerea_recorte.jpg"],
+    ["1", "O problema elétrico", "Isoladores, falhas e inspeção", "roteiro_problema.jpg"],
+    ["2", "A proposta", "Metodologia de processamento", "roteiro_proposta.jpg"],
+    ["3", "Resultados", "Dois cenários, dois modelos", "roteiro_resultados.jpg"],
+    ["4", "Impacto", "Vantagens para o sistema elétrico", "impacto.png"],
   ];
   itens.forEach((it, i) => {
     const x = M + i * 2.3, lado = 2.0;
-    foto(s, it[3], x, 1.35, lado, lado);
+    foto(s, it[3], x, 1.35, lado, lado, { borda: C.surfaceAlt, espessura: 0.75 });
     bubble(s, x + 0.12, 1.47, 0.44, it[0], { fill: i === 3 ? C.amber : C.teal, color: i === 3 ? C.night : C.white });
     s.addText(it[1], {
       x, y: 3.5, w: lado, h: 0.3, margin: 0,

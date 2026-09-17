@@ -1,7 +1,9 @@
 """Gera as imagens usadas em build.js (pasta presentation/assets).
 
 Fotos: inspeções por drone da CPFL (repositório drones-ia-cpfl) e uma imagem do CPLID.
-Ilustrações: SVG desenhado aqui e rasterizado pelo LibreOffice.
+Ilustrações: SVG desenhado aqui e rasterizado pelo LibreOffice (etapa pulada se ele não
+estiver instalado, mantendo os PNGs já gerados). A ilustração do impacto e as miniaturas
+do roteiro são desenhadas direto com a PIL.
 
 Uso: python presentation/make_assets.py
 Variáveis: DRONES_ROOT (padrão ../../../drones-ia-cpfl), SOFFICE.
@@ -262,10 +264,106 @@ def svg_rede_neural():
 
 
 svgs = {"sep.svg": svg_sep(), "drone.svg": svg_drone(), "rede_neural.svg": svg_rede_neural()}
-for nome, conteudo in svgs.items():
-    (OUT / nome).write_text(conteudo, encoding="utf-8")
-subprocess.run([SOFFICE, "--headless", "--convert-to", "png", "--outdir", str(OUT)]
-               + [str(OUT / n) for n in svgs], check=True, capture_output=True)
-for nome in svgs:
-    (OUT / nome).unlink()
-    print("ok", nome.replace(".svg", ".png"))
+if Path(SOFFICE).exists():
+    for nome, conteudo in svgs.items():
+        (OUT / nome).write_text(conteudo, encoding="utf-8")
+    subprocess.run([SOFFICE, "--headless", "--convert-to", "png", "--outdir", str(OUT)]
+                   + [str(OUT / n) for n in svgs], check=True, capture_output=True)
+    for nome in svgs:
+        (OUT / nome).unlink()
+        print("ok", nome.replace(".svg", ".png"))
+else:
+    print("LibreOffice não encontrado: mantidas as ilustrações SVG já rasterizadas em assets/")
+
+
+def desenhar_impacto(tamanho=900, s=2):
+    """Linha levando energia até uma casa iluminada, com selo de continuidade (desenhado com PIL)."""
+    rgb = lambda h: tuple(int(h.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+    im = Image.new("RGB", (tamanho * s, tamanho * s), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    P = lambda *xy: [v * s for v in xy]
+    chao = 780
+    d.line(P(30, chao, tamanho - 30, chao), fill=rgb("#DCE3EA"), width=6 * s)
+
+    # torre treliçada com três mísulas e cadeias de isoladores
+    cx, topo, larg_base, tinta = 250, 160, 190, rgb(INK)
+    lt, rt, lb, rb = cx - 16, cx + 16, cx - larg_base / 2, cx + larg_base / 2
+    d.line(P(lt, topo, lb, chao), fill=tinta, width=7 * s)
+    d.line(P(rt, topo, rb, chao), fill=tinta, width=7 * s)
+    n, h = 7, chao - topo
+    for i in range(n):
+        y1, y2 = topo + h * i / n, topo + h * (i + 1) / n
+        xl1, xr1 = lt + (lb - lt) * i / n, rt + (rb - rt) * i / n
+        xl2, xr2 = lt + (lb - lt) * (i + 1) / n, rt + (rb - rt) * (i + 1) / n
+        d.line(P(xl1, y1, xr2, y2), fill=tinta, width=3 * s)
+        d.line(P(xr1, y1, xl2, y2), fill=tinta, width=3 * s)
+    pontas = []
+    for dy, w in zip((0.10, 0.24, 0.38), (230, 190, 230)):
+        y = topo + h * dy
+        d.line(P(cx - w / 2, y, cx + w / 2, y), fill=tinta, width=7 * s)
+        for lado in (-1, 1):
+            x = cx + lado * (w / 2 - 8)
+            for j in range(4):
+                yc = y + 11 + j * 10
+                d.ellipse(P(x - 12, yc - 4.5, x + 12, yc + 4.5), fill=rgb(GLASS), outline=rgb(TEAL), width=2 * s)
+            if lado == 1:
+                pontas.append((x, y + 50))
+
+    # condutores até a casa
+    for k, (x1, y1) in enumerate(pontas):
+        x2, y2 = 590, 548 + k * 8
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2 + 36
+        pts = []
+        for t in [i / 40 for i in range(41)]:
+            pts += P((1 - t) ** 2 * x1 + 2 * (1 - t) * t * mx + t ** 2 * x2,
+                     (1 - t) ** 2 * y1 + 2 * (1 - t) * t * my + t ** 2 * y2)
+        d.line(pts, fill=rgb(MUTED), width=4 * s)
+
+    # casa com a janela acesa
+    d.rectangle(P(590, 560, 820, chao), fill=rgb("#E4EAF0"), outline=tinta, width=6 * s)
+    d.polygon(P(565, 565, 705, 440, 845, 565), fill=tinta)
+    d.rectangle(P(650, 615, 760, 700), fill=rgb(AMBER), outline=tinta, width=5 * s)
+
+    # selo de continuidade
+    d.ellipse(P(625, 155, 815, 345), fill=rgb(TEAL))
+    d.line(P(672, 252, 707, 288, 772, 212), fill=(255, 255, 255), width=22 * s, joint="curve")
+    for x, y in ((672, 252), (772, 212)):
+        d.ellipse(P(x - 11, y - 11, x + 11, y + 11), fill=(255, 255, 255))
+    return im.resize((tamanho, tamanho), Image.LANCZOS)
+
+
+im = desenhar_impacto()
+im.save(OUT / "impacto.png", optimize=True)
+print("ok impacto.png", im.size)
+
+# Miniaturas do roteiro, cada uma ligada ao tema do bloco
+sep = Image.open(OUT / "sep.png").convert("RGB")
+esc = sep.width / 2000
+torres = sep.crop((int(465 * esc), int(95 * esc), int(975 * esc), int(545 * esc)))
+salvar(ImageOps.pad(torres, (900, 900), color=(255, 255, 255)), "roteiro_problema.jpg", q=90)
+
+lado, gap = 444, 12
+grade = Image.new("RGB", (2 * lado + gap, 2 * lado + gap), (255, 255, 255))
+for i, nome in enumerate(("proc_original.jpg", "proc_contraste.jpg", "proc_equalizacao.jpg", "proc_bordas.jpg")):
+    im = ImageOps.fit(Image.open(OUT / nome).convert("RGB"), (lado, lado), Image.LANCZOS)
+    grade.paste(im, ((i % 2) * (lado + gap), (i // 2) * (lado + gap)))
+salvar(grade, "roteiro_proposta.jpg", q=88)
+
+# Acurácia da CNN no CPLID (Cap. 4) em ordem crescente, com o piso majoritário tracejado
+acc = sorted([67.44, 90.70, 95.35, 95.35, 93.02, 95.35, 67.44, 74.42, 88.37, 93.02, 67.44, 76.74, 86.05, 93.02])
+graf = Image.new("RGB", (900, 900), (255, 255, 255))
+g = ImageDraw.Draw(graf)
+x0, x1, y_min, y_max = 90, 840, 760, 150
+y_de = lambda v: y_min - (v - 50) / 50 * (y_min - y_max)
+claro, escuro = (171, 238, 185), (28, 114, 147)
+passo = (x1 - x0) / len(acc)
+for i, v in enumerate(acc):
+    t = (v - acc[0]) / (acc[-1] - acc[0])
+    cor = tuple(int(claro[c] + (escuro[c] - claro[c]) * t) for c in range(3))
+    xb = x0 + i * passo + 7
+    g.rectangle((xb, y_de(v), xb + passo - 14, y_min), fill=cor)
+g.line((x0 - 10, y_min, x1 + 10, y_min), fill=(92, 111, 128), width=4)
+yp = y_de(74.42)
+for xd in range(x0 - 10, x1 + 10, 34):
+    g.line((xd, yp, xd + 20, yp), fill=(245, 165, 74), width=6)
+salvar(graf, "roteiro_resultados.jpg", q=90)
