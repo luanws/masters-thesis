@@ -29,6 +29,7 @@ As tarefas estão definidas em [`.vscode/tasks.json`](../.vscode/tasks.json). Pa
    - **Build Docker Image** — constrói a imagem `masters-latex` (só é necessário na primeira vez ou quando o `Dockerfile` mudar).
    - **Compile LaTeX** — compila a **dissertação** (é a tarefa de build padrão, também acionável por `Ctrl+Shift+B`). Depende de *Build Docker Image*.
    - **Compile LaTeX (Sepoc)** — compila o **artigo SEPOC**. Depende de *Build Docker Image*.
+   - **Build Presentation** — gera os slides de defesa (`presentation/defesa.pptx`) com o Node instalado na máquina, sem Docker.
 
 As tarefas de compilação já dependem da construção da imagem (`dependsOn`), então basta rodar a tarefa de compilação diretamente.
 
@@ -76,6 +77,32 @@ Após a compilação bem-sucedida, o PDF fica em:
 
 - Dissertação → **`documents/out/main.pdf`**
 - Artigo SEPOC → **`sepoc/out/main.pdf`**
+
+# Slides de defesa (`presentation/`)
+
+| Caminho | Descrição |
+| --- | --- |
+| `presentation/defesa.pptx` | **Apresentação gerada.** |
+| `presentation/assets/` | Fotos e ilustrações usadas nos slides (geradas por `make_assets.py`, mais a imagem de origem do CPLID). |
+| `presentation/build/build.js` | Ponto de entrada: adiciona os slides na ordem do prefixo numérico e grava o `.pptx`. |
+| `presentation/build/comum.js` | Paleta, dados dos experimentos, instância do `pptxgenjs` e helpers de layout. |
+| `presentation/build/slides/NN-nome.js` | Um arquivo por slide, com o conteúdo e o texto falado (anotações). |
+| `presentation/build/make_assets.py` | Gera as imagens de `presentation/assets/` (precisa do repositório `drones-ia-cpfl` ao lado). |
+| `presentation/build/build.sh` | Instala o `pptxgenjs` na primeira execução e roda o `build.js`. |
+
+A geração não usa Docker, só o **Node** instalado na máquina. Na primeira vez (ou se `presentation/build/node_modules` não existir), instale a dependência:
+
+```bash
+cd presentation/build && npm install
+```
+
+Depois, gere pela tarefa **Build Presentation** ou pela linha de comando, a partir da raiz do projeto:
+
+```bash
+node presentation/build/build.js
+```
+
+O `sh presentation/build/build.sh` faz as duas etapas de uma vez (instala só se faltar `node_modules`). Para regenerar as imagens: `python presentation/build/make_assets.py`.
 
 # Servidor com os datasets e experimentos (SSH)
 

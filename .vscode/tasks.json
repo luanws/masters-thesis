@@ -55,6 +55,19 @@
             ],
             "group": "build",
             "problemMatcher": []
+        },
+        {
+            "label": "Build Presentation",
+            "type": "process",
+            "command": "node",
+            "args": [
+                "build.js"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/presentation/build"
+            },
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }

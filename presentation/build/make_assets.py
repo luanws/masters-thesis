@@ -1,13 +1,13 @@
-"""Gera as imagens usadas em build.js (pasta presentation/assets).
+"""Gera as imagens usadas pelos slides de build/slides (pasta presentation/assets).
 
 Fotos: inspeções por drone da CPFL (repositório drones-ia-cpfl) e imagens do CPLID
-(uma normal e uma defeituosa, esta copiada em presentation/fontes).
+(uma normal e uma defeituosa, esta copiada em presentation/assets).
 Ilustrações: SVG desenhado aqui e rasterizado pelo LibreOffice (etapa pulada se ele não
 estiver instalado, mantendo os PNGs já gerados). A ilustração do impacto e as miniaturas
 do roteiro são desenhadas direto com a PIL.
 
-Uso: python presentation/make_assets.py
-Variáveis: DRONES_ROOT (padrão ../../../drones-ia-cpfl), SOFFICE.
+Uso: python presentation/build/make_assets.py
+Variáveis: DRONES_ROOT (padrão ../../../../drones-ia-cpfl), SOFFICE.
 """
 import os
 import subprocess
@@ -16,9 +16,9 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "assets"
+OUT = HERE.parent / "assets"
 OUT.mkdir(exist_ok=True)
-DRONES = Path(os.environ.get("DRONES_ROOT", HERE / ".." / ".." / ".." / "drones-ia-cpfl")).resolve()
+DRONES = Path(os.environ.get("DRONES_ROOT", HERE / ".." / ".." / ".." / ".." / "drones-ia-cpfl")).resolve()
 ISOOX = DRONES / "detector-api-metrics-generator" / "data" / "ISOOX"
 CPLID = DRONES / "learn-datasets" / "test" / "resources" / "images" / "0049.jpg"
 SOFFICE = os.environ.get("SOFFICE", r"C:\Program Files\LibreOffice\program\soffice.exe")
@@ -64,7 +64,7 @@ disco_oxidado = abrir(ISOOX / "oxidacao" / "oxid-um-ano (1).JPG")      # 3456x46
 pino_enferrujado = abrir(ISOOX / "corrosao" / "corrosao (168).JPG")    # 4608x3456
 cplid = abrir(CPLID)                                                   # 1152x864
 # CPLID, Defective_Insulators/images/066.jpg (disco ausente, caixa anotada 826,410,885,467)
-cplid_defeito = abrir(HERE / "fontes" / "cplid_defeituoso_066.jpg")   # 1152x864
+cplid_defeito = abrir(OUT / "cplid_defeituoso_066.jpg")   # 1152x864
 
 salvar(gradiente(aerea_corrosao.resize((1920, 1080), Image.LANCZOS), 0.93, 0.15), "capa.jpg")
 salvar(gradiente(torre_ceu.resize((1920, 1080), Image.LANCZOS), 0.9, 0.55), "encerramento.jpg")

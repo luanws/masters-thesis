@@ -3,4 +3,4 @@
 !/documents/out/main.pdf
 !/sepoc/out/main.pdf
 # dependencias do gerador de slides
-/presentation/node_modules/
+/presentation/build/node_modules/
