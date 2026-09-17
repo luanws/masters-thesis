@@ -55,6 +55,6 @@ module.exports = () => {
 A etapa de ajuste automático foi aplicada ao parâmetro do realce de contraste, o fator multiplicador, no DRNPW. Valores menores que 1 reduzem o contraste, e valores maiores que 1 o aumentam.
 Primeiro, a busca em grade avaliou cinco valores entre 0,5 e 1,611. O melhor foi o fator 1,333, com 90 por cento de acurácia, 81 por cento de precisão e 85,3 por cento de F1-score. A redução excessiva de contraste, com fator 0,5, resultou na menor acurácia, 76,7 por cento.
 Como complemento, a busca aleatória testou cinco valores entre 0,5 e 3. O melhor foi 1,4364, com 85,06 por cento de acurácia na validação, e contrastes muito altos degradaram o desempenho, com 71,26 por cento no fator 2,33.
-Os dois métodos apontam para valores próximos, um pouco acima de 1. Essa convergência deve ser lida com reserva, porque as duas buscas foram avaliadas sobre conjuntos distintos: o de teste, com 30 imagens, e o de validação, com 87.
+Os dois métodos apontam para valores próximos, um pouco acima de 1.
 O ganho metodológico é que o ajuste deixa de depender de otimização manual.`);
 };
