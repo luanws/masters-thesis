@@ -42,12 +42,13 @@ module.exports = () => {
 
   footer(s, "Impacto");
   fala(s, `
-Voltando ao sistema elétrico, a inspeção automatizada por imagem, que este trabalho ajuda a tornar mais confiável, traz vantagens em seis frentes.
-A continuidade do fornecimento, porque a detecção precoce de falhas evita interrupções.
-O custo, porque identificar a falha cedo reduz os custos de manutenção.
-A segurança, porque o uso de imagens evita intervenções manuais em locais de difícil acesso.
-A abrangência, porque os drones facilitam a inspeção de grandes extensões de linhas.
-A reprodutibilidade, porque o diagnóstico automatizado é mais rápido, econômico e menos sujeito à subjetividade e ao erro humano.
-E a manutenção preditiva, porque as técnicas modernas permitem monitorar os equipamentos e identificar danos antes que se tornem críticos.
-Em todas essas frentes, o ganho depende de o modelo acertar, e o acerto do modelo depende, como vimos, do tratamento dado às imagens.`);
+Voltando agora para o sistema elétrico. A inspeção automatizada por imagem, que este trabalho ajuda a tornar mais confiável, traz vantagens em seis frentes.
+A continuidade do fornecimento, porque detectar a falha cedo evita interrupções.
+O custo, porque encontrar a falha cedo reduz o custo de manutenção.
+A segurança, porque usar imagens evita intervenção manual em local de difícil acesso.
+A abrangência, porque os drones facilitam inspecionar grandes extensões de linha.
+A reprodutibilidade, porque o diagnóstico automatizado é mais rápido, mais econômico e menos sujeito à subjetividade e ao erro humano.
+E a manutenção preditiva, porque as técnicas modernas permitem monitorar os equipamentos e identificar o dano antes que ele fique crítico.
+Em todas essas frentes o ganho depende de o modelo acertar. E o acerto do modelo depende, como a gente viu, do tratamento dado às imagens.
+`);
 };

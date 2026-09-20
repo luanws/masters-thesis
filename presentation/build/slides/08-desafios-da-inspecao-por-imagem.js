@@ -35,9 +35,10 @@ module.exports = () => {
 
   footer(s, "Contexto elétrico");
   fala(s, `
-A inspeção por imagem, porém, traz os seus próprios desafios.
-O primeiro é o volume. Uma inspeção produz um grande número de imagens, e a literatura aponta que a inspeção manual se torna ineficaz justamente pelo alto volume de dados.
-O segundo é o fundo das imagens. O isolador aparece sobre vegetação, rios, ocupação urbana e outras estruturas, e essa complexidade dificulta distinguir o componente elétrico do ambiente ao seu redor.
-O terceiro é a anotação. Rotular manualmente as imagens capturadas por drones é demorado e propenso a erros, o que limita o tamanho dos conjuntos de dados disponíveis.
-A inteligência artificial responde ao primeiro desafio, porque permite analisar grandes volumes de dados e identificar padrões complexos. Mas os outros dois mostram que a qualidade da imagem que chega ao modelo continua sendo decisiva.`);
+Mas a inspeção por imagem traz os desafios dela também.
+O primeiro é o volume. Uma inspeção gera um número enorme de imagens, e a literatura aponta que a inspeção manual fica inviável justamente por causa disso.
+O segundo é o fundo das imagens. O isolador aparece sobre vegetação, rio, ocupação urbana, outras estruturas, e essa complexidade toda dificulta separar o componente elétrico do ambiente em volta.
+O terceiro é a anotação. Rotular na mão as imagens que vêm dos drones é demorado e sujeito a erro, e isso limita o tamanho dos conjuntos de dados disponíveis.
+A inteligência artificial resolve o primeiro desafio, porque ela consegue analisar grande volume de dados e achar padrões complexos. Mas os outros dois mostram que a qualidade da imagem que chega no modelo continua sendo decisiva.
+`);
 };

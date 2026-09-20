@@ -54,9 +54,10 @@ module.exports = () => {
 
   footer(s, "Materiais", false, "Ilustração do efeito das técnicas sobre uma mesma imagem");
   fala(s, `
-Foram avaliadas 14 variantes de pré-processamento, aplicadas às imagens antes do treinamento. A figura ilustra o efeito de algumas delas sobre uma mesma imagem.
-O realce de contraste amplia as diferenças de intensidade por meio de um fator multiplicador. A equalização de histograma redistribui as intensidades na faixa dinâmica disponível. A escala de cinza suprime a informação de cor. O desfoque gaussiano faz uma suavização passa-baixa. E a detecção de bordas isola os contornos da imagem.
-Além dessas, foram avaliadas a binarização adaptativa, o CLAHE, que equaliza o histograma por regiões locais, a redução de ruído por médias não locais e o filtro de mediana.
-Quatro variantes são híbridas, combinando o realce de contraste com o CLAHE ou com a equalização de histograma, em ordens diferentes.
-E a imagem original entra como amostra de controle, a linha de base sem processamento.`);
+Eu avaliei 14 variantes de pré-processamento, todas aplicadas nas imagens antes do treinamento. A figura mostra o efeito de algumas delas sobre uma mesma imagem.
+O realce de contraste amplia as diferenças de intensidade por um fator multiplicador. A equalização de histograma redistribui as intensidades na faixa dinâmica disponível. A escala de cinza tira a informação de cor. O desfoque gaussiano faz uma suavização passa-baixa. E a detecção de bordas isola os contornos da imagem.
+Além dessas, eu avaliei a binarização adaptativa, o CLAHE, que equaliza o histograma por regiões locais, a redução de ruído por médias não locais e o filtro de mediana.
+Quatro das variantes são híbridas, combinando o realce de contraste com o CLAHE ou com a equalização de histograma, em ordens diferentes.
+E a imagem original entra como amostra de controle, que é a linha de base, sem processamento nenhum.
+`);
 };

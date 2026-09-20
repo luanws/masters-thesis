@@ -42,8 +42,9 @@ module.exports = () => {
 
   footer(s, "Conclusões");
   fala(s, `
-O trabalho enfrentou limitações.
-A principal foi a quantidade e a disponibilidade de dados. Há grande escassez de bancos de imagens públicos focados em redes de distribuição, com número expressivo de componentes defeituosos e anotações rigorosas, o que obriga o uso de conjuntos fortemente desbalanceados.
-Outra limitação foi o custo computacional. Otimizar todos os parâmetros do pipeline ao mesmo tempo leva à explosão combinatória, o que inviabiliza a avaliação exaustiva em tempo hábil.
-A partir dessas limitações, sugiro cinco trabalhos futuros. Usar a otimização bayesiana para explorar vários parâmetros simultaneamente. Gerar exemplos sintéticos de defeitos com redes generativas adversariais. Estender o método para arquiteturas de detecção, avaliando a localização espacial das falhas. Adotar métricas mais robustas ao desbalanceamento, como o F1-score macro e a acurácia balanceada. E avaliar o desempenho do pipeline em dispositivos embarcados, como drones, para viabilizar a inspeção dinâmica em campo.`);
+O trabalho teve limitações.
+A principal foi a quantidade e a disponibilidade de dados. Existe muita escassez de banco de imagens público focado em redes de distribuição, com número expressivo de componentes defeituosos e anotação rigorosa, e isso obriga a usar conjuntos bem desbalanceados.
+Outra limitação foi o custo computacional. Otimizar todos os parâmetros do pipeline ao mesmo tempo leva a uma explosão combinatória, o que inviabiliza avaliar tudo em tempo hábil.
+A partir dessas limitações, eu sugiro cinco trabalhos futuros. Usar a otimização bayesiana para explorar vários parâmetros ao mesmo tempo. Gerar exemplos sintéticos de defeitos com redes generativas adversariais. Estender o método para arquiteturas de detecção, avaliando também onde a falha está na imagem. Adotar métricas mais robustas ao desbalanceamento, como o F1-score macro e a acurácia balanceada. E avaliar o desempenho do pipeline em dispositivos embarcados, como o próprio drone, para viabilizar a inspeção dinâmica em campo.
+`);
 };

@@ -59,8 +59,9 @@ module.exports = () => {
 
   footer(s, "Proposta");
   fala(s, `
-Um sistema de inspeção automática segue esta sequência. A imagem é adquirida, recebe um pré-processamento, é analisada pelo modelo de rede neural, e o resultado é um diagnóstico: com falha ou sem falha.
-A eficácia desse sistema depende, em grande medida, das técnicas de processamento de imagem empregadas e da forma como elas são combinadas e ajustadas. Diferentes técnicas, parâmetros e arquiteturas podem produzir resultados bastante distintos para o mesmo problema.
-Não basta investir apenas em arquiteturas complexas de rede neural se as imagens de entrada apresentarem ruídos e limitações de contraste que ocultam os defeitos.
-Por isso, este trabalho coloca o pré-processamento no centro, como a variável independente do estudo. A pergunta passa a ser: qual tratamento aplicar à imagem para que o modelo identifique melhor a falha no isolador?`);
+Um sistema de inspeção automática segue essa sequência aqui. A imagem é adquirida, passa por um pré-processamento, vai para o modelo de rede neural, e sai um diagnóstico, com falha ou sem falha.
+E a eficácia desse sistema depende bastante das técnicas de processamento de imagem que são usadas e da forma como elas são combinadas e ajustadas. Técnicas diferentes, parâmetros diferentes e arquiteturas diferentes podem dar resultados bem distintos para o mesmo problema.
+Não adianta investir só em arquitetura complexa de rede neural se a imagem de entrada tem ruído e limitação de contraste que escondem o defeito.
+Então este trabalho coloca o pré-processamento no centro, como a variável independente do estudo. A pergunta passa a ser essa: qual tratamento eu aplico na imagem para que o modelo enxergue melhor a falha no isolador?
+`);
 };

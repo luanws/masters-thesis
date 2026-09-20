@@ -44,8 +44,9 @@ module.exports = () => {
 
   footer(s, "Contexto elétrico");
   fala(s, `
-Tradicionalmente, a inspeção de cadeias de isoladores é feita de forma visual e manual, por equipes especializadas. Isso torna a inspeção lenta, custosa e sujeita à subjetividade e a erros humanos.
-Uma alternativa promissora é a inspeção por imagem. O uso de imagens capturadas por drones facilita a inspeção de grandes extensões de linhas de transmissão, reduz custos e aumenta a segurança, porque evita intervenções manuais em locais de difícil acesso.
-Associadas a modelos de aprendizado de máquina, essas imagens permitem automatizar a detecção e a classificação das falhas, o que torna a inspeção mais rápida, econômica e reprodutível. E os métodos de aprendizado profundo conseguem reconhecer padrões que indicam falhas mesmo em condições adversas, como baixa visibilidade ou equipamentos desgastados.
-É essa combinação de drone e inteligência artificial que forma o contexto de aplicação desta dissertação.`);
+Tradicionalmente, a inspeção das cadeias de isoladores é feita de forma visual e manual, por equipes especializadas. Isso deixa a inspeção lenta, cara e sujeita à subjetividade e ao erro humano.
+Uma alternativa promissora é a inspeção por imagem. Usar imagens capturadas por drones facilita muito inspecionar grandes extensões de linha, reduz custo e aumenta a segurança, porque evita que alguém tenha que ir até um local de difícil acesso.
+Quando essas imagens são associadas a modelos de aprendizado de máquina, dá para automatizar a detecção e a classificação das falhas, e a inspeção fica mais rápida, mais econômica e reprodutível. E os métodos de aprendizado profundo conseguem reconhecer padrões de falha mesmo em condições adversas, com pouca visibilidade ou equipamento desgastado.
+É essa combinação de drone com inteligência artificial que forma o contexto de aplicação da dissertação.
+`);
 };

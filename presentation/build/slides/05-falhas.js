@@ -33,7 +33,8 @@ module.exports = () => {
 
   footer(s, "Contexto elétrico", false, "Fotos ilustrativas de cadeias de isoladores");
   fala(s, `
-As falhas aparecem de diferentes formas. A literatura cita trincas, contaminação superficial, perfurações e rupturas, além de corrosões nas estruturas, que também podem ser identificadas por imagem. À esquerda está um exemplo de corrosão.
-À direita está o defeito estrutural das cadeias de discos cerâmicos, em que o disco está ausente ou fraturado. Essas condições comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
-O ponto em comum é que todas essas falhas deixam uma assinatura visual. É isso que torna possível usar imagens para encontrá-las.`);
+Essas falhas aparecem de várias formas. A literatura cita trincas, contaminação superficial, perfurações e rupturas, além de corrosões nas estruturas, que também dá para identificar por imagem. Aqui à esquerda vocês veem um exemplo de corrosão.
+À direita está o defeito estrutural das cadeias de discos cerâmicos, em que o disco está ausente ou fraturado. Essas condições comprometem a rigidez dielétrica da cadeia e podem evoluir para uma falha de isolamento na linha.
+O ponto em comum entre todas elas é que deixam uma assinatura visual. E é justamente isso que torna possível usar imagem para encontrar essas falhas.
+`);
 };

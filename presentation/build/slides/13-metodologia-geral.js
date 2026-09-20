@@ -42,7 +42,8 @@ module.exports = () => {
   footer(s, "Proposta");
   fala(s, `
 A metodologia é estruturada, iterativa e modular.
-O fluxo parte do início e percorre seis etapas: a seleção e a validação do conjunto de dados, o pré-processamento, o ajuste de parâmetros, a escolha e a construção do modelo, o treinamento e, por fim, a avaliação e os ajustes, encerrando em conclusões e recomendações.
-O caráter iterativo vem do ciclo de avaliação. Quando o desempenho não é satisfatório, a avaliação retroalimenta o pré-processamento e a escolha do modelo, o que permite refinar as técnicas e os parâmetros a cada iteração.
-O caráter modular vem da divisão em blocos, que permite identificar e corrigir problemas em cada etapa de forma isolada, sem comprometer o restante do processo. É essa modularidade que permite, mais adiante, trocar apenas o bloco do modelo e repetir o experimento com uma segunda arquitetura.`);
+O fluxo começa aqui e passa por seis etapas. Seleção e validação do conjunto de dados, pré-processamento, ajuste de parâmetros, escolha e construção do modelo, treinamento e, por último, avaliação e ajustes, terminando em conclusões e recomendações.
+O caráter iterativo vem desse ciclo de avaliação. Quando o desempenho não é satisfatório, a avaliação volta para o pré-processamento e para a escolha do modelo, e isso permite refinar as técnicas e os parâmetros a cada iteração.
+E o caráter modular vem da divisão em blocos. Dá para identificar e corrigir problemas em cada etapa de forma isolada, sem mexer no resto do processo. É essa modularidade que me permitiu, mais adiante, trocar só o bloco do modelo e repetir o experimento com uma segunda arquitetura.
+`);
 };

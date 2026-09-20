@@ -52,9 +52,10 @@ module.exports = () => {
 
   footer(s, "Resultados");
   fala(s, `
-A etapa de ajuste automático foi aplicada ao parâmetro do realce de contraste, o fator multiplicador, no DRNPW. Valores menores que 1 reduzem o contraste, e valores maiores que 1 o aumentam.
-Primeiro, a busca em grade varreu cinco valores do fator. O melhor foi 1,333, com 90 por cento de acurácia, o ponto mais alto da curva. A redução excessiva de contraste deu o pior resultado da varredura. Esse patamar não é diretamente comparável ao das varreduras anteriores, porque aqui o treinamento foi mais curto e em resolução maior.
-Como complemento, a busca aleatória testou outros valores em uma faixa mais ampla. O melhor ficou próximo do encontrado na grade, ainda que medido na validação, e não no teste, e contrastes muito altos degradaram bastante o desempenho.
-Os dois métodos apontam, portanto, para valores um pouco acima de 1.
-O ganho metodológico é que o ajuste deixa de depender de otimização manual.`);
+A etapa de ajuste automático eu apliquei no parâmetro do realce de contraste, que é o fator multiplicador, usando o DRNPW. Valor menor que 1 reduz o contraste e valor maior que 1 aumenta.
+Primeiro a busca em grade varreu cinco valores desse fator. O melhor foi 1,333, com 90 por cento de acurácia, que é esse ponto mais alto da curva. A redução excessiva de contraste deu o pior resultado da varredura. Esse patamar não é diretamente comparável ao das varreduras anteriores, porque aqui o treinamento foi mais curto e em resolução maior.
+Como complemento, a busca aleatória testou outros valores numa faixa mais ampla. O melhor ficou perto do que a grade encontrou, ainda que medido na validação e não no teste, e contrastes muito altos degradaram bastante o desempenho.
+Então os dois métodos apontam para valores um pouco acima de 1.
+E o ganho metodológico aqui é que o ajuste deixa de depender de otimização manual.
+`);
 };

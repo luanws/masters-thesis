@@ -31,5 +31,6 @@ module.exports = () => {
 
   footer(s, "Encerramento", true);
   fala(s, `
-Muito obrigado pela atenção. Fico à disposição da banca para as arguições.`);
+Muito obrigado pela atenção. Fico à disposição da banca para as arguições.
+`);
 };

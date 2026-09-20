@@ -37,7 +37,8 @@ module.exports = () => {
   footer(s, "Conclusões");
   fala(s, `
 Concluindo.
-Primeira conclusão: o pré-processamento das imagens exerce papel determinante no desempenho dos modelos em cenários de inspeção de infraestrutura elétrica.
-Segunda conclusão: não há um processamento universalmente superior. Para defeitos estruturais em cadeias de isoladores de linhas de transmissão, no CPLID, o realce de contraste foi a estratégia de maior êxito. Para a inspeção aérea com fundos heterogêneos e poluídos, no DRNPW, as combinações de realce de contraste e equalização de histograma foram mais eficazes. A eficácia de cada técnica depende das características do conjunto de dados e do contexto de captura das falhas.
-Terceira conclusão: a ordem de mérito das técnicas se altera conforme a arquitetura, de modo que a seleção do pré-processamento não é independente do modelo nem da forma de inicialização dos seus pesos. Por isso, ela precisa ser refeita a cada mudança de arquitetura ou de conjunto de dados, e é essa reexecução controlada que a metodologia proposta busca viabilizar.`);
+Primeira conclusão. O pré-processamento das imagens tem papel determinante no desempenho dos modelos em cenários de inspeção de infraestrutura elétrica.
+Segunda conclusão. Não existe um processamento universalmente superior. Para defeito estrutural em cadeia de isoladores de linhas de transmissão, no CPLID, o realce de contraste foi a estratégia de maior êxito. Para a inspeção aérea com fundos heterogêneos e poluídos, no DRNPW, as combinações de realce de contraste com equalização de histograma foram mais eficazes. A eficácia de cada técnica depende das características do conjunto de dados e do contexto em que a falha foi capturada.
+Terceira conclusão. A ordem de mérito das técnicas muda conforme a arquitetura, de forma que escolher o pré-processamento não é independente do modelo nem da forma como os pesos dele foram inicializados. Por isso essa escolha precisa ser refeita a cada troca de arquitetura ou de conjunto de dados, e é essa reexecução controlada que a metodologia proposta busca viabilizar.
+`);
 };

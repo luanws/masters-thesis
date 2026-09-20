@@ -22,7 +22,8 @@ module.exports = () => {
 
   footer(s, "Resultados");
   fala(s, `
-Começo pelos resultados da rede convolucional no CPLID, o cenário das cadeias cerâmicas de linhas de transmissão com defeito estrutural. O gráfico mostra a acurácia de cada técnica, em ordem crescente, com a imagem tratada acima de cada barra.
-No topo, três técnicas empataram na maior acurácia, e todas ampliam o contraste: o realce de contraste simples, a combinação de CLAHE com realce e a combinação de realce com equalização de histograma. O realce simples teve ainda o maior F1-score do conjunto e superou a imagem original, sem tratamento.
-No outro extremo, o desfoque gaussiano e a redução de ruído reduziram consideravelmente o desempenho. Os dois ficaram no fim da lista, bem abaixo da imagem original e também abaixo do piso majoritário. Ou seja, um tratamento inadequado piorou o resultado em relação a não tratar a imagem.`);
+Vou começar pelos resultados da rede convolucional no CPLID, que é o cenário das cadeias cerâmicas de linhas de transmissão com defeito estrutural. O gráfico mostra a acurácia de cada técnica, em ordem crescente, e acima de cada barra está a imagem já tratada.
+No topo, três técnicas empataram na maior acurácia, e todas elas ampliam o contraste. O realce de contraste simples, a combinação de CLAHE com realce e a combinação de realce com equalização de histograma. O realce simples ainda teve o maior F1-score do conjunto e superou a imagem original, sem tratamento nenhum.
+No outro extremo, o desfoque gaussiano e a redução de ruído derrubaram bastante o desempenho. Os dois ficaram no fim da lista, bem abaixo da imagem original e abaixo também do piso majoritário. Quer dizer, um tratamento inadequado piorou o resultado em relação a simplesmente não tratar a imagem.
+`);
 };

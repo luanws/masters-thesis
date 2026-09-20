@@ -43,10 +43,11 @@ module.exports = () => {
 
   footer(s, "Proposta");
   fala(s, `
-Cada etapa se desdobra em operações e decisões, mostradas no fluxograma detalhado. Destaco os quatro pontos de decisão.
-O primeiro verifica se o conjunto de dados está balanceado. Isso é especialmente relevante na detecção de falhas, em que costuma haver muito mais amostras de isoladores saudáveis do que de defeituosos.
-O segundo decide se as técnicas serão usadas isoladas ou combinadas em um pipeline.
+Cada etapa se desdobra em operações e decisões, que aparecem nesse fluxograma detalhado. Eu queria destacar os quatro pontos de decisão.
+O primeiro verifica se o conjunto de dados está balanceado. Isso é bem relevante na detecção de falhas, porque costuma existir muito mais imagem de isolador saudável do que de isolador defeituoso.
+O segundo decide se as técnicas vão ser usadas isoladas ou combinadas em um pipeline.
 O terceiro define o tipo de tarefa, entre classificação, detecção e regressão.
-E o quarto verifica se o desempenho atende aos critérios definidos. Se não atende, o bloco de ajuste de processamentos e modelo devolve o fluxo às etapas anteriores.
-Neste trabalho, foram percorridos os dois ramos do pré-processamento, o de técnicas isoladas e o de técnicas combinadas, com a tarefa de classificação e o ajuste automático de parâmetros.`);
+E o quarto verifica se o desempenho atende aos critérios definidos. Se não atende, o bloco de ajuste de processamentos e modelo devolve o fluxo para as etapas anteriores.
+Neste trabalho eu percorri os dois ramos do pré-processamento, o de técnicas isoladas e o de técnicas combinadas, com a tarefa de classificação e com o ajuste automático de parâmetros.
+`);
 };

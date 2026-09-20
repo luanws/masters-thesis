@@ -38,7 +38,8 @@ module.exports = () => {
 
   footer(s, "Contexto elétrico");
   fala(s, `
-Começo pelo Sistema Elétrico de Potência. A energia gerada percorre as linhas de transmissão, passa pelas subestações e chega aos consumidores pelas redes de distribuição.
-Ao longo dessas linhas, componentes como isoladores, fixadores e suportes garantem a sustentação e o isolamento dos condutores. Quando esses componentes apresentam problemas que não são tratados, a consequência pode ser a interrupção do fornecimento de energia. Por isso, a inspeção desses ativos é uma atividade central para a confiabilidade do sistema. E o processamento de imagens se tornou uma ferramenta essencial para essa confiabilidade, porque permite identificar problemas nesses componentes a partir de imagens das linhas.
-Entre esses componentes, o foco deste trabalho é o que aparece destacado no círculo da figura: a cadeia de isoladores, presente nas estruturas das linhas de alta tensão. É sobre a detecção e a classificação de falhas nessas cadeias que a dissertação trata.`);
+Então vamos começar pelo Sistema Elétrico de Potência. A energia que é gerada percorre as linhas de transmissão, passa pelas subestações e chega até os consumidores pelas redes de distribuição.
+Ao longo dessas linhas existem componentes como isoladores, fixadores e suportes, que fazem a sustentação e o isolamento dos condutores. Se um desses componentes apresenta um problema e esse problema não é tratado, o resultado pode ser a interrupção do fornecimento de energia. Por isso inspecionar esses ativos é uma atividade central para a confiabilidade do sistema. E o processamento de imagens virou uma ferramenta essencial aqui, porque permite encontrar problemas nesses componentes a partir de imagens das linhas.
+Entre todos esses componentes, o foco do meu trabalho é esse que está destacado no círculo da figura, a cadeia de isoladores, que fica nas estruturas das linhas de alta tensão. É sobre detectar e classificar falhas nessas cadeias que a dissertação trata.
+`);
 };

@@ -42,11 +42,12 @@ module.exports = () => {
 
   footer(s, "Proposta");
   fala(s, `
-Para alcançar esse objetivo, foram definidos sete objetivos específicos.
+Para chegar nesse objetivo, eu defini sete objetivos específicos.
 O primeiro é estabelecer métricas para avaliar a eficácia dos processamentos de imagem.
-O segundo e o terceiro são determinar o tipo de rede neural adequado e construir os modelos de avaliação, sem o intuito de encontrar um modelo definitivo.
+O segundo e o terceiro são determinar o tipo de rede neural adequado e construir os modelos de avaliação, sem a intenção de chegar a um modelo definitivo.
 O quarto e o quinto são analisar o impacto da escolha do modelo e a influência do conjunto de dados sobre os resultados.
-O sexto é aprimorar os processamentos pela combinação de abordagens unitárias.
+O sexto é aprimorar os processamentos combinando abordagens unitárias.
 E o sétimo é criar um método de ajuste automático dos parâmetros.
-Destaco o sentido do terceiro objetivo: os modelos treinados servem para avaliar o impacto dos diferentes processamentos, e não são o produto final do trabalho.`);
+Eu queria destacar o sentido do terceiro objetivo. Os modelos que eu treinei servem para medir o impacto dos diferentes processamentos. Eles não são o produto final do trabalho.
+`);
 };

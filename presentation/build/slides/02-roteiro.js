@@ -38,8 +38,9 @@ module.exports = () => {
   footer(s, "Roteiro");
   fala(s, `
 A apresentação está dividida em quatro partes.
-Começo pelo problema elétrico: o papel dos isoladores no sistema elétrico de potência, as falhas que eles apresentam e a forma como são inspecionados.
-Em seguida, apresento a proposta, que é a metodologia para comparar, selecionar, combinar e ajustar o processamento das imagens.
-Depois, os resultados obtidos com dois conjuntos de dados e dois modelos de rede neural.
-E termino voltando ao sistema elétrico, com as vantagens e o impacto do trabalho.`);
+Eu começo pelo problema elétrico, que é o papel dos isoladores no sistema elétrico de potência, as falhas que aparecem neles e a forma como eles são inspecionados hoje.
+Depois eu apresento a proposta, que é a metodologia para comparar, selecionar, combinar e ajustar o processamento das imagens.
+Na terceira parte eu mostro os resultados, com dois conjuntos de dados e dois modelos de rede neural.
+E no fim eu volto para o sistema elétrico, para falar das vantagens e do impacto do trabalho.
+`);
 };

@@ -36,9 +36,10 @@ module.exports = () => {
 
   footer(s, "Contexto elétrico", false, "", 6.0);
   fala(s, `
-Os isoladores cumprem duas funções ao mesmo tempo.
-A primeira é mecânica: sustentar os condutores.
-A segunda é elétrica: garantir o isolamento entre as partes energizadas e as estruturas aterradas.
-Nas linhas de alta tensão, eles são normalmente agrupados em cadeias, como a que aparece na foto.
-O problema é que essas cadeias ficam expostas de forma contínua a condições ambientais severas, como variações de temperatura, umidade, poluição e descargas atmosféricas. Ao longo do tempo, essa exposição favorece o surgimento de falhas que comprometem a capacidade de isolamento e, com ela, a confiabilidade do sistema elétrico. O desempenho da linha depende, portanto, do estado de cada cadeia de isoladores instalada ao longo dela.`);
+O isolador cumpre duas funções ao mesmo tempo.
+A primeira é mecânica, que é sustentar os condutores.
+A segunda é elétrica, que é garantir o isolamento entre as partes energizadas e as estruturas aterradas.
+Nas linhas de alta tensão eles normalmente aparecem agrupados em cadeias, como essa que está na foto.
+O problema é que essas cadeias ficam expostas o tempo todo a condições ambientais severas, variação de temperatura, umidade, poluição, descarga atmosférica. Com o tempo, essa exposição favorece o aparecimento de falhas que comprometem a capacidade de isolamento e, junto com ela, a confiabilidade do sistema elétrico. Ou seja, o desempenho da linha depende do estado de cada cadeia de isoladores instalada nela.
+`);
 };

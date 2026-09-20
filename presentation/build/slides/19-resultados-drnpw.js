@@ -22,8 +22,9 @@ module.exports = () => {
 
   footer(s, "Resultados");
   fala(s, `
-No DRNPW, o cenário de inspeção aérea em ambiente operacional real, o comportamento muda.
-Com fundos de forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A melhor foi o realce de contraste com equalização de histograma, bem à frente dos modelos treinados apenas com as imagens originais. O F1-score, que é a métrica mais sensível ao desbalanceamento, subiu de menos de 50 por cento, com as imagens originais, para cerca de 75 por cento.
-A leitura é que, nesse cenário, a combinação reforça o contraste entre o componente e o fundo. Já a escala de cinza, que suprime a informação de cor, ficou entre os piores resultados, no mesmo patamar da imagem original e do realce de contraste aplicado isoladamente. Aqui o realce sozinho não bastou: o ganho veio da combinação com a equalização de histograma.
-Faço aqui uma ressalva: esse melhor resultado supera o piso majoritário em dez pontos percentuais, o equivalente a três imagens de teste, e seis das 14 técnicas avaliadas ficaram no piso ou abaixo dele. Por isso, a inspeção em ambiente com forte poluição visual permanece como o caso mais desafiador.`);
+Já no DRNPW, que é o cenário de inspeção aérea em ambiente operacional real, o comportamento muda.
+Com fundos de forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A melhor de todas foi o realce de contraste com equalização de histograma, bem à frente dos modelos treinados só com as imagens originais. O F1-score, que é a métrica mais sensível ao desbalanceamento, subiu de menos de 50 por cento, com as imagens originais, para uns 75 por cento.
+A leitura é que, nesse cenário, a combinação reforça o contraste entre o componente e o fundo. E a escala de cinza, que tira a informação de cor, ficou entre os piores resultados, no mesmo patamar da imagem original e do realce de contraste aplicado sozinho. Aqui o realce sozinho não bastou. O ganho veio mesmo da combinação com a equalização de histograma.
+Eu preciso fazer uma ressalva aqui. Esse melhor resultado supera o piso majoritário em dez pontos percentuais, que equivale a três imagens de teste, e seis das 14 técnicas avaliadas ficaram no piso ou abaixo dele. Então a inspeção em ambiente com forte poluição visual continua sendo o caso mais desafiador.
+`);
 };

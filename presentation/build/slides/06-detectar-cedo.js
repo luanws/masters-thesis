@@ -40,9 +40,10 @@ module.exports = () => {
 
   footer(s, "Contexto elétrico", true);
   fala(s, `
-Por isso, a identificação precoce dessas falhas é essencial, e ela traz três ganhos diretos para o sistema elétrico.
-O primeiro é a continuidade: encontrar a falha a tempo evita interrupções no fornecimento de energia.
-O segundo é econômico: a detecção precoce reduz os custos de manutenção.
-O terceiro é a segurança: previne riscos às instalações e às pessoas.
-Há também o outro lado dessa questão. Uma falha que não é detectada, o chamado falso negativo, pode ter consequências graves e, no limite, levar a falhas no sistema de transmissão. Por isso, ao longo do trabalho, a capacidade de encontrar a falha, e não apenas a taxa geral de acertos, recebe atenção especial na leitura dos resultados.`);
+Por isso encontrar essas falhas cedo é essencial, e isso traz três ganhos diretos para o sistema elétrico.
+O primeiro é a continuidade. Achar a falha a tempo evita interrupção no fornecimento de energia.
+O segundo é econômico. Detectar cedo reduz o custo de manutenção.
+E o terceiro é a segurança, porque previne risco para as instalações e para as pessoas.
+Tem também o outro lado dessa questão. Uma falha que passa despercebida, o chamado falso negativo, pode ter consequência grave e, no limite, levar a uma falha no sistema de transmissão. Por isso, ao longo do trabalho, eu dou uma atenção especial à capacidade de encontrar a falha, e não só à taxa geral de acertos.
+`);
 };

@@ -63,9 +63,10 @@ module.exports = () => {
 
   footer(s, "Resultados");
   fala(s, `
-Até aqui, todas as avaliações usaram uma única arquitetura. Isso isola o pré-processamento, mas deixa uma pergunta em aberto: os efeitos observados vêm das imagens ou do modelo usado para avaliá-las?
-Como a metodologia trata o modelo como um bloco substituível, a mesma varredura foi repetida com o YOLOv8n-cls, a variante de classificação da família YOLO, com pesos iniciais do COCO. Foram repetidos os treinamentos completos para os dois conjuntos de dados, mantendo as mesmas 14 técnicas de pré-processamento.
-O YOLOv8n-cls não superou a rede convolucional. No CPLID, a sua acurácia média ficou bem abaixo da CNN, e ele quase não superou o piso majoritário em nenhuma das técnicas avaliadas. No DRNPW, as duas arquiteturas ficaram na vizinhança do piso.
-E a ordem de mérito das técnicas se inverteu, como mostram os três casos à direita. A combinação de CLAHE com realce, que liderava no CPLID, caiu quase pela metade. A melhor combinação do DRNPW também desabou. E a escala de cinza, que estava entre as piores, subiu.
-Uma explicação plausível é que os pesos do COCO carregam as estatísticas de cor e contraste de fotografias naturais, e transformações que se afastam dessa distribuição degradam a utilidade dos filtros já aprendidos. A consequência é que a escolha do pré-processamento não é independente do modelo.`);
+Até aqui, todas as avaliações usaram uma arquitetura só. Isso isola o pré-processamento, mas deixa uma pergunta em aberto. Os efeitos que eu observei vêm das imagens ou vêm do modelo que eu usei para avaliá-las?
+Como a metodologia trata o modelo como um bloco substituível, eu repeti a mesma varredura com o YOLOv8n-cls, que é a variante de classificação da família YOLO, com pesos iniciais do COCO. Foram treinamentos completos, refeitos para os dois conjuntos de dados, mantendo as mesmas 14 técnicas de pré-processamento.
+O YOLOv8n-cls não superou a rede convolucional. No CPLID, a acurácia média dele ficou bem abaixo da CNN, e ele quase não passou do piso majoritário em nenhuma das técnicas avaliadas. No DRNPW, as duas arquiteturas ficaram na vizinhança do piso.
+E a ordem de mérito das técnicas se inverteu, como mostram esses três casos aqui à direita. A combinação de CLAHE com realce, que liderava no CPLID, caiu quase pela metade. A melhor combinação do DRNPW também desabou. E a escala de cinza, que estava entre as piores, subiu.
+Uma explicação plausível é que os pesos do COCO carregam as estatísticas de cor e de contraste de fotografias naturais, e transformações que se afastam dessa distribuição acabam degradando a utilidade dos filtros que já foram aprendidos. A consequência prática é que escolher o pré-processamento não é independente do modelo.
+`);
 };

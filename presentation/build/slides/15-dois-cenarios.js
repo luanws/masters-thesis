@@ -40,7 +40,8 @@ module.exports = () => {
 
   footer(s, "Materiais", false, "Foto à direita: ilustrativa do cenário de campo");
   fala(s, `
-Para validar a metodologia, foram usados dois conjuntos de dados de inspeção de infraestrutura elétrica, que representam cenários bem diferentes.
-O primeiro é o CPLID, o Chinese Power Line Insulator Dataset. Ele reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, majoritariamente cerâmicos, capturadas por drones e com fundos homogêneos. O defeito de interesse é estrutural: a ausência de disco e as fraturas no corpo do isolador. São duas classes, e a divisão entre treino, validação e teste está no slide.
-O segundo é o DRNPW, disponibilizado pela CPFL, com imagens capturadas por drones em condições operacionais reais. Aqui os isoladores aparecem sobre fundos heterogêneos, com vegetação e ocupação urbana, o que reproduz a dificuldade de campo em distinguir o componente elétrico do ambiente. É um conjunto menor que o primeiro e fortemente desbalanceado: a maior parte das imagens de treino pertence a uma única categoria.`);
+Para validar a metodologia, eu usei dois conjuntos de dados de inspeção de infraestrutura elétrica, que representam cenários bem diferentes um do outro.
+O primeiro é o CPLID, o Chinese Power Line Insulator Dataset. Ele reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, na maioria cerâmicos, capturadas por drones e com fundo homogêneo. O defeito de interesse aqui é estrutural, o disco ausente e a fratura no corpo do isolador. São duas classes, e a divisão entre treino, validação e teste está no slide.
+O segundo é o DRNPW, que foi disponibilizado pela CPFL, com imagens capturadas por drones em condições operacionais reais. Aqui os isoladores aparecem sobre fundo heterogêneo, com vegetação e ocupação urbana, e isso reproduz a dificuldade que existe em campo de separar o componente elétrico do ambiente. É um conjunto menor que o primeiro e bastante desbalanceado. A maior parte das imagens de treino é de uma categoria só.
+`);
 };

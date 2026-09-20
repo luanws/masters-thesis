@@ -59,8 +59,9 @@ module.exports = () => {
 
   footer(s, "Materiais");
   fala(s, `
-O protocolo experimental isola uma única variável.
-Foi implementada uma rede neural convolucional clássica e padronizada, com camadas convolucionais, max-pooling, uma camada densa e saída softmax. O treinamento usou o otimizador Adam, com data augmentation em tempo de treino e imagens redimensionadas para um tamanho fixo. Com o modelo fixo, a única variável entre as execuções é o pré-processamento aplicado às imagens. Depois, a mesma varredura foi repetida com uma segunda arquitetura.
-Para ler os resultados, é preciso um critério de referência, porque os dois conjuntos de teste são desbalanceados. Nesses casos, a acurácia sozinha pode ser enganosa, já que um modelo que sempre prevê a classe saudável alcança um valor alto sem detectar nenhuma falha. Esse critério é o piso majoritário: a acurácia obtida ao responder sempre a classe mais frequente, sem observar a imagem.
-Nos dois conjuntos de teste, uma das classes domina, e o piso fica em torno de três quartos de acurácia, nos valores que aparecem no slide. Um modelo abaixo desse valor não extrai informação útil das imagens.`);
+O protocolo experimental isola uma variável só.
+Eu implementei uma rede neural convolucional clássica e padronizada, com camadas convolucionais, max-pooling, uma camada densa e saída softmax. O treinamento usou o otimizador Adam, com data augmentation em tempo de treino e imagens redimensionadas para um tamanho fixo. Com o modelo fixo, a única coisa que muda de uma execução para outra é o pré-processamento aplicado nas imagens. Depois eu repeti essa mesma varredura com uma segunda arquitetura.
+Agora, para ler os resultados eu preciso de um critério de referência, porque os dois conjuntos de teste são desbalanceados. Nesse caso a acurácia sozinha engana, já que um modelo que responde sempre a classe saudável chega num valor alto sem detectar falha nenhuma. Esse critério é o piso majoritário, que é a acurácia que se obtém respondendo sempre a classe mais frequente, sem nem olhar a imagem.
+Nos dois conjuntos de teste uma das classes domina, e esse piso fica em torno de três quartos de acurácia, nos valores que estão no slide. Um modelo que fica abaixo disso não está extraindo informação útil das imagens.
+`);
 };

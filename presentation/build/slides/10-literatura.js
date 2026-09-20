@@ -42,9 +42,10 @@ module.exports = () => {
 
   footer(s, "Proposta");
   fala(s, `
-Quando se busca na literatura como tratar essas imagens, o que se encontra é falta de consenso.
-Liu e Wang, que detectam falhas em isoladores em imagens aéreas de linhas de transmissão, utilizaram apenas redimensionamento e normalização, e não registram impacto significativo do pré-processamento.
-Zhang, que combina aprendizado profundo com processamento morfológico para segmentar os isoladores, relata melhora no desempenho. Salvi, em uma revisão na área de patologia digital, conclui que essas técnicas melhoram a precisão e reduzem o tempo computacional.
-Já Öztürk e Akdemir mostram que o excesso de processamento pode degradar o desempenho, e Rodrigues observa que as imagens originais favoreceram a rede neural.
-Os estudos vão, portanto, da melhora ao risco de sobre-processamento. E nenhum deles propõe um método para determinar quais processamentos são mais eficientes e para otimizar os seus parâmetros. Essa é a lacuna que a dissertação procura preencher.`);
+Quando eu fui buscar na literatura como tratar essas imagens, o que eu encontrei foi falta de consenso.
+Liu e Wang, que detectam falhas em isoladores em imagens aéreas de linhas de transmissão, usaram só redimensionamento e normalização, e não registram impacto significativo do pré-processamento.
+Zhang, que combina aprendizado profundo com processamento morfológico para segmentar os isoladores, relata melhora no desempenho. E Salvi, numa revisão na área de patologia digital, conclui que essas técnicas melhoram a precisão e reduzem o tempo computacional.
+Já Öztürk e Akdemir mostram que excesso de processamento pode degradar o desempenho, e Rodrigues observa que as imagens originais favoreceram a rede neural.
+Ou seja, os estudos vão da melhora até o risco de sobre-processamento. E nenhum deles propõe um método para determinar quais processamentos são mais eficientes e para otimizar os parâmetros deles. Essa é a lacuna que a dissertação tenta preencher.
+`);
 };

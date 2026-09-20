@@ -43,8 +43,9 @@ module.exports = () => {
 
   footer(s, "Conclusões", true);
   fala(s, `
-Encerro voltando ao ponto de partida, o Sistema Elétrico de Potência.
-A principal contribuição deste trabalho é uma metodologia estruturada para a inspeção automatizada de linhas de transmissão, que mapeia de forma sistemática o impacto do processamento das imagens aéreas.
-O impacto aparece em três frentes. Na confiabilidade do sistema, porque um modelo que identifica melhor a falha no isolador contribui para encontrá-la antes que ela cause uma interrupção no fornecimento. Na manutenção das linhas, porque fortalece a inspeção por drone e inteligência artificial, que é mais rápida, econômica, segura e reprodutível que a inspeção manual. E na própria inspeção automatizada, porque oferece um procedimento sistemático para escolher e ajustar o tratamento das imagens, que pode ser repetido a cada novo conjunto de dados ou nova arquitetura.
-A mensagem final é que o tratamento adequado das imagens brutas é tão relevante quanto a escolha da arquitetura da rede neural.`);
+Eu encerro voltando para o ponto de partida, que é o Sistema Elétrico de Potência.
+A principal contribuição do trabalho é uma metodologia estruturada para a inspeção automatizada de linhas de transmissão, que mapeia de forma sistemática o impacto do processamento das imagens aéreas.
+E esse impacto aparece em três frentes. Na confiabilidade do sistema, porque um modelo que enxerga melhor a falha no isolador ajuda a encontrar essa falha antes que ela cause uma interrupção no fornecimento. Na manutenção das linhas, porque fortalece a inspeção por drone e inteligência artificial, que é mais rápida, mais econômica, mais segura e mais reprodutível que a inspeção manual. E na própria inspeção automatizada, porque entrega um procedimento sistemático para escolher e ajustar o tratamento das imagens, e esse procedimento pode ser repetido a cada novo conjunto de dados ou nova arquitetura.
+A mensagem que eu queria deixar é essa. Tratar bem as imagens brutas é tão importante quanto escolher a arquitetura da rede neural.
+`);
 };

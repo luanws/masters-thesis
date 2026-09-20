@@ -37,12 +37,13 @@ module.exports = () => {
 
   footer(s, "Proposta", true);
   fala(s, `
-A partir dessa lacuna, o objetivo geral do trabalho é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para a detecção e a classificação de falhas em cadeias de isoladores.
-Os quatro verbos organizam toda a proposta.
+A partir dessa lacuna, o objetivo geral do trabalho é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para detectar e classificar falhas em cadeias de isoladores.
+Esses quatro verbos organizam a proposta inteira.
 Comparar as técnicas entre si, sob as mesmas condições.
-Selecionar as mais adequadas a cada caso.
+Selecionar as mais adequadas para cada caso.
 Combinar técnicas em sequência, formando pipelines.
-E aprimorar os seus parâmetros de forma automática, sem a necessidade de intervenção manual extensa.
-Esse objetivo responde diretamente à lacuna identificada. Em vez de relatar apenas o que funcionou em um experimento, a proposta é oferecer um método para determinar os processamentos mais eficientes e otimizar os seus parâmetros.
-Com isso, a escolha do tratamento das imagens passa a seguir um procedimento sistemático.`);
+E aprimorar os parâmetros de forma automática, sem depender de intervenção manual extensa.
+Esse objetivo responde direto à lacuna que eu acabei de mostrar. Em vez de relatar só o que funcionou em um experimento, a ideia é entregar um método para determinar os processamentos mais eficientes e otimizar os parâmetros.
+Com isso, escolher o tratamento das imagens passa a seguir um procedimento sistemático.
+`);
 };

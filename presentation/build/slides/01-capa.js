@@ -51,7 +51,8 @@ module.exports = () => {
 
   fala(s, `
 Bom dia a todos.
-Meu nome é Luan Willig Silveira e apresento a minha dissertação de mestrado, desenvolvida no Programa de Pós-Graduação em Engenharia Elétrica da Universidade Federal de Santa Maria, sob orientação do professor Daniel Pinheiro Bernardon e coorientação do professor Paulo César Vargas Luz.
-O título do trabalho é Método de aprimoramento de processamentos de imagens aplicados à detecção e classificação de falhas em cadeias de isoladores. O tema une a manutenção das linhas do sistema elétrico ao uso de imagens e de redes neurais para inspecioná-las.
-Agradeço a presença da banca e passo à apresentação.`);
+Meu nome é Luan Willig Silveira e eu vou apresentar hoje a minha dissertação de mestrado, que foi desenvolvida no Programa de Pós-Graduação em Engenharia Elétrica da Universidade Federal de Santa Maria, com orientação do professor Daniel Pinheiro Bernardon e coorientação do professor Paulo César Vargas Luz.
+O título é esse que está no slide, Método de aprimoramento de processamentos de imagens aplicados à detecção e classificação de falhas em cadeias de isoladores. Na prática, o trabalho junta duas coisas, a manutenção das linhas do sistema elétrico e o uso de imagens e de redes neurais para inspecionar essas linhas.
+Queria agradecer à banca pela presença. Então vamos começar.
+`);
 };

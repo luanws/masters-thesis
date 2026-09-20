@@ -40,10 +40,11 @@ module.exports = () => {
 
   footer(s, "Impacto", true);
   fala(s, `
-Reunindo os resultados, destaco o que a metodologia entrega para quem desenvolve um sistema de inspeção de isoladores.
-Primeiro, ganho de desempenho. No cenário de campo, a escolha do tratamento elevou de forma expressiva o F1-score em relação às imagens originais, com a mesma rede.
+Juntando os resultados, eu queria destacar o que a metodologia entrega para quem desenvolve um sistema de inspeção de isoladores.
+Primeiro, ganho de desempenho. No cenário de campo, a escolha do tratamento elevou bastante o F1-score em relação às imagens originais, usando a mesma rede.
 Segundo, proteção contra a escolha errada. No CPLID, o desfoque gaussiano derrubou a acurácia para bem abaixo da imagem original.
-Terceiro, uma indicação sobre onde investir. Em regime de poucos dados, a arquitetura maior e pré-treinada não superou a rede convolucional simples, porque o aumento da capacidade do modelo não compensou as limitações do conjunto de dados.
-E quarto, um procedimento. Como a melhor técnica muda com a arquitetura e com o conjunto de dados, a seleção precisa ser refeita a cada mudança, e a estrutura iterativa da metodologia viabiliza essa reexecução controlada.
-Em síntese, o tratamento adequado das imagens brutas, ajustado a cada conjunto de dados e ao modelo adotado, é condição essencial para o bom desempenho.`);
+Terceiro, uma indicação de onde investir. Em regime de poucos dados, a arquitetura maior e pré-treinada não superou a rede convolucional simples, porque aumentar a capacidade do modelo não compensou as limitações do conjunto de dados.
+E quarto, um procedimento. Como a melhor técnica muda com a arquitetura e com o conjunto de dados, a seleção precisa ser refeita a cada mudança, e a estrutura iterativa da metodologia é o que viabiliza essa reexecução controlada.
+Resumindo, tratar bem as imagens brutas, ajustando para cada conjunto de dados e para o modelo adotado, é condição essencial para um bom desempenho.
+`);
 };
