@@ -41,7 +41,6 @@ module.exports = () => {
   footer(s, "Materiais", false, "Foto à direita: ilustrativa do cenário de campo");
   fala(s, `
 Para validar a metodologia, foram usados dois conjuntos de dados de inspeção de infraestrutura elétrica, que representam cenários bem diferentes.
-O primeiro é o CPLID, o Chinese Power Line Insulator Dataset. Ele reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, majoritariamente cerâmicos, capturadas por drones e com fundos homogêneos. O defeito de interesse é estrutural: a ausência de disco e as fraturas no corpo do isolador. São duas classes, com 678 imagens de treino, 127 de validação e 43 de teste.
-O segundo é o DRNPW, disponibilizado pela CPFL, com imagens capturadas por drones em condições operacionais reais. Aqui os isoladores aparecem sobre fundos heterogêneos, com vegetação e ocupação urbana, o que reproduz a dificuldade de campo em distinguir o componente elétrico do ambiente. São 585 imagens, divididas em 468 de treino, 87 de validação e 30 de teste.
-Esse conjunto é fortemente desbalanceado: das 468 imagens de treino, 335 pertencem a uma única categoria.`);
+O primeiro é o CPLID, o Chinese Power Line Insulator Dataset. Ele reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, majoritariamente cerâmicos, capturadas por drones e com fundos homogêneos. O defeito de interesse é estrutural: a ausência de disco e as fraturas no corpo do isolador. São duas classes, e a divisão entre treino, validação e teste está no slide.
+O segundo é o DRNPW, disponibilizado pela CPFL, com imagens capturadas por drones em condições operacionais reais. Aqui os isoladores aparecem sobre fundos heterogêneos, com vegetação e ocupação urbana, o que reproduz a dificuldade de campo em distinguir o componente elétrico do ambiente. É um conjunto menor que o primeiro e fortemente desbalanceado: a maior parte das imagens de treino pertence a uma única categoria.`);
 };

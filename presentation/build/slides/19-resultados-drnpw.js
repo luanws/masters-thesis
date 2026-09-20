@@ -23,7 +23,7 @@ module.exports = () => {
   footer(s, "Resultados");
   fala(s, `
 No DRNPW, o cenário de inspeção aérea em ambiente operacional real, o comportamento muda.
-Com fundos de forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A combinação de realce de contraste e equalização de histograma teve o melhor desempenho, com 83,33 por cento de acurácia e 75,76 por cento de F1-score, contra 63,33 por cento de acurácia e 49,12 por cento de F1-score dos modelos treinados apenas com as imagens originais.
+Com fundos de forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A melhor foi o realce de contraste com equalização de histograma, bem à frente dos modelos treinados apenas com as imagens originais. O F1-score, que é a métrica mais sensível ao desbalanceamento, subiu de menos de 50 por cento, com as imagens originais, para cerca de 75 por cento.
 A leitura é que, nesse cenário, a combinação reforça o contraste entre o componente e o fundo. Já as técnicas que suprimem a cor, como a escala de cinza, ou que suavizam as texturas, como os desfoques, ficaram entre os piores resultados, por descartarem informação relevante à identificação do defeito.
-Faço aqui uma ressalva: esse melhor resultado supera o piso de 73,33 por cento em 10 pontos percentuais, o equivalente a três imagens de teste, e boa parte das técnicas avaliadas ficou no piso ou abaixo dele. Por isso, a inspeção em ambiente com forte poluição visual permanece como o caso mais desafiador.`);
+Faço aqui uma ressalva: esse melhor resultado supera o piso majoritário em dez pontos percentuais, o equivalente a três imagens de teste, e boa parte das técnicas avaliadas ficou no piso ou abaixo dele. Por isso, a inspeção em ambiente com forte poluição visual permanece como o caso mais desafiador.`);
 };

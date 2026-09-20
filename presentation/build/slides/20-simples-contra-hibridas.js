@@ -54,7 +54,7 @@ module.exports = () => {
   footer(s, "Resultados");
   fala(s, `
 Agrupando as 14 técnicas em simples e híbridas, as combinações se destacam com a rede convolucional.
-No CPLID, a média de acurácia das técnicas híbridas foi 13,49 pontos percentuais superior à das técnicas simples. No DRNPW, a vantagem foi de 5,17 pontos.
+No CPLID, a média de acurácia das híbridas ficou bem acima da média das simples, mais de treze pontos percentuais. No DRNPW, a vantagem se mantém, mas é bem menor.
 Isso confirma a decisão da metodologia de avaliar também pipelines de técnicas combinadas, em que a saída de uma técnica serve de entrada para a próxima. Um pipeline pode reunir, por exemplo, normalização, redução de ruído, ajuste de contraste e aumento de nitidez.
 E há um detalhe importante: a ordem das operações importa, porque sequências diferentes produzem resultados distintos. Por isso, as combinações foram avaliadas nas duas ordens possíveis: CLAHE seguido de realce e realce seguido de CLAHE, e equalização seguida de realce e realce seguido de equalização.`);
 };

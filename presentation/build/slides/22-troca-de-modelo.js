@@ -65,7 +65,7 @@ module.exports = () => {
   fala(s, `
 Até aqui, todas as avaliações usaram uma única arquitetura. Isso isola o pré-processamento, mas deixa uma pergunta em aberto: os efeitos observados vêm das imagens ou do modelo usado para avaliá-las?
 Como a metodologia trata o modelo como um bloco substituível, a mesma varredura foi repetida com o YOLOv8n-cls, a variante de classificação da família YOLO, com pesos iniciais do COCO. Foram repetidos os treinamentos completos para os dois conjuntos de dados, mantendo as mesmas 14 técnicas de pré-processamento.
-O YOLOv8n-cls não superou a rede convolucional. No CPLID, a sua acurácia média foi de 66,28 por cento, contra 84,55, e ele quase não superou o piso majoritário nas 14 técnicas avaliadas. No DRNPW, as duas arquiteturas ficaram na vizinhança do piso.
-E a ordem de mérito das técnicas se inverteu. A combinação de CLAHE com realce caiu de 95,35 para 51,16 por cento. A melhor combinação do DRNPW caiu de 83,33 para 53,33. E a escala de cinza subiu de 76,74 para 81,40 por cento.
+O YOLOv8n-cls não superou a rede convolucional. No CPLID, a sua acurácia média ficou bem abaixo da CNN, e ele quase não superou o piso majoritário em nenhuma das técnicas avaliadas. No DRNPW, as duas arquiteturas ficaram na vizinhança do piso.
+E a ordem de mérito das técnicas se inverteu, como mostram os três casos à direita. A combinação de CLAHE com realce, que liderava no CPLID, caiu quase pela metade. A melhor combinação do DRNPW também desabou. E a escala de cinza, que estava entre as piores, subiu.
 Uma explicação plausível é que os pesos do COCO carregam as estatísticas de cor e contraste de fotografias naturais, e transformações que se afastam dessa distribuição degradam a utilidade dos filtros já aprendidos. A consequência é que a escolha do pré-processamento não é independente do modelo.`);
 };
