@@ -31,6 +31,8 @@ module.exports = () => {
 
   footer(s, "Encerramento", true);
   fala(s, `
-Muito obrigado pela atenção. Fico à disposição da banca para as arguições.
+Muito obrigado pela atenção.
+Agradeço mais uma vez a presença dos professores Adriano e Lúcio na banca e também aos professores Daniel e Paulo Cesar, que me orientaram durante o desenvolvimento do trabalho.
+Fico à disposição da banca para a etapa seguinte e passo a palavra ao professor Daniel.
 `);
 };
