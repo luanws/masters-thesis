@@ -44,6 +44,6 @@ Por isso encontrar essas falhas cedo é essencial, e isso traz três ganhos dire
 O primeiro é a continuidade. Achar a falha a tempo evita interrupção no fornecimento de energia.
 O segundo é econômico. Detectar cedo reduz o custo de manutenção.
 E o terceiro é a segurança, porque previne risco para as instalações e para as pessoas.
-Tem também o outro lado dessa questão. Uma falha que passa despercebida, o chamado falso negativo, pode ter consequência grave e, no limite, levar a uma falha no sistema de transmissão. Por isso, ao longo do trabalho, eu dou uma atenção especial à capacidade de encontrar a falha, e não só à taxa geral de acertos.
+Tem também o outro lado dessa questão. Uma falha que passa despercebida, o chamado falso negativo, pode ter consequência grave e levar a uma falha no sistema de transmissão. Por isso, ao longo do trabalho, eu dou uma atenção especial à capacidade de encontrar a falha, e não só à taxa geral de acertos.
 `);
 };
