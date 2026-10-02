@@ -1,0 +1,185 @@
+Falas da apresentação de defesa
+
+Slide 1 — Capa
+Boa tarde a todos.
+Meu nome é Luan Willig Silveira e eu vou apresentar hoje a minha dissertação de mestrado, que foi desenvolvida no Programa de Pós-Graduação em Engenharia Elétrica da Universidade Federal de Santa Maria, com orientação do professor Daniel Pinheiro Bernardon e coorientação do professor Paulo César Vargas Luz.
+O título é esse que está no slide, Método de aprimoramento de processamentos de imagens aplicados à detecção e classificação de falhas em cadeias de isoladores. Na prática, o trabalho junta duas coisas, a manutenção das linhas do sistema elétrico e o uso de imagens e de redes neurais para inspecionar essas linhas.
+Queria agradecer pela presença dos professores Adriano e Lúcio e por aceitarem o convite pra participar da banca. Então vamos começar.
+
+Slide 2 — Do sistema elétrico de volta ao sistema elétrico
+A apresentação está dividida em quatro partes.
+Eu começo pelo problema elétrico, que é o papel dos isoladores no sistema elétrico de potência, as falhas que aparecem neles e a forma como eles são inspecionados hoje.
+Depois eu apresento a proposta, que é a metodologia para comparar, selecionar, combinar e ajustar o processamento das imagens.
+Na terceira parte eu mostro os resultados, com dois conjuntos de dados e dois modelos de rede neural.
+E no fim eu volto para o sistema elétrico, para falar das vantagens e do impacto do trabalho.
+
+Slide 3 — O isolador no Sistema Elétrico de Potência
+Então vamos começar pelo Sistema Elétrico de Potência. A energia que é gerada percorre as linhas de transmissão, passa pelas subestações e chega até os consumidores pelas redes de distribuição.
+Ao longo dessas linhas existem componentes como isoladores, fixadores e suportes, que fazem a sustentação e o isolamento dos condutores. Se um desses componentes apresenta um problema e esse problema não é tratado, o resultado pode ser a interrupção do fornecimento de energia. Por isso inspecionar esses ativos é uma atividade central para a confiabilidade do sistema. E o processamento de imagens virou uma ferramenta essencial aqui, porque permite encontrar problemas nesses componentes a partir de imagens das linhas.
+Entre todos esses componentes, o foco do meu trabalho é esse que está destacado no círculo da figura, a cadeia de isoladores, que fica nas estruturas das linhas de alta tensão. É sobre detectar e classificar falhas nessas cadeias que a dissertação trata.
+
+Slide 4 — Isolador: sustentação e isolamento
+O isolador cumpre duas funções ao mesmo tempo.
+A primeira é mecânica, que é sustentar os condutores.
+A segunda é elétrica, que é garantir o isolamento entre as partes energizadas e as estruturas aterradas.
+Nas linhas de alta tensão eles normalmente aparecem agrupados em cadeias, como essa que está na foto.
+O problema é que essas cadeias ficam expostas o tempo todo a condições ambientais severas, variação de temperatura, umidade, poluição, descarga atmosférica. Com o tempo, essa exposição favorece o aparecimento de falhas que comprometem a capacidade de isolamento e, junto com ela, a confiabilidade do sistema elétrico. Ou seja, o desempenho da linha depende do estado de cada cadeia de isoladores instalada nela.
+
+Slide 5 — Falhas que deixam marca na imagem
+Essas falhas aparecem de várias formas. A literatura cita trincas, contaminação superficial, perfurações e rupturas, além de corrosões nas estruturas, que também dá para identificar por imagem. Aqui à esquerda vocês veem um exemplo de corrosão.
+À direita está o defeito estrutural das cadeias de discos cerâmicos, em que o disco está ausente ou fraturado. Essas condições comprometem a rigidez dielétrica da cadeia e podem evoluir para uma falha de isolamento na linha.
+O ponto em comum entre todas elas é que deixam uma assinatura visual. E é justamente isso que torna possível usar imagem para encontrar essas falhas.
+
+Slide 6 — Detectar cedo protege o sistema elétrico
+Por isso encontrar essas falhas cedo é essencial, e isso traz três ganhos diretos para o sistema elétrico.
+O primeiro é a continuidade. Achar a falha a tempo evita interrupção no fornecimento de energia.
+O segundo é econômico. Detectar cedo reduz o custo de manutenção.
+E o terceiro é a segurança, porque previne risco para as instalações e para as pessoas.
+Tem também o outro lado dessa questão. Uma falha que passa despercebida, o chamado falso negativo, pode ter consequência grave e levar a uma falha no sistema de transmissão. Por isso, ao longo do trabalho, eu dou uma atenção especial à capacidade de encontrar a falha, e não só à taxa geral de acertos.
+
+Slide 7 — Da inspeção manual à inspeção automatizada
+Tradicionalmente, a inspeção das cadeias de isoladores é feita de forma visual e manual, por equipes especializadas. Isso deixa a inspeção lenta, cara e sujeita à subjetividade e ao erro humano.
+Uma alternativa promissora é a inspeção por imagem. Usar imagens capturadas por drones facilita muito inspecionar grandes extensões de linha, reduz custo e aumenta a segurança, porque evita que alguém tenha que ir até um local de difícil acesso.
+Quando essas imagens são associadas a modelos de aprendizado de máquina, dá para automatizar a detecção e a classificação das falhas, e a inspeção fica mais rápida, mais econômica e reprodutível. E os métodos de aprendizado profundo conseguem reconhecer padrões de falha mesmo em condições adversas, com pouca visibilidade ou equipamento desgastado.
+É essa combinação de drone com inteligência artificial que forma o contexto de aplicação da dissertação.
+
+Slide 8 — O desafio: muitas imagens e fundos complexos
+Mas a inspeção por imagem traz os desafios dela também.
+O primeiro é o volume. Uma inspeção gera um número enorme de imagens, e a literatura aponta que a inspeção manual fica inviável justamente por causa disso.
+O segundo é o fundo das imagens. O isolador aparece sobre vegetação, rio, ocupação urbana, outras estruturas, e essa complexidade toda dificulta separar o componente elétrico do ambiente em volta.
+O terceiro é a anotação. Rotular na mão as imagens que vêm dos drones é demorado e sujeito a erro, e isso limita o tamanho dos conjuntos de dados disponíveis.
+A inteligência artificial resolve o primeiro desafio, porque ela consegue analisar grande volume de dados e achar padrões complexos. Mas os outros dois mostram que a qualidade da imagem que chega no modelo continua sendo decisiva.
+
+Slide 9 — A IA depende da imagem que recebe
+Um sistema de inspeção automática segue essa sequência aqui. A imagem é adquirida, passa por um pré-processamento, vai para o modelo de rede neural, e sai um diagnóstico, com falha ou sem falha.
+E a eficácia desse sistema depende bastante das técnicas de processamento de imagem que são usadas e da forma como elas são combinadas e ajustadas. Técnicas diferentes, parâmetros diferentes e arquiteturas diferentes podem dar resultados bem distintos para o mesmo problema.
+Não adianta investir só em arquitetura complexa de rede neural se a imagem de entrada tem ruído e limitação de contraste que escondem o defeito.
+Então este trabalho coloca o pré-processamento no centro, como a variável independente do estudo. A pergunta passa a ser essa: qual tratamento eu aplico na imagem para que o modelo enxergue melhor a falha no isolador?
+
+Slide 10 — A literatura não chega a um consenso
+Quando eu fui buscar na literatura como tratar essas imagens, o que eu encontrei foi falta de consenso.
+Liu e Wang, que detectam falhas em isoladores em imagens aéreas de linhas de transmissão, usaram só redimensionamento e normalização, e não registram impacto significativo do pré-processamento.
+Zhang, que combina aprendizado profundo com processamento morfológico para segmentar os isoladores, relata melhora no desempenho. E Salvi, numa revisão na área de patologia digital, conclui que essas técnicas melhoram a precisão e reduzem o tempo computacional.
+Já Öztürk e Akdemir mostram que excesso de processamento pode degradar o desempenho, e Rodrigues observa que as imagens originais favoreceram a rede neural.
+Ou seja, os estudos vão da melhora até o risco de sobre-processamento. E nenhum deles propõe um método para determinar quais processamentos são mais eficientes e para otimizar os parâmetros deles. Essa é a lacuna que a dissertação tenta preencher.
+
+Slide 11 — Objetivo geral
+A partir dessa lacuna, o objetivo geral do trabalho é desenvolver uma metodologia capaz de comparar, selecionar, combinar e aprimorar técnicas de processamento de imagem para detectar e classificar falhas em cadeias de isoladores.
+Esses quatro verbos organizam a proposta inteira.
+Comparar as técnicas entre si, sob as mesmas condições.
+Selecionar as mais adequadas para cada caso.
+Combinar técnicas em sequência, formando pipelines.
+E aprimorar os parâmetros de forma automática, sem depender de intervenção manual extensa.
+Esse objetivo responde direto à lacuna que eu acabei de mostrar. Em vez de relatar só o que funcionou em um experimento, a ideia é entregar um método para determinar os processamentos mais eficientes e otimizar os parâmetros.
+Com isso, escolher o tratamento das imagens passa a seguir um procedimento sistemático.
+
+Slide 12 — Objetivos específicos
+Para chegar nesse objetivo, eu defini sete objetivos específicos.
+O primeiro é estabelecer métricas para avaliar a eficácia dos processamentos de imagem.
+O segundo e o terceiro são determinar o tipo de rede neural adequado e construir os modelos de avaliação, sem a intenção de chegar a um modelo definitivo.
+O quarto e o quinto são analisar o impacto da escolha do modelo e a influência do conjunto de dados sobre os resultados.
+O sexto é aprimorar os processamentos combinando abordagens unitárias.
+E o sétimo é criar um método de ajuste automático dos parâmetros.
+Eu queria destacar o sentido do terceiro objetivo. Os modelos que eu treinei servem para medir o impacto dos diferentes processamentos. Eles não são o produto final do trabalho.
+
+Slide 13 — Estruturada, iterativa e modular
+A metodologia é estruturada, iterativa e modular.
+O fluxo começa aqui e passa por seis etapas. Seleção e validação do conjunto de dados, pré-processamento, ajuste de parâmetros, escolha e construção do modelo, treinamento e, por último, avaliação e ajustes, terminando em conclusões e recomendações.
+O caráter iterativo vem desse ciclo de avaliação. Quando o desempenho não é satisfatório, a avaliação volta para o pré-processamento e para a escolha do modelo, e isso permite refinar as técnicas e os parâmetros a cada iteração.
+E o caráter modular vem da divisão em blocos. Dá para identificar e corrigir problemas em cada etapa de forma isolada, sem mexer no resto do processo. É essa modularidade que me permitiu, mais adiante, trocar só o bloco do modelo e repetir o experimento com uma segunda arquitetura.
+
+Slide 14 — Quatro decisões conduzem o fluxo
+Cada etapa se desdobra em operações e decisões, que aparecem nesse fluxograma detalhado. Eu queria destacar os quatro pontos de decisão.
+O primeiro verifica se o conjunto de dados está balanceado. Isso é bem relevante na detecção de falhas, porque costuma existir muito mais imagem de isolador saudável do que de isolador defeituoso.
+O segundo decide se as técnicas vão ser usadas isoladas ou combinadas em um pipeline.
+O terceiro define o tipo de tarefa, entre classificação, detecção e regressão.
+E o quarto verifica se o desempenho atende aos critérios definidos. Se não atende, o bloco de ajuste de processamentos e modelo devolve o fluxo para as etapas anteriores.
+Neste trabalho eu percorri os dois ramos do pré-processamento, o de técnicas isoladas e o de técnicas combinadas, com a tarefa de classificação e com o ajuste automático de parâmetros.
+
+Slide 15 — Dois cenários de inspeção de isoladores
+Para validar a metodologia, eu usei dois conjuntos de dados de inspeção de infraestrutura elétrica, que representam cenários bem diferentes um do outro.
+O primeiro é o CPLID, o Chinese Power Line Insulator Dataset. Ele reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, na maioria cerâmicos, capturadas por drones e com fundo homogêneo. O defeito de interesse aqui é estrutural, o disco ausente e a fratura no corpo do isolador. São duas classes, e a divisão entre treino, validação e teste está no slide.
+O segundo é o DRNPW, que foi disponibilizado pela CPFL, com imagens capturadas por drones em condições operacionais reais. Aqui os isoladores aparecem sobre fundo heterogêneo, com vegetação e ocupação urbana, e isso reproduz a dificuldade que existe em campo de separar o componente elétrico do ambiente. É um conjunto menor que o primeiro e bastante desbalanceado. A maior parte das imagens de treino é de uma categoria só.
+
+Slide 16 — O que cada técnica faz com a imagem
+Eu avaliei 14 variantes de pré-processamento, todas aplicadas nas imagens antes do treinamento. Aqui na figura dá pra ver o efeito de algumas delas sobre a mesma imagem.
+São técnicas bem diferentes entre si. Umas mexem no contraste, outras tiram a cor, outras suavizam ou isolam os contornos. Cada uma destaca uma coisa e apaga outra.
+Quatro dessas variantes são híbridas, combinando duas técnicas em sequência. E a imagem original entra como controle, que é a linha de base, sem processamento nenhum.
+
+Slide 17 — Uma variável por vez e uma régua de leitura
+O protocolo experimental isola uma variável só.
+Eu implementei uma rede neural convolucional clássica e padronizada, com camadas convolucionais, max-pooling, uma camada densa e saída softmax. O treinamento usou o otimizador Adam, com data augmentation em tempo de treino e imagens redimensionadas para um tamanho fixo. Com o modelo fixo, a única coisa que muda de uma execução para outra é o pré-processamento aplicado nas imagens. Depois eu repeti essa mesma varredura com uma segunda arquitetura.
+Agora, para ler os resultados eu preciso de um critério de referência, porque os dois conjuntos de teste são desbalanceados. Nesse caso a acurácia sozinha engana, já que um modelo que responde sempre a classe saudável chega num valor alto sem detectar falha nenhuma. Esse critério é o piso majoritário, que é a acurácia que se obtém respondendo sempre a classe mais frequente, sem nem olhar a imagem.
+Nos dois conjuntos de teste uma das classes domina, e esse piso fica em torno de três quartos de acurácia, nos valores que estão no slide. Um modelo que fica abaixo disso não está extraindo informação útil das imagens.
+
+Slide 18 — Realçar o contraste evidencia o defeito estrutural
+Vou começar pelos resultados da rede convolucional no CPLID, que é o cenário das cadeias cerâmicas de linhas de transmissão com defeito estrutural. O gráfico mostra a acurácia de cada técnica, em ordem crescente, e acima de cada barra está a imagem já tratada.
+No topo, três técnicas empataram na maior acurácia, e todas elas ampliam o contraste. O realce de contraste simples, a combinação de CLAHE com realce e a combinação de realce com equalização de histograma. O realce simples ainda teve o maior F1-score do conjunto e superou a imagem original, sem tratamento nenhum.
+No outro extremo, o desfoque gaussiano e a redução de ruído derrubaram bastante o desempenho. Os dois ficaram no fim da lista, bem abaixo da imagem original e abaixo também do piso majoritário. Quer dizer, um tratamento inadequado piorou o resultado em relação a simplesmente não tratar a imagem.
+
+Slide 19 — Combinar técnicas separa o isolador do fundo
+Já no DRNPW, que é o cenário de inspeção aérea em ambiente operacional real, o comportamento muda.
+Com fundos de forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A melhor de todas foi o realce de contraste com equalização de histograma, bem à frente dos modelos treinados só com as imagens originais. O F1-score, que é a métrica mais sensível ao desbalanceamento, subiu de menos de 50 por cento, com as imagens originais, para uns 75 por cento.
+A leitura é que, nesse cenário, a combinação reforça o contraste entre o componente e o fundo. E a escala de cinza, que tira a informação de cor, ficou entre os piores resultados, no mesmo patamar da imagem original e do realce de contraste aplicado sozinho. Aqui o realce sozinho não bastou. O ganho veio mesmo da combinação com a equalização de histograma.
+Eu preciso fazer uma ressalva aqui. Esse melhor resultado supera o piso majoritário em dez pontos percentuais, que equivale a três imagens de teste, e seis das 14 técnicas avaliadas ficaram no piso ou abaixo dele. Então a inspeção em ambiente com forte poluição visual continua sendo o caso mais desafiador.
+
+Slide 20 — Combinar técnicas compensa com a CNN
+Agrupando as 14 técnicas em simples e híbridas, as combinações se destacam com a rede convolucional.
+No CPLID, a média de acurácia das híbridas ficou bem acima da média das simples, mais de treze pontos percentuais. No DRNPW a vantagem continua, mas é bem menor. E isso vale para a rede convolucional. Com o YOLOv8n-cls, como eu mostro daqui a pouco, o sinal se inverte nos dois conjuntos.
+Esse resultado confirma a decisão da metodologia de avaliar também pipelines de técnicas combinadas, em que a saída de uma técnica vira a entrada da próxima. Um pipeline pode juntar, por exemplo, normalização, redução de ruído, ajuste de contraste e aumento de nitidez.
+E tem um detalhe importante aqui. A ordem das operações importa, porque sequências diferentes dão resultados diferentes. Por isso eu avaliei as combinações nas duas ordens possíveis. CLAHE seguido de realce e realce seguido de CLAHE, e equalização seguida de realce e realce seguido de equalização.
+
+Slide 21 — O ajuste do contraste passa a ser automático
+A etapa de ajuste automático eu apliquei no parâmetro do realce de contraste, que é o fator multiplicador, usando o DRNPW. Valor menor que 1 reduz o contraste e valor maior que 1 aumenta.
+Primeiro a busca em grade varreu cinco valores desse fator. O melhor foi 1,333, com 90 por cento de acurácia, que é esse ponto mais alto da curva. A redução excessiva de contraste deu o pior resultado da varredura.
+Como complemento, a busca aleatória testou outros valores, onde o melhor ficou perto do que a grade encontrou.
+Então os dois métodos apontam para valores um pouco acima de 1.
+E o ganho metodológico aqui é que o ajuste deixa de depender de otimização manual.
+
+Slide 22 — Trocar o modelo inverte a melhor técnica
+Até aqui, todas as avaliações usaram uma arquitetura só. Isso isola o pré-processamento, mas deixa uma pergunta em aberto. Os efeitos que eu observei vêm das imagens ou vêm do modelo que eu usei para avaliá-las?
+Como a metodologia trata o modelo como um bloco substituível, eu repeti a mesma varredura com o YOLOv8n-cls, que é a variante de classificação da família YOLO, com pesos iniciais do COCO. Foram treinamentos completos, refeitos para os dois conjuntos de dados, mantendo as mesmas 14 técnicas de pré-processamento.
+O YOLOv8n-cls não superou a rede convolucional. No CPLID, a acurácia média dele ficou bem abaixo da CNN, e ele quase não passou do piso majoritário em nenhuma das técnicas avaliadas. No DRNPW, as duas arquiteturas ficaram na vizinhança do piso.
+E a ordem de mérito das técnicas se inverteu, como mostram esses três casos aqui à direita. A combinação de CLAHE com realce, que liderava no CPLID, caiu quase pela metade. A melhor combinação do DRNPW também desabou. E a escala de cinza, que estava entre as piores, subiu.
+Uma explicação plausível é que os pesos do COCO carregam as estatísticas de cor e de contraste de fotografias naturais, e transformações que se afastam dessa distribuição acabam degradando a utilidade dos filtros que já foram aprendidos. A consequência prática é que escolher o pré-processamento não é independente do modelo.
+
+Slide 23 — O que a metodologia entrega
+Juntando os resultados, eu queria destacar o que a metodologia entrega para quem desenvolve um sistema de inspeção de isoladores.
+Primeiro, ganho de desempenho. No cenário de campo, a escolha do tratamento elevou bastante o F1-score em relação às imagens originais, usando a mesma rede.
+Segundo, proteção contra a escolha errada. No CPLID, o desfoque gaussiano derrubou a acurácia para bem abaixo da imagem original.
+Terceiro, uma indicação de onde investir. Em regime de poucos dados, a arquitetura maior e pré-treinada não superou a rede convolucional simples, porque aumentar a capacidade do modelo não compensou as limitações do conjunto de dados.
+E quarto, um procedimento. Como a melhor técnica muda com a arquitetura e com o conjunto de dados, a seleção precisa ser refeita a cada mudança, e a estrutura iterativa da metodologia é o que viabiliza essa reexecução controlada.
+Resumindo, tratar bem as imagens brutas, ajustando para cada conjunto de dados e para o modelo adotado, é condição essencial para um bom desempenho.
+
+Slide 24 — Vantagens para o sistema elétrico
+Voltando agora para o sistema elétrico. A inspeção automatizada por imagem, que este trabalho ajuda a tornar mais confiável, traz vantagens em seis frentes.
+A continuidade do fornecimento, porque detectar a falha cedo evita interrupções.
+O custo, porque encontrar a falha cedo reduz o custo de manutenção.
+A segurança, porque usar imagens evita intervenção manual em local de difícil acesso.
+A abrangência, porque os drones facilitam inspecionar grandes extensões de linha.
+A reprodutibilidade, porque o diagnóstico automatizado é mais rápido, mais econômico e menos sujeito à subjetividade e ao erro humano.
+E a manutenção preditiva, porque as técnicas modernas permitem monitorar os equipamentos e identificar o dano antes que ele fique crítico.
+Em todas essas frentes o ganho depende de o modelo acertar. E o acerto do modelo depende, como a gente viu, do tratamento dado às imagens.
+
+Slide 25 — O que os resultados sustentam
+Concluindo.
+Primeira conclusão. O pré-processamento das imagens tem papel determinante no desempenho dos modelos em cenários de inspeção de infraestrutura elétrica.
+Segunda conclusão. Não existe um processamento universalmente superior. Para defeito estrutural em cadeia de isoladores de linhas de transmissão, no CPLID, o realce de contraste foi a estratégia de maior êxito. Para a inspeção aérea com fundos heterogêneos e poluídos, no DRNPW, as combinações de realce de contraste com equalização de histograma foram mais eficazes. A eficácia de cada técnica depende das características do conjunto de dados e do contexto em que a falha foi capturada.
+Terceira conclusão. A ordem de mérito das técnicas muda conforme a arquitetura, de forma que escolher o pré-processamento não é independente do modelo nem da forma como os pesos dele foram inicializados. Por isso essa escolha precisa ser refeita a cada troca de arquitetura ou de conjunto de dados, e é essa reexecução controlada que a metodologia proposta busca viabilizar.
+
+Slide 26 — Limitações e trabalhos futuros
+O trabalho teve limitações.
+A principal foi a quantidade e a disponibilidade de dados. Existe muita escassez de banco de imagens público focado em redes de distribuição, com número expressivo de componentes defeituosos e anotação rigorosa, e isso obriga a usar conjuntos bem desbalanceados.
+Outra limitação foi o custo computacional. Otimizar todos os parâmetros do pipeline ao mesmo tempo leva a uma explosão combinatória, o que inviabiliza avaliar tudo em tempo hábil.
+A partir dessas limitações, eu sugiro cinco trabalhos futuros. Usar a otimização bayesiana para explorar vários parâmetros ao mesmo tempo. Gerar exemplos sintéticos de defeitos com redes generativas adversariais. Estender o método para arquiteturas de detecção, avaliando também onde a falha está na imagem. Adotar métricas mais robustas ao desbalanceamento, como o F1-score macro e a acurácia balanceada. E avaliar o desempenho do pipeline em dispositivos embarcados, como o próprio drone, para viabilizar a inspeção dinâmica em campo.
+
+Slide 27 — O impacto para a engenharia elétrica
+Eu encerro voltando para o ponto de partida, que é o Sistema Elétrico de Potência.
+A principal contribuição do trabalho é uma metodologia estruturada para a inspeção automatizada de linhas de transmissão, que mapeia de forma sistemática o impacto do processamento das imagens aéreas.
+E esse impacto aparece em três frentes. Na confiabilidade do sistema, porque um modelo que enxerga melhor a falha no isolador ajuda a encontrar essa falha antes que ela cause uma interrupção no fornecimento. Na manutenção das linhas, porque fortalece a inspeção por drone e inteligência artificial, que é mais rápida, mais econômica, mais segura e mais reprodutível que a inspeção manual. E na própria inspeção automatizada, porque entrega um procedimento sistemático para escolher e ajustar o tratamento das imagens, e esse procedimento pode ser repetido a cada novo conjunto de dados ou nova arquitetura.
+A mensagem que eu queria deixar é essa. Tratar bem as imagens brutas é tão importante quanto escolher a arquitetura da rede neural.
+
+Slide 28 — Obrigado pela atenção
+Muito obrigado pela atenção.
+Agradeço mais uma vez a presença dos professores Adriano e Lúcio na banca e também aos professores Daniel e Paulo Cesar, que me orientaram durante o desenvolvimento do trabalho.
+Fico à disposição da banca para a etapa seguinte e passo a palavra ao professor Daniel.
