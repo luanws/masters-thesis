@@ -4,7 +4,10 @@ Uso, a partir da raiz do projeto:
     python sepoc/presentation/build_banner.py
 """
 from copy import deepcopy
+import tempfile
 from pathlib import Path
+
+from PIL import Image, ImageEnhance, ImageFilter
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -15,6 +18,8 @@ from pptx.util import Cm, Pt
 
 AQUI = Path(__file__).resolve().parent
 IMG = AQUI.parent / "img"
+ASSETS = AQUI / "assets"
+TMP = Path(tempfile.mkdtemp())
 TEMPLATE = AQUI / "Poster_Template.pptx"
 SAIDA = AQUI / "banner_sepoc.pptx"
 
@@ -196,7 +201,7 @@ def figura(caminho, x, y, w):
     return h, pic
 
 
-def cartao(x, y, w, h, numero, cor_num, rotulo):
+def cartao(x, y, w, h, numero, cor_num, rotulo, foto=None):
     fundo = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Cm(x), Cm(y), Cm(w), Cm(h))
     fundo.adjustments[0] = 0.08
     fundo.fill.solid()
@@ -204,8 +209,13 @@ def cartao(x, y, w, h, numero, cor_num, rotulo):
     fundo.line.fill.background()
     fundo.shadow.inherit = False
     fundo.name = f"Cartão {numero}"
+    if foto is not None:
+        lado = h - 0.8
+        larg_foto = lado * 1.25
+        slide.shapes.add_picture(str(foto), Cm(x + 0.4), Cm(y + 0.4), Cm(larg_foto), Cm(lado))
+        x, w = x + larg_foto + 0.4, w - larg_foto - 0.4
     caixa(x + 0.7, y + 0.5, w - 1.4, h - 1.0, [
-        {"runs": [(numero, {"tamanho": 66, "negrito": True, "cor": cor_num})], "depois": 4, "entrelinha": 1.0},
+        {"runs": [(numero, {"tamanho": 60, "negrito": True, "cor": cor_num})], "depois": 4, "entrelinha": 1.0},
         {"runs": [(rotulo, {"tamanho": LEGENDA, "cor": TEXTO})], "depois": 0, "entrelinha": 1.05},
     ], ancora=MSO_ANCHOR.MIDDLE)
 
@@ -243,20 +253,45 @@ def tabela(x, y, w, larguras, linhas, destaque=None, tamanho=26, altura_linha=1.
     return shp
 
 
+# --------------------------------------- recortes do CPLID com os filtros reais
+# Mesmos parâmetros do learn-datasets: ImageEnhance.Contrast(2.0) e GaussianBlur(2),
+# aplicados na resolução original. O recorte vem depois, só para exibição.
+W_GRAF = 21.0
+_cplid = Image.open(ASSETS / "cplid_0049.jpg").convert("RGB")
+_recorte = (520, 290, 845, 550)  # 325x260 sobre a cadeia, proporção 1,25
+
+
+def _salvar(im, nome):
+    caminho = TMP / nome
+    im.crop(_recorte).save(caminho, quality=92)
+    return caminho
+
+
+FOTO_ORIG = _salvar(_cplid, "orig.jpg")
+FOTO_CE = _salvar(ImageEnhance.Contrast(_cplid).enhance(2.0), "ce.jpg")
+FOTO_BLUR = _salvar(_cplid.filter(ImageFilter.GaussianBlur(2)), "blur.jpg")
+
+
 # ===================================================== COLUNA ESQUERDA
 y = 33.4
 barra(COL_E, y, "INTRODUÇÃO")
 y += 2.7
-caixa(COL_E, y, LARG, 13.2, [
-    item("A inspeção automatizada de isoladores usa Redes Neurais Convolucionais (CNNs), "
-         "cujo desempenho depende da qualidade da imagem de entrada."),
-    item("Não há método padronizado para escolher as técnicas de pré-processamento "
-         "nem seus parâmetros, que costumam ser fixados sem avaliação."),
+w_foto_intro = 13.0
+caixa(COL_E, y, LARG - w_foto_intro - 1.0, 16.0, [
+    item("Redes Neurais Convolucionais (CNNs) automatizam a inspeção de isoladores, "
+         "mas dependem da qualidade da imagem de entrada."),
+    item("Falta um método padronizado para escolher as técnicas de pré-processamento "
+         "e seus parâmetros."),
     item(b("Objetivo: "), "comparar, selecionar, combinar e ajustar essas técnicas "
-         "de forma sistemática na classificação de falhas.", depois=0),
+         "de forma sistemática.", depois=0),
 ], nome="Texto introdução")
+h_intro, _ = figura(ASSETS / "campo_drone.jpg", COL_E + LARG - w_foto_intro, y, w_foto_intro)
+caixa(COL_E + LARG - w_foto_intro, y + h_intro + 0.3, w_foto_intro, 2.2, [
+    {"runs": [("Cadeia de isoladores fotografada por drone em inspeção de campo.",
+               {"tamanho": LEGENDA, "cor": CINZA, "italico": True})], "depois": 0},
+], nome="Legenda foto introdução")
 
-y += 14.2
+y += max(16.0, h_intro + 2.5) + 0.8
 barra(COL_E, y, "METODOLOGIA")
 y += 2.7
 h_fluxo, _ = figura(IMG / "metodologia - geral.png", COL_E, y, 10.0)
@@ -286,27 +321,27 @@ caixa(x_txt, y + 17.4 + 3.6 + 0.4, w_txt, 2.4, [
 y += max(h_fluxo + 2.5, 17.4 + 3.6 + 2.8) + 1.2
 barra(COL_E, y, "RESULTADOS: CPLID")
 y += 2.7
-h_cplid, _ = figura(IMG / "cplid_acc.png", COL_E - 0.5, y, 24.5)
-x_card = COL_E + 24.6
-w_card = LARG - 24.6
+h_cplid, _ = figura(IMG / "cplid_acc.png", COL_E - 0.5, y, W_GRAF)
+x_card = COL_E + W_GRAF - 0.3
+w_card = LARG - W_GRAF + 0.3
 alt = (h_cplid - 1.2) / 3
-cartao(x_card, y, w_card, alt, "95,35%", MARROM_MEDIO, "CE isolado, empatado com duas combinações")
-cartao(x_card, y + alt + 0.6, w_card, alt, "93,02%", VERMELHO, "Imagem original: 1 acerto a menos em 43")
-cartao(x_card, y + 2 * (alt + 0.6), w_card, alt, "67,44%", CINZA, "Gaussian Blur: abaixo do piso")
+cartao(x_card, y, w_card, alt, "95,35%", MARROM_MEDIO, "Contrast Enhancement", FOTO_CE)
+cartao(x_card, y + alt + 0.6, w_card, alt, "93,02%", VERMELHO, "Imagem original", FOTO_ORIG)
+cartao(x_card, y + 2 * (alt + 0.6), w_card, alt, "67,44%", CINZA, "Gaussian Blur, abaixo do piso", FOTO_BLUR)
 caixa(COL_E, y + h_cplid + 0.3, LARG, 5.0, [
     {"runs": [("Figura 2: acurácia no CPLID. Em vermelho, a imagem sem tratamento. "
-               "A linha tracejada marca o piso majoritário.",
+               "A linha tracejada marca o piso majoritário. Ao lado, a mesma imagem do CPLID com cada filtro.",
                {"tamanho": LEGENDA, "cor": CINZA, "italico": True})], "depois": 10},
-    {"runs": [b("Margem estreita para ajudar e ampla para prejudicar: ", tamanho=28),
-              ("o método serve para descartar transformações destrutivas.", {"tamanho": 28})], "depois": 0},
+    {"runs": [b("O melhor filtro ganhou 1 acerto e os piores perderam 11. ", tamanho=28),
+              ("Aqui o método serve para descartar os filtros que prejudicam.", {"tamanho": 28})], "depois": 0},
 ], nome="Texto CPLID")
 
 # ===================================================== COLUNA DIREITA
 y = 33.4
 barra(COL_D, y, "RESULTADOS: DRNPW")
 y += 2.7
-h_drnpw, _ = figura(IMG / "drnpw_acc.png", COL_D - 0.5, y, 24.5)
-x_card = COL_D + 24.6
+h_drnpw, _ = figura(IMG / "drnpw_acc.png", COL_D - 0.5, y, W_GRAF)
+x_card = COL_D + W_GRAF - 0.3
 cartao(x_card, y, w_card, alt, "63,33%", VERMELHO, "Imagem original, abaixo do piso")
 cartao(x_card, y + alt + 0.6, w_card, alt, "83,33%", MARROM_MEDIO, "CE + Equalize Histogram")
 cartao(x_card, y + 2 * (alt + 0.6), w_card, alt, "+6", LARANJA, "acertos em 30 imagens de teste")
@@ -351,7 +386,13 @@ caixa(COL_D, y, LARG, 2.6, [
 y += 2.6 + 1.4
 barra(COL_D, y, "CONCLUSÃO")
 y += 2.7
-caixa(COL_D, y, LARG, 106.5 - y, [
+w_foto_conc = 12.5
+h_conc, _ = figura(ASSETS / "cadeia_torre.jpg", COL_D + LARG - w_foto_conc, y + 0.3, w_foto_conc)
+caixa(COL_D + LARG - w_foto_conc, y + 0.3 + h_conc + 0.3, w_foto_conc, 2.2, [
+    {"runs": [("Cadeia de isoladores em torre de transmissão.",
+               {"tamanho": LEGENDA, "cor": CINZA, "italico": True})], "depois": 0},
+], nome="Legenda foto conclusão")
+caixa(COL_D, y, LARG - w_foto_conc - 1.0, 106.5 - y, [
     item("O efeito de uma mesma técnica variou entre os cenários de captura. ",
          b("CE + Equalize Histogram"), " teve a maior acurácia nos dois conjuntos."),
     item(b("CPLID: "), "ganho de um acerto, sem relevância. O valor do método está em evitar perdas de até 25,6 pontos."),
