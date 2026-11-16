@@ -11,7 +11,7 @@ A seguir, será apresentada uma revisão dos principais conceitos e técnicas de
 
 \section{Processamento de Imagens}
 
-O processamento de imagens desempenha um papel fundamental no contexto do Sistema Elétrico de Potência (SEP), especialmente em atividades de inspeção, manutenção preditiva e monitoramento de ativos em linhas de transmissão. Com o uso crescente de drones, câmeras térmicas e sensores ópticos, a obtenção de imagens de componentes da rede elétrica tornou-se mais acessível e eficiente. No entanto, a qualidade e a variabilidade dessas imagens exigem técnicas robustas de pré-processamento para garantir resultados precisos em tarefas como a detecção de falhas, corrosões, aquecimentos anômalos e objetos estranhos nas estruturas. Esta seção apresenta os principais métodos de processamento de imagens empregados para preparar dados visuais que serão utilizados em modelos baseados em aprendizado de máquina e redes neurais, contribuindo diretamente para a confiabilidade, segurança e eficiência operacional do SEP.
+O processamento de imagens desempenha um papel fundamental no contexto do SEP, especialmente em atividades de inspeção, manutenção preditiva e monitoramento de ativos em linhas de transmissão. Com o uso crescente de drones, câmeras térmicas e sensores ópticos, a obtenção de imagens de componentes da rede elétrica tornou-se mais acessível e eficiente. No entanto, a qualidade e a variabilidade dessas imagens exigem técnicas robustas de pré-processamento para garantir resultados precisos em tarefas como a detecção de falhas, corrosões, aquecimentos anômalos e objetos estranhos nas estruturas. Esta seção apresenta os principais métodos de processamento de imagens empregados para preparar dados visuais que serão utilizados em modelos baseados em aprendizado de máquina e redes neurais, contribuindo diretamente para a confiabilidade, segurança e eficiência operacional do SEP.
 
 \subsection{Normalização}
 A normalização é uma etapa fundamental no pré-processamento de imagens para redes neurais, pois padroniza os valores dos pixels, facilitando a convergência durante o treinamento e melhorando a generalização do modelo. Um método comum é a normalização de valores de pixels, que escala os valores para intervalos como [0,1] ou [-1,1], frequentemente realizada dividindo os valores originais pelo máximo possível (por exemplo, 255 para imagens de 8 bits) \cite{sharma2024deep}. Outro método é a normalização Z-score, que subtrai a média dos pixels e divide pelo desvio padrão, resultando em dados com média zero e variância unitária \cite{chen2023robustness}. A equalização de histograma também é utilizada para redistribuir as intensidades dos pixels, aumentando o contraste e destacando detalhes em imagens de baixa qualidade \cite{chen2023robustness}. Além disso, a padronização de cores, como subtrair os valores médios dos canais RGB, centraliza os dados em torno de uma distribuição normal, o que é particularmente útil para redes convolucionais \cite{sciencedirect2023normalization}. Técnicas mais avançadas, como a normalização por percentis, utilizam o 5º e o 95º percentis como limites para lidar com valores discrepantes, enquanto a correspondência de histogramas ajusta a distribuição de intensidades com base em pontos de referência \cite{isola2023comparison}. Essas abordagens garantem que as redes neurais processem dados de forma consistente, reduzindo a sensibilidade a variações de iluminação ou escala, especialmente em tarefas de visão computacional \cite{sharma2024deep}.
@@ -20,7 +20,7 @@ A Figura \ref{fig:normalizacao} ilustra o processo de normalização de imagens,
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:normalizacao}Normalização de Imagens}
+    \caption{\label{fig:normalizacao}Normalização de Imagens.}
     \includegraphics[width=0.8\textwidth]{img/revisao_bibliografica/normalizacao.png}
     \fonte{\citeonline{kuehlkamp2013ferramenta}.}
 \end{figure}
@@ -28,12 +28,12 @@ A Figura \ref{fig:normalizacao} ilustra o processo de normalização de imagens,
 \subsection{Redimensionamento e Recorte}
 O redimensionamento é essencial para ajustar as imagens ao tamanho de entrada esperado pelas arquiteturas de redes neurais, garantindo compatibilidade e consistência. Um método comum é redimensionar as imagens para um tamanho fixo, como 224x224 pixels, amplamente utilizado em modelos como ResNet e VGG \cite{chen2023robustness}. Isso pode ser feito por meio de interpolação bilinear ou bicúbica, que suaviza as transições entre pixels, embora métodos mais avançados, como interpolação baseada em Fourier, também sejam explorados \cite{dennanni2019resizing}. O recorte, por outro lado, extrai uma região de interesse da imagem, frequentemente centrada, para preservar áreas relevantes, especialmente quando as dimensões originais variam significativamente \cite{sciencedirect2023normalization}. Estudos indicam que o redimensionamento para tamanhos menores pode acelerar o treinamento, mas tamanhos muito reduzidos podem comprometer a qualidade das características extraídas \cite{sabottke2020effect}. Além disso, o recorte aleatório é usado em conjunto com aumento de dados para introduzir variabilidade durante o treinamento \cite{nalepa2022data}. Essas técnicas são cruciais para lidar com conjuntos de dados heterogêneos, garantindo que as entradas sejam uniformes sem perda significativa de informação \cite{chen2023robustness}.
 
-A Figura \ref{fig:redimensionamento_e_recorte} ilustra o processo de redimensionamento e recorte de imagens, na qual a imagem da esquerda (original) é utilizada para extrair uma região de interesse (recorte) e em seguida redimensionada para um tamanho fixo (imagem da direita).
+A Figura \ref{fig:redimensionamento_e_recorte} ilustra o processo de redimensionamento e recorte de imagens, na qual a imagem original (a) é utilizada para extrair uma região de interesse (b), que em seguida é redimensionada para um tamanho fixo (c).
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:redimensionamento_e_recorte}Redimensionamento e recorte}
-    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/redimensionamento_e_recorte.png}
+    \caption{\label{fig:redimensionamento_e_recorte}Redimensionamento e recorte: (a) imagem original, (b) região recortada e (c) região redimensionada.}
+    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/redimensionamento_e_recorte_ab.png}
     \fonte{Adaptado de \citeonline{venturelli2021}.}
 \end{figure}
 
@@ -43,12 +43,12 @@ O aumento de dados é uma estratégia poderosa para ampliar a diversidade do con
 \subsection{Redução de Ruído}
 A redução de ruído remove interferências que podem comprometer o desempenho das redes neurais, sendo especialmente crítica em aplicações como imagens médicas e vigilância. Métodos tradicionais, como filtros de média ou mediana, são complementados por abordagens baseadas em aprendizado profundo, como redes neurais convolucionais (CNNs) especializadas, como DnCNNs, que aprendem a mapear imagens ruidosas para versões limpas \cite{sharma2024deep}. Autoencoders também são empregados para reconstruir imagens a partir de representações latentes, eliminando ruídos como Gaussianos ou de sal e pimenta \cite{sharma2024deep}. Técnicas como Total Variation Denoising (TVD) e Non-Local Means (NLM) exploram regularizações e similaridades entre pixels para preservar detalhes \cite{sharma2024deep}. Um estudo demonstrou que a aplicação de DnCNNs em imagens de tomografia computadorizada resultou em uma precisão de detecção de câncer de pulmão variando de 86,17\% a 99,67\% \cite{sharma2024deep}. Além disso, métodos baseados em redes neurais profundas, como o Deep Neural Filter (DNF), alcançaram melhorias de até 10 dB na relação sinal-ruído em sinais de EEG \cite{peer2022real}. Essas abordagens são essenciais para garantir que as redes neurais processem imagens de alta qualidade, minimizando artefatos que poderiam obscurecer características críticas \cite{sharma2024deep}.
 
-A Figura \ref{fig:reducao_de_ruido} ilustra o processo de redução de ruído, onde a imagem original (à esquerda) é processada para remover o ruído, resultando em uma imagem mais limpa (à direita).
+A Figura \ref{fig:reducao_de_ruido} ilustra o processo de redução de ruído, em que a imagem original (a) é processada para remover o ruído, resultando em uma imagem mais limpa (b).
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:reducao_de_ruido}Redução de Ruído}
-    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/reducao_de_ruido.png}
+    \caption{\label{fig:reducao_de_ruido}Redução de Ruído: (a) imagem original e (b) imagem filtrada.}
+    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/reducao_de_ruido_ab.png}
     \fonte{Adaptado de \citeonline{wavelet_denoising}.}
 \end{figure}
 
@@ -60,7 +60,7 @@ A Figura \ref{fig:clahe} ilustra o efeito do CLAHE em uma imagem, destacando det
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:clahe}Ajuste de Contraste e Brilho com CLAHE}
+    \caption{\label{fig:clahe}Ajuste de Contraste e Brilho com CLAHE.}
     \includegraphics[width=1\textwidth]{img/revisao_bibliografica/clahe.png}
     \fonte{\citeonline{pandey2023image}.}
 \end{figure}
@@ -68,51 +68,51 @@ A Figura \ref{fig:clahe} ilustra o efeito do CLAHE em uma imagem, destacando det
 \subsection{Aumento de Nitidez}
 O aumento de nitidez realça bordas e detalhes finos, facilitando tarefas como detecção de objetos e segmentação. Técnicas tradicionais, como a máscara de desfoque, aplicam filtros de alta passagem para enfatizar transições de intensidade \cite{sciencedirect2023normalization}. Métodos baseados em redes neurais, como CNNs, foram desenvolvidos para detectar e corrigir nitidez, como no caso da detecção de máscaras de desfoque (USM), superando métodos baseados em codificação ternária perpendicular a bordas \cite{ding2018detecting}. Em aplicações específicas, como imagens de documentos, redes convolucionais combinadas com filtros de Gabor e desfoque melhoraram a legibilidade, reduzindo distorções como sombras e ruídos \cite{ben2022deep}. Essas técnicas são particularmente úteis em cenários onde a clareza das bordas é essencial para o desempenho do modelo \cite{sharma2024deep}.
 
-A Figura \ref{fig:aumento_de_nitidez} ilustra o efeito do aumento de nitidez em uma imagem, onde os detalhes são mais evidentes após o processamento.
+A Figura \ref{fig:aumento_de_nitidez} ilustra o efeito do aumento de nitidez em uma imagem: os detalhes da imagem original (a) ficam mais evidentes após o processamento (b).
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:aumento_de_nitidez}Aumento de Nitidez}
-    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/aumento_de_nitidez.png}
+    \caption{\label{fig:aumento_de_nitidez}Aumento de Nitidez: (a) imagem original e (b) imagem com nitidez realçada.}
+    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/aumento_de_nitidez_ab.png}
     \fonte{Adaptado de \citeonline{joshi2025}.}
 \end{figure}
 
 \subsection{Conversão de Espaço de Cores}
-A conversão de espaço de cores adapta as imagens às necessidades específicas da tarefa, simplificando o processamento ou destacando características relevantes. A conversão de RGB para escala de cinza reduz a dimensionalidade, sendo útil em tarefas onde a cor não é essencial \cite{sharma2024deep}. Espaços como HSV e LAB são preferidos em aplicações que requerem separação de matiz, saturação ou luminância, como segmentação de objetos \cite{sharma2024deep}. Redes neurais também foram usadas para realizar conversões de espaço de cores, como de RGB para XYZ, alcançando erros de cor inferiores a 1,0 unidade ΔE 2000 em mais de 85\% dos casos testados \cite{macdonald2019color}. Essas conversões são valiosas para otimizar a extração de características e reduzir a complexidade computacional em tarefas de visão computacional \cite{sharma2024deep}.
+A conversão de espaço de cores adapta as imagens às necessidades específicas da tarefa, simplificando o processamento ou destacando características relevantes. A conversão de RGB para escala de cinza reduz a dimensionalidade, sendo útil em tarefas onde a cor não é essencial \cite{sharma2024deep}. Espaços como HSV e LAB são preferidos em aplicações que requerem separação de matiz, saturação ou luminância, como segmentação de objetos \cite{sharma2024deep}. Redes neurais também foram usadas para realizar conversões de espaço de cores, como de RGB para XYZ, alcançando erros de cor inferiores a 1,0 unidade $Delta E_{2000}$ em mais de 85\% dos casos testados \cite{macdonald2019color}. Essas conversões são valiosas para otimizar a extração de características e reduzir a complexidade computacional em tarefas de visão computacional \cite{sharma2024deep}.
 
 \subsection{Restauração e Desembaçamento de Imagens}
 A restauração de imagens visa recuperar a imagem original a partir de versões degradadas por desfoque, ruído ou outras distorções. O desembaçamento, um subcampo da restauração, utiliza redes neurais como U-Net para corrigir desfoques dinâmicos, alcançando PSNR de 31,53 no conjunto GoPro e 31,32 no Real Blur \cite{Lian2023Deblurring}. Métodos baseados em autoencoders convolucionais foram propostos para restaurar imagens em aplicações de fotografia computacional e sensoriamento remoto \cite{barreto2020cnn}. Além disso, redes neurais como DnCNNs foram aplicadas para remover ruídos específicos, como speckle em imagens holográficas \cite{sharma2024deep}. Essas técnicas são cruciais para preparar imagens de alta qualidade para redes neurais, especialmente em domínios onde a clareza é essencial \cite{sumida2019deep}.
 
-A Figura \ref{fig:desembacamento} ilustra o processo de desembaçamento, onde a imagem original (à esquerda) é processada para remover o desfoque, resultando em uma imagem mais nítida (à direita).
+A Figura \ref{fig:desembacamento} ilustra o processo de desembaçamento, em que a imagem original (a) é processada para remover o desfoque, resultando em uma imagem mais nítida (b).
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:desembacamento}Restauração e Desembaçamento de Imagens}
-    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/desembacamento.png}
+    \caption{\label{fig:desembacamento}Restauração e Desembaçamento de Imagens: (a) imagem original e (b) imagem restaurada.}
+    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/desembacamento_ab.png}
     \fonte{Adaptado de \citeonline{mathworks2025lucyrichardson}.}
 \end{figure}
 
 \subsection{Detecção de Bordas}
 A detecção de bordas identifica limites e formas nas imagens, sendo uma etapa fundamental em muitas tarefas de visão computacional. Redes neurais, como redes de codificação-decodificação, foram desenvolvidas para detectar bordas com alta precisão, alcançando desempenho comparável ao de detectores tradicionais como o Canny em imagens ruidosas \cite{yu1994edge}. Métodos inspirados em mecanismos biológicos, como redes com atenção seletiva, melhoraram a extração de características globais, resultando em mapas de bordas mais robustos \cite{chen2022edge}. Essas abordagens são essenciais para pré-processar imagens, fornecendo informações estruturais que facilitam a segmentação e o reconhecimento de objetos \cite{yu1994edge}.
 
-A Figura \ref{fig:deteccao_de_bordas} ilustra o processo de detecção de bordas, onde as bordas da imagem original (à esquerda) são destacadas na imagem processada (à direita).
+A Figura \ref{fig:deteccao_de_bordas} ilustra o processo de detecção de bordas, em que as bordas da imagem original (a) são destacadas na imagem processada (b).
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:deteccao_de_bordas}Detecção de Bordas}
-    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/deteccao_de_bordas.png}
+    \caption{\label{fig:deteccao_de_bordas}Detecção de Bordas: (a) imagem original e (b) mapa de bordas.}
+    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/deteccao_de_bordas_ab.png}
     \fonte{\citeonline{couto2024regions}.}
 \end{figure}
 
 \subsection{Correção de Iluminação}
 A correção de iluminação normaliza as condições de luz nas imagens, garantindo consistência na extração de características. Métodos baseados em aprendizado profundo, como redes convolucionais, foram propostos para corrigir imagens com iluminação desigual, como pinturas, alcançando resultados superiores em métricas como NIQE e LOE \cite{li2020simple}. Técnicas híbridas que combinam modelos baseados em aprendizado e físicos foram aplicadas para melhorar a detecção de objetos em condições de luz variada, como em imagens de plantações \cite{yang2022using}. Essas abordagens são particularmente úteis em cenários onde a iluminação não uniforme pode comprometer o desempenho do modelo \cite{li2020simple}.
 
-A Figura \ref{fig:correcao_de_iluminacao} ilustra o processo de correção de iluminação, onde a imagem original (à esquerda) é processada para uniformizar a iluminação, resultando em uma imagem mais equilibrada (à direita).
+A Figura \ref{fig:correcao_de_iluminacao} ilustra o processo de correção de iluminação, em que a imagem original (a) é processada para uniformizar a iluminação, resultando em uma imagem mais equilibrada (b).
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:correcao_de_iluminacao}Correção de Iluminação}
-    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/correcao_de_iluminacao.png}
+    \caption{\label{fig:correcao_de_iluminacao}Correção de Iluminação: (a) imagem original e (b) imagem corrigida.}
+    \includegraphics[width=1\textwidth]{img/revisao_bibliografica/correcao_de_iluminacao_ab.png}
     \fonte{\citeonline{Bascle2006IlluminationCorrection}.}
 \end{figure}
 
@@ -121,7 +121,7 @@ A super-resolução aumenta a resolução de imagens, gerando versões de alta q
 
 \subsection{Conclusão parcial da seção}
 
-O processamento de imagens é uma etapa crucial para garantir a eficácia dos modelos de aprendizado profundo aplicados ao Sistema Elétrico de Potência (SEP). As técnicas discutidas, como normalização, redimensionamento, aumento de dados e redução de ruído, podem ser fundamentais para preparar as imagens antes de serem alimentadas em redes neurais. Essas abordagens não apenas melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições. A escolha adequada dessas técnicas pode impactar significativamente o desempenho dos modelos na detecção e classificação de falhas em equipamentos de linhas de transmissão.
+O processamento de imagens é uma etapa crucial para garantir a eficácia dos modelos de aprendizado profundo aplicados ao SEP. As técnicas discutidas, como normalização, redimensionamento, aumento de dados e redução de ruído, podem ser fundamentais para preparar as imagens antes de serem alimentadas em redes neurais. Essas abordagens não apenas melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições. A escolha adequada dessas técnicas pode impactar significativamente o desempenho dos modelos na detecção e classificação de falhas em equipamentos de linhas de transmissão.
 
 Dando continuidade, para que as técnicas de processamento de imagens sejam efetivamente aplicadas, é fundamental compreender os fundamentos das redes neurais, que são as principais ferramentas para análise e classificação dessas imagens. A próxima seção aborda os conceitos essenciais sobre redes neurais.
 
@@ -130,7 +130,7 @@ Uma rede neural artificial é formada por um grande número de neurônios para f
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:neuronio}Modelo de um Neurônio Artificial}
+    \caption{\label{fig:neuronio}Modelo de um Neurônio Artificial.}
     \includegraphics[width=0.8\textwidth]{img/revisao_bibliografica/neuronio.png}
     \fonte{\citeonline{braga2011redes}.}
 \end{figure}
@@ -139,22 +139,22 @@ Os passos para a obtenção da saída de um neurônio artificial são:
 
 \begin{enumerate}
     \item O modelo recebe um número $m$ de entradas $x_1, x_2, ..., x_m$;
-    \item Cada uma dessas entradas é multiplicada por um peso, conforme a Equação~\ref{eq:entrada_peso}:
+    \item Cada uma dessas entradas é multiplicada por um peso, conforme a expressão a seguir:
     \begin{equation}
         x_i w_i, \quad \text{para } i = 1, 2, ..., m
         \label{eq:entrada_peso}
     \end{equation}
-    \item Somam-se as entradas multiplicadas pelos seus respectivos pesos, conforme a Equação~\ref{eq:soma_pesos}:
+    \item Somam-se as entradas multiplicadas pelos seus respectivos pesos:
     \begin{equation}
         \sum_{n=1}^{m} w_n x_n
         \label{eq:soma_pesos}
     \end{equation}
-    \item Adiciona-se o bias, conforme a Equação~\ref{eq:bias}:
+    \item Adiciona-se o bias:
     \begin{equation}
         b + \sum_{n=1}^{m} w_n x_n
         \label{eq:bias}
     \end{equation}
-    \item O resultado passa por uma função de ativação, conforme a Equação~\ref{eq:ativacao}:
+    \item O resultado passa por uma função de ativação:
     \begin{equation}
         \varphi \left( b + \sum_{n=1}^{m} w_n x_n \right)
         \label{eq:ativacao}
@@ -185,7 +185,7 @@ FFNs são o tipo mais básico de rede neural, em que a informação flui linearm
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:ffn}FFN}
+    \caption{\label{fig:ffn}FFN.}
     \includegraphics[width=0.8\textwidth]{img/revisao_bibliografica/ffn.png}
     \fonte{\citeonline{alex2020}.}
 \end{figure}
@@ -194,12 +194,12 @@ As redes do tipo P, Figura \ref{fig:perceptron}, são um caso especial de uma re
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:perceptron}Perceptron}
+    \caption{\label{fig:perceptron}Perceptron.}
     \includegraphics[width=0.8\textwidth]{img/revisao_bibliografica/perceptron.png}
     \fonte{\citeonline{alex2020}.}
 \end{figure}
 
-As FFNs são utilizadas para problemas em que os dados de entrada têm impacto atemporal nos dados de saída, em que a saída não depende do estado anterior da rede neural. Um exemplo é usar informações de um exame de sangue para determinar a presença de uma doença.
+As FFNs são utilizadas para problemas em que os dados de entrada têm impacto atemporal nos dados de saída, em que a saída não depende do estado anterior da rede neural. Um exemplo é classificar um conjunto de medições de um isolador, tomadas em um único instante, como indicativo ou não de falha, sem depender de medições anteriores.
 
 \subsubsection{Convolutional neural network (CNN) ou Deep convolutional network (DCN)}
 
@@ -209,7 +209,7 @@ Uma CNN, cuja estrutura está representada através da Figura \ref{fig:cnn}, per
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:cnn}CNN}
+    \caption{\label{fig:cnn}CNN.}
     \includegraphics[width=0.8\textwidth]{img/revisao_bibliografica/cnn.png}
     \fonte{\citeonline{veen2016}.}
 \end{figure}
@@ -275,7 +275,7 @@ As funções de custo são responsáveis por medir o quão distante a saída pre
 
 \subsubsection{Erro Médio Quadrático (MSE)}
 
-O Erro Médio Quadrático (MSE) é uma das funções mais comuns em regressão, penalizando fortemente grandes erros e sendo sensível a outliers \cite{goodfellow2016deep}. Ele é definido como a Equação~\ref{eq:mse}:
+O Erro Médio Quadrático (MSE) é uma das funções mais comuns em regressão, penalizando fortemente grandes erros e sendo sensível a outliers \cite{goodfellow2016deep}. Ele é definido como:
 
 \begin{equation}
     MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
@@ -284,7 +284,7 @@ O Erro Médio Quadrático (MSE) é uma das funções mais comuns em regressão, 
 
 \subsubsection{Erro Médio Absoluto (MAE)}
 
-O Erro Médio Absoluto (MAE) é mais robusto a outliers que o MSE, mas pode ser mais difícil de otimizar. Sua fórmula é apresentada na Equação~\ref{eq:mae}:
+O Erro Médio Absoluto (MAE) é mais robusto a outliers que o MSE, mas pode ser mais difícil de otimizar. Sua fórmula é:
 
 \begin{equation}
     MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
@@ -293,7 +293,7 @@ O Erro Médio Absoluto (MAE) é mais robusto a outliers que o MSE, mas pode ser 
 
 \subsubsection{Função Huber}
 
-A função Huber combina as vantagens do MSE e MAE, sendo menos sensível a outliers e mais estável para pequenos erros \cite{huber1964robust}. Ela é definida pela Equação~\ref{eq:huber}:
+A função Huber combina as vantagens do MSE e MAE, sendo menos sensível a outliers e mais estável para pequenos erros \cite{huber1964robust}. Ela é definida como:
 
 \begin{equation}
     L_{\text{Huber}} =
@@ -306,7 +306,7 @@ A função Huber combina as vantagens do MSE e MAE, sendo menos sensível a outl
 
 \subsubsection{Entropia Cruzada Binária}
 
-A Entropia Cruzada Binária é indicada para problemas de classificação binária \cite{zhang2018cross}, sendo expressa pela Equação~\ref{eq:binary_crossentropy}:
+A Entropia Cruzada Binária é indicada para problemas de classificação binária \cite{zhang2018cross}, sendo expressa por:
 
 \begin{equation}
     L = -\frac{1}{n} \sum_{i=1}^{n} \left[y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)\right]
@@ -315,7 +315,7 @@ A Entropia Cruzada Binária é indicada para problemas de classificação binár
 
 \subsubsection{Entropia Cruzada Categórica}
 
-Já a Entropia Cruzada Categórica é utilizada em classificação multiclasse com rótulo único por amostra, e sua fórmula é apresentada na Equação~\ref{eq:categorical_crossentropy}:
+Já a Entropia Cruzada Categórica é utilizada em classificação multiclasse com rótulo único por amostra, e sua fórmula é:
 
 \begin{equation}
     L = -\sum_{i=1}^{n} \sum_{j=1}^{k} y_{ij} \log(\hat{y}_{ij})
@@ -339,8 +339,8 @@ Conjuntos de dados desbalanceados são prevalentes na detecção de falhas em li
 % Datasets escassos: definição e desafios
 Datasets escassos, caracterizados por um número reduzido de amostras, são comuns em áreas onde a coleta de dados é custosa, demorada ou restrita pela raridade de eventos, como na detecção de falhas em isoladores de linhas de transmissão. A escassez de dados aumenta o risco de sobreajuste, onde modelos de redes neurais memorizam os dados de treinamento em vez de aprender padrões generalizáveis \cite{goodfellow2016deep}. Esse problema é agravado em aplicações de engenharia elétrica, onde imagens de falhas, como quebras ou flashovers por poluição, são difíceis de obter em quantidade suficiente. A anotação manual de imagens capturadas por drones, frequentemente usada para identificar defeitos, é demorada e propensa a erros, limitando ainda mais o tamanho dos datasets \cite{zheng2022improved}. Por exemplo, o conjunto de dados Insulator-Defect Detection, com apenas 1600 imagens, enfrenta desafios devido ao número limitado de amostras de defeitos \cite{zheng2022improved}.
 
-% Aprendizado por transferência para datasets escassos
-O aprendizado por transferência é uma técnica amplamente utilizada para mitigar os desafios de datasets escassos, permitindo que modelos pré-treinados em grandes conjuntos de dados, como o ImageNet, sejam ajustados para tarefas específicas com menos dados \cite{pan2010survey}. Essa abordagem é eficaz em cenários onde características visuais gerais, como bordas e texturas, podem ser transferidas de datasets genéricos para aplicações especializadas. O aprendizado por transferência tem se mostrado particularmente útil em aplicações de engenharia elétrica, onde datasets específicos são frequentemente escassos.
+% Transfer learning para datasets escassos
+O \textit{transfer learning} é uma técnica amplamente utilizada para mitigar os desafios de datasets escassos, permitindo que modelos pré-treinados em grandes conjuntos de dados, como o ImageNet, sejam ajustados para tarefas específicas com menos dados \cite{pan2010survey}. Essa abordagem é eficaz em cenários onde características visuais gerais, como bordas e texturas, podem ser transferidas de datasets genéricos para aplicações especializadas. O \textit{transfer learning} tem se mostrado particularmente útil em aplicações de engenharia elétrica, onde datasets específicos são frequentemente escassos.
 
 % Aumento de dados para datasets escassos
 Uma das formas de tentar diminuir o impacto negativo de bancos de dados escassos, como são os casos citados, é o aumento de dados, uma estratégia essencial para ampliar artificialmente o tamanho e a diversidade dos dados por meio de transformações como rotação, escala, inversão e alterações de iluminação \cite{shorten2019survey}. Esta abordagem é particularmente valiosa quando a coleta de dados reais é custosa, demorada ou limitada pela raridade de eventos, como na detecção de falhas em equipamentos de linhas de transmissão. Na detecção de falhas em linhas de transmissão, essas transformações ajudam a simular diferentes condições ambientais, como variações de luz ou ângulos de captura, comuns em imagens de VANTs (Veículo Aéreo Não Tripulado). Por exemplo, \citeonline{peng2023edf} aplicaram aumento de dados para melhorar a robustez de um modelo YOLOv5 na detecção de defeitos pequenos, como flashovers por poluição, em imagens de linhas de transmissão. Métodos avançados, como redes adversárias generativas (GANs), podem gerar imagens sintéticas de falhas, mas sua aplicação em engenharia elétrica é limitada devido à complexidade computacional \cite{goodfellow2014generative}. Apesar disso, GANs têm potencial para criar amostras sintéticas de defeitos raros, como quebras em isoladores, ampliando datasets escassos e reduzindo significativamente o problema da escassez de dados.
@@ -361,13 +361,13 @@ A Tabela \ref{tab:tecnicas_escassez_desbalanceamento_datasets} resume os princip
 
 \begin{table}[H]
 \centering
-\caption{Técnicas para Lidar com Escassez e Desbalanceamento de Dados}
+\caption{Técnicas para Lidar com Escassez e Desbalanceamento de Dados.}
 \label{tab:tecnicas_escassez_desbalanceamento_datasets}
 \begin{tabular}{|p{3.5cm}|p{3.5cm}|p{7.5cm}|}
 \hline
 \textbf{Categoria} & \textbf{Técnica} & \textbf{Descrição} \\
 \hline
-Escassez & Aprendizado por Transferência & Reutiliza modelos pré-treinados em grandes conjuntos para tarefas com poucos dados \cite{pan2010survey}. \\
+Escassez & \textit{Transfer learning} & Reutiliza modelos pré-treinados em grandes conjuntos para tarefas com poucos dados \cite{pan2010survey}. \\
 \hline
 Escassez & Aumento de Dados & Aplica transformações (por exemplo, rotação, escala) para ampliar o conjunto de dados \cite{shorten2019survey}. \\
 \hline
@@ -384,13 +384,13 @@ Após a análise das principais estratégias para lidar com escassez e desbalanc
 
 \section{Métricas de Avaliação de Desempenho de Modelos}
 
-Na detecção de falhas em cadeias de isoladores e equipamentos de linhas de transmissão, a escolha das métricas de avaliação é fundamental para garantir a eficácia e confiabilidade dos modelos de redes neurais. Métricas comumente utilizadas incluem acurácia, precisão, recall, F1-score, área sob a curva ROC (AUC-ROC) e, para tarefas de detecção de objetos, a média da precisão média (mAP). A acurácia, definida como a proporção de previsões corretas em relação ao total, pode ser enganosa em datasets desbalanceados, onde a classe de falhas é significativamente menos representada que a classe de isoladores saudáveis. Por exemplo, em um dataset com 95\% de amostras saudáveis, um modelo que sempre prevê "saudável" alcançará alta acurácia, mas falhará em detectar falhas, comprometendo a segurança do sistema \cite{he2009learning}. Em \citeonline{alam2025robust}, os autores reportaram uma acurácia de 99,96\% para um modelo ensemble RF-LSTM Tuned KNN, mas complementaram a avaliação com precisão, recall e F1-score para abordar o desbalanceamento do conjunto de dados, garantindo uma análise mais robusta do desempenho em classes minoritárias.
+Na detecção de falhas em cadeias de isoladores e equipamentos de linhas de transmissão, a escolha das métricas de avaliação é fundamental para garantir a eficácia e confiabilidade dos modelos de redes neurais. Nos trabalhos revisados nesta pesquisa, as métricas mais utilizadas são a acurácia, a precisão, o recall, o F1-score, a área sob a curva ROC (AUC-ROC) e, para tarefas de detecção de objetos, a média da precisão média (mAP) \cite{zheng2022improved,alam2025robust,peng2023edf}. A acurácia, definida como a proporção de previsões corretas em relação ao total, pode ser enganosa em datasets desbalanceados, onde a classe de falhas é significativamente menos representada que a classe de isoladores saudáveis. Por exemplo, em um dataset com 95\% de amostras saudáveis, um modelo que sempre prevê ``saudável'' alcançará alta acurácia, mas falhará em detectar falhas, comprometendo a segurança do sistema \cite{he2009learning}. Em \citeonline{alam2025robust}, os autores reportaram uma acurácia de 99,96\% para um modelo ensemble RF-LSTM Tuned KNN, mas complementaram a avaliação com precisão, recall e F1-score para abordar o desbalanceamento do conjunto de dados, garantindo uma análise mais robusta do desempenho em classes minoritárias.
 
 A Figura~\ref{fig:roc_curve} ilustra uma curva ROC típica, que representa a relação entre a taxa de verdadeiros positivos (sensibilidade) e a taxa de falsos positivos para diferentes limiares de decisão. A área sob a curva (AUC) é uma métrica importante para avaliar a capacidade discriminativa do modelo.
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:roc_curve}Curva ROC}
+    \caption{\label{fig:roc_curve}Curva ROC.}
     \includegraphics[width=0.7\textwidth]{img/revisao_bibliografica/curva_roc.png}
     \fonte{\citeonline{torres2025}.}
 \end{figure}
@@ -407,7 +407,7 @@ A Tabela~\ref{tab:metricas_avaliacao_modelos} apresenta um resumo das principais
 
 \begin{table}[H]
 \centering
-\caption{Principais métricas de avaliação de desempenho de modelos}
+\caption{Principais métricas de avaliação de desempenho de modelos.}
 \label{tab:metricas_avaliacao_modelos}
 \begin{tabular}{|p{4.5cm}|p{10cm}|}
 \hline
@@ -437,70 +437,60 @@ A utilização de ferramentas de inteligência artificial para diagnósticos em 
 
 No setor elétrico, particularmente no sistema elétrico de potência, essas soluções têm ganhado relevância devido à criticidade dos ativos e ao impacto direto na continuidade do fornecimento de energia. A detecção precoce de falhas em componentes como isoladores, transformadores e linhas de transmissão é fundamental para evitar interrupções e reduzir custos de manutenção \cite{wang2023}. O uso de inteligência artificial permite analisar grandes volumes de dados e identificar padrões complexos, superando limitações das abordagens tradicionais.
 
-Diante desse cenário, diversos pesquisadores têm buscado aprimorar os métodos de diagnóstico automatizado, propondo novas técnicas e avaliando o impacto de diferentes estratégias de processamento de imagens e aprendizado profundo. As próximas subseções apresentam uma revisão dos principais trabalhos relacionados, com o objetivo de contextualizar a importância do tema e caracterizar o estado da arte na área.
+Diante desse cenário, diversos pesquisadores têm buscado aprimorar os métodos de diagnóstico automatizado. Os trabalhos selecionados são apresentados em dois grupos, conforme o papel que atribuem ao pré-processamento. O primeiro reúne estudos de detecção de falhas em isoladores, nos quais a contribuição está na arquitetura do modelo e o pré-processamento se limita, em geral, ao redimensionamento e à normalização. O segundo reúne estudos que tomam o pré-processamento como objeto de investigação. Como esse tipo de comparação ainda é raro no domínio de isoladores, o segundo grupo recorre a trabalhos de imagens médicas, área em que a questão foi estudada de forma direta. Em cada grupo, os trabalhos são comparados pelo modelo empregado, pelo conjunto de dados, pela métrica reportada e pelo tratamento dado às imagens.
 
-\subsection{Análise Sustentável da Detecção de Falhas em Isoladores Baseada em Otimização Visual Refinada}
-O primeiro estudo aborda a detecção de falhas em isoladores em linhas de transmissão aéreas, destacando a vulnerabilidade desses componentes a fatores ambientais. A inspeção manual é ineficaz devido ao alto volume de dados e à complexidade dos fundos das imagens, levando à aplicação da rede neural convolucional de atenção regressiva (RA-CNN). O método proposto melhora a acurácia da detecção ao empregar extração de características em múltiplas escalas e operações recursivas, com otimização pelo algoritmo de Enxame de Partículas (PSO). Os resultados indicam que a RA-CNN (1+2+3) atinge 85,3\% de acurácia, superando os modelos FCAN e MG-CNN. Além disso, a abordagem proposta demonstra maior eficiência em tempo real, atingindo 25,4 FPS. \cite{wang2023}
+\subsection{Detecção de falhas em isoladores com aprendizado profundo}
 
-\subsection{Detecção de Falhas em Isoladores em Imagens Aéreas de Linhas de Transmissão de Alta Voltagem Baseada em Modelo de Aprendizado Profundo}
-O segundo estudo foca na detecção de falhas em isoladores por meio de imagens aéreas, utilizando um modelo YOLO modificado, denominado CSPD-YOLO, baseado no YOLO-v3 e na Rede Parcial de Estágio Cruzado. A pesquisa envolve a criação do conjunto de dados 'InSF-detection', composto por 1.331 imagens e 2.104 falhas rotuladas. O modelo CSPD-YOLO se destaca por uma alta acurácia (AP = 98,18\%) e eficiência no processamento (0,011 s), superando modelos tradicionais como YOLO-v3 e YOLO-v4. A análise qualitativa indica que o método é eficaz mesmo em cenários complexos, como presença de rios, vegetação e torres de energia. \cite{liu2021}
+\citeonline{wang2023} tratam a detecção de falhas em isoladores de linhas aéreas, componentes expostos a fatores ambientais e fotografados sobre fundos complexos. Os autores propõem uma rede neural convolucional de atenção regressiva (RA-CNN), que extrai características em múltiplas escalas por operações recursivas e tem seus parâmetros ajustados pelo algoritmo de Enxame de Partículas (PSO). A configuração RA-CNN (1+2+3) atinge 85,3\% de acurácia, superando os modelos FCAN e MG-CNN, e processa 25,4 quadros por segundo (FPS).
 
-\subsection{Detecção de Defeitos em Isoladores por Imagem Baseada em Processamento Morfológico e Aprendizado Profundo}
-O terceiro estudo propõe um método híbrido para detecção de defeitos em isoladores, combinando aprendizado profundo (Faster RCNN) com processamento morfológico. A segmentação das imagens utiliza técnicas de transformação de forma para identificação e separação de isoladores, enquanto a detecção de falhas é realizada por um modelo matemático aplicado a imagens binárias. O Faster RCNN alcança AP = 0,9175 e \textit{recall} = 0,98, superando abordagens baseadas em ResNet, YOLO e LBP+SVM. Além disso, a análise de desempenho em diferentes níveis de voltagem e condições de ruído demonstra a robustez do modelo \cite{zhang2022}.
-O processo de segmentação realizado no trabalho é apresentado na Figura \ref{fig:segmentacao_zhang2022}.
+\citeonline{liu2021} também trabalham com imagens aéreas, mas por meio de um detector de objetos. O modelo CSPD-YOLO, derivado do YOLO-v3 com a Rede Parcial de Estágio Cruzado, foi avaliado no conjunto InSF-detection, criado pelos autores com 1.331 imagens e 2.104 falhas rotuladas. O modelo alcança AP de 98,18\% e tempo de processamento de 0,011~s por imagem, o equivalente a cerca de 91~FPS, superando o YOLO-v3 e o YOLO-v4. Os autores relatam bom comportamento em cenas com rios, vegetação e torres de energia ao fundo. Na comparação entre detectores, a taxa de quadros depende do hardware utilizado, de modo que medidas de complexidade computacional, como o número de parâmetros e de operações, permitem uma comparação mais justa. Cabe observar ainda que o custo de inferência tende a ser baixo frente ao de treinamento, e é este último que limita o número de configurações que podem ser avaliadas.
+
+Diferentemente dos dois estudos anteriores, \citeonline{zhang2022} incluem uma etapa explícita de tratamento das imagens. O método combina o Faster RCNN com processamento morfológico: a segmentação, por transformações de forma, separa os isoladores do fundo, e a falha é identificada por um modelo matemático aplicado à imagem binária resultante. O Faster RCNN alcança AP de 0,9175 e recall de 0,98, superando abordagens baseadas em ResNet, YOLO e LBP+SVM, e mantém o desempenho em diferentes níveis de tensão e de ruído. O processo de segmentação é apresentado na Figura \ref{fig:segmentacao_zhang2022}.
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:segmentacao_zhang2022}Segmentação de isoladores}
+    \caption{\label{fig:segmentacao_zhang2022}Segmentação de isoladores.}
     \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/segmentacao_zhang2022.png}
     \fonte{\citeonline{zhang2022}.}
 \end{figure}
 
-\subsection{Detecção Melhorada de Defeitos em Isoladores Utilizando YOLOv7}
-O estudo de \citeonline{zheng2022improved} aborda a detecção de defeitos em isoladores utilizando um modelo YOLOv7 modificado por meio de diversas otimizações em sua arquitetura e processo de treinamento. O trabalho foca na detecção de defeitos em imagens com fundos complexos, utilizando um conjunto de dados com 1600 imagens para o experimento.
-
-A abordagem proposta não utiliza aprendizado por transferência, mas sim melhorias diretas no modelo. As principais modificações incluem:
+Por fim, \citeonline{zheng2022improved} atuam sobre o modelo e o treinamento, e não sobre as imagens. A partir do YOLOv7, avaliado em um conjunto de 1.600 imagens com fundos complexos e sem uso de \textit{transfer learning}, os autores introduzem as seguintes modificações:
 \begin{itemize}
-    \item O uso do algoritmo \textbf{K-means++} para gerar caixas de âncora (\textit{anchor boxes}) mais adequadas aos alvos.
-    \item A adição dos módulos \textbf{Coordinate Attention (CoordAtt)} e \textbf{HorBlock} para aprimorar a extração de características e focar em informações relevantes.
-    \item A implementação da função de perda \textbf{SIoU} para acelerar a convergência do modelo e da \textbf{focal loss} para lidar com o desbalanceamento entre amostras positivas e negativas.
+    \item o uso do algoritmo \textbf{K-means++} para gerar caixas de âncora (\textit{anchor boxes}) mais adequadas aos alvos;
+    \item a adição dos módulos \textbf{Coordinate Attention (CoordAtt)} e \textbf{HorBlock} para aprimorar a extração de características;
+    \item a função de perda \textbf{SIoU}, para acelerar a convergência, e a \textbf{focal loss}, para lidar com o desbalanceamento entre amostras positivas e negativas.
 \end{itemize}
 
-Os resultados demonstram que o modelo melhorado é eficaz na detecção de defeitos pequenos, como \textit{flashovers} por poluição, alcançando uma precisão média (mAP) de 93,8\%. Este desempenho supera o modelo YOLOv7 original, bem como outras abordagens como Faster R-CNN e YOLOv5s.
+O modelo modificado alcança mAP de 93,8\% e é eficaz na detecção de defeitos pequenos, como \textit{flashovers} por poluição, superando o YOLOv7 original, o Faster R-CNN e o YOLOv5s.
 
-\subsection{Comparando redes neurais convolucionais e técnicas de pré- processamento para classificação de células HEp-2 em imagens de imunofluorescência}
-A pesquisa avalia seis estratégias de pré-processamento e cinco arquiteturas de CNNs de última geração para classificar células HEp-2 em imagens de imunofluorescência, uma tarefa crítica em diagnósticos médicos. Métodos como aumento de dados (rotações, espelhamentos), ajuste fino e otimização de hiperparâmetros foram testados em conjunto com arquiteturas como Inception-V3 e ResNet. Surpreendentemente, o melhor desempenho, com 98,28\% de precisão, foi alcançado ao treinar o modelo Inception-V3 do zero, utilizando apenas aumento de dados sem pré-processamento adicional. A conclusão sugere que, para esse tipo de imagem, técnicas tradicionais de pré-processamento podem ser menos impactantes quando o aumento de dados é bem implementado, desafiando a necessidade de etapas complexas de preparação. A contribuição do estudo está em mostrar que, em cenários específicos como imagens médicas de imunofluorescência, estratégias simples podem superar abordagens mais elaboradas, oferecendo uma alternativa eficiente para aplicações práticas em classificação \cite{rodrigues2020comparing}.
-A Figura \ref{fig:preprocessing_rodrigues2020comparing} apresenta os métodos e combinações de pré-processamentos utilizados no trabalho.
+Comparados entre si, os quatro trabalhos compartilham o mesmo tipo de imagem, a inspeção aérea de isoladores, mas não o mesmo conjunto de dados nem a mesma métrica: \citeonline{wang2023} reportam acurácia, enquanto os demais reportam AP ou mAP, o que impede a comparação direta dos valores. Em \citeonline{wang2023} e \citeonline{liu2021}, o tratamento das imagens se limita ao redimensionamento e à normalização. \citeonline{zhang2022} usam a segmentação como etapa auxiliar da detecção, e \citeonline{zheng2022improved} concentram os ganhos na arquitetura e na função de perda. Em nenhum deles o efeito do pré-processamento é medido de forma isolada.
+
+\subsection{Efeito do pré-processamento sobre redes neurais convolucionais}
+
+A pergunta deixada em aberto pelo grupo anterior, isto é, quanto o pré-processamento altera o desempenho de uma CNN, foi estudada de forma direta em imagens médicas, cujas dificuldades (pouca disponibilidade de amostras rotuladas, variação de iluminação e de contraste e ruído de aquisição) são semelhantes às das imagens de inspeção.
+
+\citeonline{rodrigues2020comparing} compararam seis estratégias de pré-processamento e cinco arquiteturas de CNN na classificação de células HEp-2 em imagens de imunofluorescência. Foram testados redimensionamento, alongamento de contraste, equalização de histograma e subtração da média, além de aumento de dados, ajuste fino e otimização de hiperparâmetros. O melhor resultado, 98,28\% de precisão, foi obtido pelo Inception-V3 treinado do zero, com aumento de dados e sem pré-processamento adicional. A Figura \ref{fig:preprocessing_rodrigues2020comparing} apresenta os métodos e as combinações avaliados.
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:preprocessing_rodrigues2020comparing}Etapas do método proposto}
+    \caption{\label{fig:preprocessing_rodrigues2020comparing}Etapas do método proposto.}
     \includegraphics[width=0.6\textwidth]{img/trabalhos_relacionados/preprocessing_rodrigues2020comparing.png}
     \fonte{\citeonline{rodrigues2020comparing}.}
 \end{figure}
 
-\subsection{Efeitos do pré-processamento de imagens histopatológicas em redes neurais convolucionais}
-O artigo analisa como diferentes níveis de pré-processamento afetam a classificação de imagens histopatológicas por CNNs, dividindo os dados em quatro categorias: imagens originais, pré-processadas normalmente (com redução de ruído e aprimoramento de células), outras pré-processadas normalmente e excessivamente pré-processadas (com operações morfológicas adicionais). Os experimentos revelam que o pré-processamento normal melhora a precisão ao remover ruídos de fundo e realçar características celulares, mas o excesso de processamento não agrega valor e pode até degradar o desempenho ao eliminar informações úteis. A conclusão enfatiza a importância de um equilíbrio no pré-processamento, recomendando ajustes moderados para maximizar a eficácia das CNNs em imagens histopatológicas. A contribuição do trabalho é fornecer uma análise comparativa detalhada que orienta pesquisadores e profissionais na escolha de técnicas de pré-processamento, evitando exageros que comprometam a qualidade dos dados em aplicações médicas \cite{ozturk2018histopathological}.
+\citeonline{ozturk2018histopathological} chegaram a uma conclusão intermediária em imagens histopatológicas. Os autores dividiram os dados em imagens originais, imagens com pré-processamento moderado (remoção de fundo, filtros de suavização e equalização de histograma) e imagens com pré-processamento excessivo (operações morfológicas adicionais e limiar adaptativo). O tratamento moderado melhorou a precisão ao remover ruído de fundo e realçar as células, enquanto o excesso de processamento eliminou informação útil e degradou o desempenho.
 
-\subsection{O impacto de técnicas de pré-processamento e pós-processamento de imagens em frameworks de aprendizado profundo: uma revisão abrangente para análise de imagens de patologia digital}
-Este trabalho explora como técnicas tradicionais de pré- e pós-processamento de imagens, como redução de ruído, correção de iluminação e segmentação, melhoram o desempenho de redes neurais em tarefas de patologia digital, incluindo classificação (tecido saudável vs. canceroso), detecção (contagem de linfócitos) e segmentação (núcleos e glândulas). Ao analisar uma ampla gama de estudos, os autores concluem que essas técnicas são indispensáveis para lidar com a variabilidade e complexidade das imagens médicas, melhorando significativamente a precisão e a robustez dos modelos de aprendizado profundo. A revisão destaca que o pós-processamento, como refinamento de contornos, também desempenha um papel crucial em tarefas de segmentação. A contribuição do artigo está em consolidar evidências sobre a eficácia dessas abordagens, oferecendo um guia abrangente para pesquisadores que buscam integrar métodos tradicionais ao treinamento de redes neurais, especialmente em contextos de patologia digital onde a qualidade dos dados é crítica \cite{Salvi2021}.
+\citeonline{Salvi2021}, em uma revisão sobre patologia digital, analisam técnicas de pré-processamento e de pós-processamento, como redução de ruído, correção de iluminação, normalização de cor, remoção de artefatos, seleção de \textit{patches} e refinamento de contornos, em tarefas de classificação, detecção e segmentação. A conclusão é favorável ao uso dessas técnicas, que melhoram a precisão e a robustez dos modelos e reduzem o tempo computacional.
 
-\subsection{Resumo dos Trabalhos}
+Os três trabalhos chegam, portanto, a conclusões distintas sobre a mesma questão: o pré-processamento foi dispensável em \citeonline{rodrigues2020comparing}, útil apenas em dose moderada em \citeonline{ozturk2018histopathological} e recomendado em \citeonline{Salvi2021}. A divergência indica que o efeito depende do tipo de imagem, da técnica e do modelo, e que não pode ser transferido de um domínio para outro sem uma avaliação própria.
 
-Diversos estudos abordam o impacto do pré-processamento de imagens na análise por redes neurais convolucionais (CNNs) e outros modelos de aprendizado profundo. O estudo de \citeonline{liu2021} e \citeonline{wang2023} optam por não realizar processamentos significativos, utilizando apenas redimensionamento e normalização.
+\subsection{Síntese e lacuna}
 
-Por outro lado, \citeonline{ozturk2018histopathological} investigam diferentes algoritmos de pré-processamento, incluindo remoção de fundo, filtros de suavização e equalização de histograma, além de um método de sobre-processamento baseado em limiar adaptativo. \citeonline{rodrigues2020comparing} testam técnicas como redimensionamento, alongamento de contraste, equalização de histograma e subtração da média, constatando que o uso de imagens originais favorece o desempenho da CNN, enquanto o data augmentation tem impacto positivo. \citeonline{Salvi2021} destacam que técnicas como remoção de artefatos, normalização de cor e seleção de patches melhoram a precisão dos modelos e reduzem o tempo computacional. Por fim, \citeonline{zhang2022} exploram a segmentação de isoladores para otimizar a classificação.
+A Tabela \ref{tab:comparacao_de_trabalhos_relacionados} resume o efeito do pré-processamento relatado em cada trabalho. Incluiu-se também o estudo de \citeonline{zou2024bolt}, que aplicou \textit{transfer learning} à detecção de defeitos em parafusos de linhas de transmissão.
 
-\subsection{Justificativa da Relevância da Metodologia Proposta}
-
-Os trabalhos analisados demonstram a importância do pré-processamento na análise de imagens, mas também indicam que determinadas abordagens podem comprometer o desempenho da CNN. Em especial, \citeonline{rodrigues2020comparing} evidenciam que a eliminação de ruídos e artefatos pode não ser sempre benéfica. Além disso, \citeonline{Salvi2021} reforçam que técnicas de segmentação e normalização podem aprimorar a análise quando aplicadas corretamente. No entanto, nenhum dos estudos analisados aborda a metodologia específica proposta nesta dissertação, o que destaca sua inovação e potencial contribuição para a área.
-
-\subsection{Tabela Comparativa dos Trabalhos}
-
-A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de diferentes estudos sobre pré-processamento de imagens e seu impacto nos modelos de classificação de imagens. Os estudos variam desde melhorias no desempenho até riscos de sobre-processamento, destacando a falta de consenso e a necessidade de novas abordagens. A metodologia proposta neste trabalho busca preencher essa lacuna ao introduzir um método inovador para determinar os processamentos mais eficientes e otimizar os parâmetros de processamento, oferecendo uma solução mais robusta e adaptável para análise de imagens.
-
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\caption{\label{tab:comparacao_de_trabalhos_relacionados}Comparação dos trabalhos relacionados.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{|l|p{11cm}|}
 \hline
@@ -508,36 +498,30 @@ A tabela \ref{tab:comparacao_de_trabalhos_relacionados} compara os resultados de
 \hline
 \citeonline{liu2021} & Sem impacto significativo \\
 \hline
-\citeonline{ozturk2018histopathological} & Melhorou contraste, mas risco de sobre-processamento \\
+\citeonline{ozturk2018histopathological} & Melhorou o contraste, mas com risco de sobre-processamento \\
 \hline
-\citeonline{rodrigues2020comparing} & Afetou negativamente a CNN; data augmentation foi positivo \\
+\citeonline{rodrigues2020comparing} & Afetou negativamente a CNN e o aumento de dados foi positivo \\
 \hline
-\citeonline{Salvi2021} & Melhorou precisão e reduziu tempo computacional \\
+\citeonline{Salvi2021} & Melhorou a precisão e reduziu o tempo computacional \\
 \hline
 \citeonline{wang2023} & Sem impacto significativo \\
 \hline
-\citeonline{zhang2022} & Melhorou o desempenho do modelo \\
+\citeonline{zhang2022} & A segmentação melhorou o desempenho do modelo \\
 \hline
-\citeonline{zheng2022improved} & Aumento de dados e aprendizado por transferência melhoraram detecção \\
+\citeonline{zheng2022improved} & Ganhos vieram de modificações na arquitetura e na função de perda \\
 \hline
-\citeonline{zou2024bolt} & Aprendizado por transferência eficaz para defeitos em parafusos \\
+\citeonline{zou2024bolt} & \textit{Transfer learning} eficaz para defeitos em parafusos \\
 \hline
 \end{tabular}
 }
-\caption{Comparação dos trabalhos relacionados}
-\label{tab:comparacao_de_trabalhos_relacionados}
+\fonte{Autor.}
 \end{table}
 
-A análise desses estudos reforça a lacuna existente na literatura e a necessidade de uma nova abordagem, como a metodologia proposta nesta dissertação.
-A proposta de um método para determinar os processamentos mais eficientes e otimizar os parâmetros de processamento representa uma contribuição significativa para a área de análise de imagens. Através da combinação de técnicas de pré-processamento adaptativo e otimização de parâmetros, o trabalho busca não apenas melhorar o desempenho dos modelos de aprendizado profundo, mas também oferecer uma solução prática e eficiente para cenários complexos. Essa abordagem pode impactar positivamente diversas áreas, como diagnóstico médico, inspeção industrial e análise de imagens aéreas, ao proporcionar resultados mais precisos e confiáveis. Além disso, a metodologia proposta pode servir como base para futuras pesquisas e aplicações em diferentes contextos, ampliando as possibilidades de utilização das redes neurais em tarefas desafiadoras de classificação e detecção de objetos em imagens.
-
-\subsection{Considerações sobre os trabalhos relacionados}
-
-A metodologia apresentada neste trabalho se diferencia dos estudos revisados ao introduzir um novo enfoque que não foi explorado anteriormente. Enquanto os trabalhos existentes se concentram em construção de modelos de redes neurais e utilização de técnicas tradicionais de pré-processamento e normalização, a metodologia deste trabalho propõe a criação de um método para determinar os processamentos mais eficientes das imagens, além de um método de otimização dos parâmetros de processamento. Além disso, a pesquisa busca integrar novas abordagens que possam aprimorar a análise de dados em contextos variados, contribuindo para a evolução das técnicas de aprendizado profundo. A implementação dessas novas abordagens poderá oferecer insights valiosos para futuras investigações e aplicações práticas.
+Os estudos variam de melhorias no desempenho a riscos de sobre-processamento, o que mostra a falta de consenso sobre o tema. Nos trabalhos voltados a isoladores, o pré-processamento não é tratado como variável de estudo. Nos trabalhos que o tratam como variável, o domínio é outro e a escolha das técnicas é feita uma única vez, sem ajuste de parâmetros. A metodologia proposta nesta dissertação busca ocupar esse espaço, ao definir um procedimento para comparar, selecionar e combinar técnicas de pré-processamento e para ajustar seus parâmetros de forma automática, aplicado à detecção de falhas em cadeias de isoladores.
 
 \section{Considerações finais do capítulo}
 
-Neste capítulo, foram apresentados os principais conceitos e técnicas de processamento de imagens, redes neurais, estratégias para lidar com escassez e desbalanceamento de dados, as métricas de avaliação de desempenho de modelos e os trabalhos relacionados aplicados à detecção de falhas em linhas de transmissão. A revisão evidenciou que o uso de métodos avançados de processamento de imagens e aprendizado profundo é fundamental para garantir a confiabilidade e eficiência do Sistema Elétrico de Potência, especialmente em cenários desafiadores, como a inspeção de grandes extensões e a identificação de defeitos raros.
+Neste capítulo, foram apresentados os principais conceitos e técnicas de processamento de imagens, redes neurais, estratégias para lidar com escassez e desbalanceamento de dados, as métricas de avaliação de desempenho de modelos e os trabalhos relacionados aplicados à detecção de falhas em linhas de transmissão. A revisão evidenciou que o uso de métodos avançados de processamento de imagens e aprendizado profundo é fundamental para garantir a confiabilidade e eficiência do SEP, especialmente em cenários desafiadores, como a inspeção de grandes extensões e a identificação de defeitos raros.
 
 A escolha adequada das técnicas de pré-processamento, arquitetura de redes neurais e estratégias para tratar limitações dos datasets impacta diretamente na robustez e precisão dos modelos desenvolvidos. Além disso, a seleção criteriosa das métricas de avaliação permite uma análise mais completa do desempenho, especialmente em situações de desbalanceamento entre classes.
 

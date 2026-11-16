@@ -2,6 +2,15 @@
 
 Os isoladores elétricos são componentes fundamentais em linhas de transmissão e distribuição de energia, responsáveis por sustentar mecanicamente os condutores e por garantir o isolamento elétrico entre as partes energizadas e as estruturas aterradas. Em linhas de alta tensão, esses componentes são normalmente agrupados em cadeias de isoladores, que ficam expostas de forma contínua a condições ambientais severas, como variações de temperatura, umidade, poluição e descargas atmosféricas. Ao longo do tempo, essa exposição favorece o surgimento de falhas, como trincas, contaminação superficial, perfurações e rupturas, que comprometem a capacidade de isolamento e a confiabilidade do sistema elétrico.
 
+A Figura \ref{fig:isoladores_cplid} mostra duas cadeias de isoladores fotografadas por drone em linhas de transmissão. Em (a), a cadeia está íntegra. Em (b), a região destacada indica um disco ausente, defeito estrutural que reduz o número de unidades isolantes em série e, com isso, a suportabilidade dielétrica da cadeia.
+
+\begin{figure}[H]
+    \centering
+    \caption{\label{fig:isoladores_cplid}Cadeias de isoladores de linhas de transmissão: (a) cadeia sem defeito e (b) cadeia com disco ausente, destacado em vermelho.}
+    \includegraphics[width=1\textwidth]{img/introducao/isoladores_cplid.jpg}
+    \fonte{Adaptado de \citeonline{tao2020cplid}.}
+\end{figure}
+
 A identificação precoce dessas falhas é essencial para evitar interrupções no fornecimento de energia, reduzir custos de manutenção e prevenir riscos à segurança das instalações e das pessoas. Tradicionalmente, a inspeção de cadeias de isoladores é realizada de forma visual e manual, por equipes especializadas, o que a torna lenta, custosa e sujeita à subjetividade e a erros humanos. Nesse contexto, técnicas de processamento de imagem associadas a modelos de aprendizado de máquina despontam como alternativa promissora para automatizar a detecção e a classificação de falhas, tornando a inspeção mais rápida, econômica e reprodutível.
 
 A eficácia desses sistemas automatizados depende, em grande medida, das técnicas de processamento de imagem empregadas e da forma como são combinadas e ajustadas. Diferentes técnicas, parâmetros e arquiteturas de rede neural podem produzir resultados bastante distintos para um mesmo problema, o que torna relevante o estudo sistemático de como comparar, selecionar, combinar e aprimorar essas técnicas no domínio específico da detecção de falhas em cadeias de isoladores.
@@ -23,11 +32,11 @@ O objetivo geral deste estudo é desenvolver uma metodologia capaz de comparar, 
 Para alcançar esse objetivo, foram definidos os seguintes objetivos específicos:
 
 \begin{itemize}
-    \item Estabelecer métricas para avaliar a eficácia dos processamentos de imagem.
-    \item Determinar o tipo de modelo de redes neurais ideal para avaliar o desempenho dos processamentos.
-    \item Construir modelos de redes neurais destinados à avaliação do desempenho das técnicas de processamento de imagem, sem o intuito de encontrar um modelo definitivo.
+    \item Estabelecer métricas (acurácia, precisão, recall e F1-score) para medir o efeito de cada processamento de imagem sobre o desempenho de um modelo de classificação.
+    \item Determinar o tipo de modelo de rede neural adequado para avaliar o desempenho dos processamentos.
+    \item Construir uma rede neural convolucional própria, de pequeno porte, destinada à avaliação do desempenho das técnicas de processamento de imagem, sem o intuito de encontrar um modelo definitivo.
     \item Analisar o impacto da escolha do modelo de rede neural no desempenho do processamento, considerando que diferentes modelos podem gerar diferentes resultados para um mesmo processamento.
-    \item Avaliar a influência do dataset na eficácia do processamento, considerando possíveis variações nos resultados devido à utilização de diferentes conjuntos de dados.
+    \item Avaliar a influência do dataset no desempenho obtido com cada processamento, considerando possíveis variações nos resultados devido à utilização de diferentes conjuntos de dados.
     \item Desenvolver uma metodologia para o aprimoramento dos processamentos de imagem por meio da combinação de diferentes abordagens unitárias.
     \item Criar um método de ajuste automático de parâmetros dos processamentos de imagem, visando otimizar seus resultados sem a necessidade de intervenção manual extensa.
 \end{itemize}

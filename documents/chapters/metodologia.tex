@@ -6,19 +6,19 @@ A metodologia proposta neste estudo tem como objetivo desenvolver um procediment
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_geral}Fluxograma geral da metodologia, integrando todas as etapas principais}
+    \caption{\label{fig:fluxograma_geral}Fluxograma geral da metodologia.}
     \includegraphics[width=0.5\textwidth]{img/metodologia - geral.png}
     \fonte{Autor.}
 \end{figure}
 
-Conforme a Figura \ref{fig:fluxograma_geral}, o fluxo parte do bloco ``Início'' e percorre, em sequência, as etapas de ``Seleção e validação do dataset'', ``Pré-processamento'', ``Ajuste de parâmetros'', ``Escolha e construção do modelo'' e ``Treinamento'', até a ``Avaliação e ajustes'', encerrando em ``Conclusões e recomendações''. O caráter iterativo é dado pelos ciclos de ``Avaliação e ajustes'', que retroalimentam as fases de ``Pré-processamento'' e de ``Escolha e construção do modelo'', permitindo o refinamento contínuo das técnicas e dos parâmetros a cada iteração. A divisão em módulos facilita a identificação e a correção de problemas em cada etapa de forma isolada, sem comprometer o restante do processo.
+Conforme a Figura \ref{fig:fluxograma_geral}, o fluxo parte do bloco ``Início'' e percorre, em sequência, as etapas de ``Seleção e validação do dataset'', ``Pré-processamento'', ``Ajuste de parâmetros'', ``Escolha e construção do modelo'' e ``Treinamento'', até a ``Avaliação e ajustes'', encerrando em ``Conclusões e recomendações''. O caráter iterativo é dado pelos ciclos de ``Avaliação e ajustes'', que retroalimentam as fases de ``Pré-processamento'' e de ``Escolha e construção do modelo'', permitindo o refinamento contínuo das técnicas e dos parâmetros a cada iteração. Em cada retorno, o conjunto de dados é novamente processado com as técnicas ou os parâmetros revistos e o modelo é treinado outra vez a partir de pesos iniciais, e não a partir do modelo treinado na iteração anterior. Dessa forma, cada iteração mede o efeito da configuração vigente sem herdar o aprendizado obtido com a configuração anterior. A divisão em módulos facilita a identificação e a correção de problemas em cada etapa de forma isolada, sem comprometer o restante do processo.
 
 Cada uma dessas etapas principais desdobra-se em um conjunto de operações e decisões, detalhado no fluxograma da Figura \ref{fig:fluxograma_metodologia}, no qual os blocos individuais aparecem agrupados segundo as etapas do fluxo geral apresentado na Figura \ref{fig:fluxograma_geral}.
 
-\begin{figure}[H]
+\begin{figure}[p]
     \centering
-    \caption{\label{fig:fluxograma_metodologia}Fluxograma detalhado da metodologia de processamento de imagens}
-    \includegraphics[width=0.5\textwidth]{img/metodologia.png}
+    \caption{\label{fig:fluxograma_metodologia}Fluxograma detalhado da metodologia de processamento de imagens.}
+    \includegraphics[height=0.82\textheight,width=\textwidth,keepaspectratio]{img/metodologia.png}
     \fonte{Autor.}
 \end{figure}
 
@@ -39,7 +39,7 @@ Esta seção detalha a etapa ``Seleção e validação do dataset'' do fluxo ger
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_selecao_dataset}Fluxograma da etapa de seleção e validação do dataset}
+    \caption{\label{fig:fluxograma_selecao_dataset}Fluxograma da etapa de seleção e validação do dataset.}
     \includegraphics[width=0.6\textwidth]{img/metodologia - 1 - seleção e validação do dataset.png}
     \fonte{Autor.}
 \end{figure}
@@ -47,9 +47,45 @@ Esta seção detalha a etapa ``Seleção e validação do dataset'' do fluxo ger
 \subsection{Definir métricas: acurácia, F1-score, tempo}
 O bloco ``Definir métricas: acurácia, F1-score, tempo'' estabelece os critérios objetivos de avaliação que orientam o processo. Nessa etapa são especificadas as métricas usadas para medir o desempenho das diferentes combinações de técnicas de processamento e de arquiteturas de modelo. Definir essas métricas previamente é importante porque elas orientam as decisões posteriores, da seleção das técnicas de pré-processamento à escolha dos modelos.
 
-As três métricas adotadas (acurácia, F1-score e tempo de processamento) fornecem uma visão abrangente do desempenho do sistema. A acurácia oferece uma medida geral de correção das predições; o F1-score é particularmente útil em datasets desbalanceados, por combinar precisão e recall; e o tempo de processamento é relevante em aplicações práticas nas quais a eficiência computacional é crítica, como na inspeção automatizada de linhas de transmissão.
+As três métricas adotadas (acurácia, F1-score e tempo de processamento) fornecem uma visão abrangente do desempenho do sistema. A acurácia oferece uma medida geral de correção das predições. O F1-score é particularmente útil em datasets desbalanceados, por combinar precisão e recall. O tempo de processamento é relevante em aplicações práticas nas quais a eficiência computacional é crítica, como na inspeção automatizada de linhas de transmissão.
 
-A dificuldade dessa etapa é baixa, de caráter essencialmente conceitual e de planejamento. Os principais riscos são a escolha de métricas inadequadas ao problema ou a omissão de métricas relevantes; nesses casos, os critérios são revistos ao longo do desenvolvimento, mantendo a coerência com os objetivos do estudo. Essa etapa estabelece as bases quantitativas para as comparações realizadas nas fases seguintes.
+Essas métricas são adequadas a problemas de classificação, que é o caso dos experimentos desta dissertação, mas a escolha depende do tipo de tarefa definido na etapa de construção do modelo \cite{sokolova2009systematic}. A Tabela \ref{tab:metricas_por_tarefa} relaciona as métricas usuais a cada tipo de tarefa e indica quando cada uma é mais informativa.
+
+\begin{table}[H]
+\centering
+\caption{\label{tab:metricas_por_tarefa}Métricas de avaliação por tipo de tarefa e situação de uso.}
+\small
+\begin{tabular}{|p{2.6cm}|p{3.6cm}|p{8.3cm}|}
+\hline
+\textbf{Tarefa} & \textbf{Métrica} & \textbf{Quando usar} \\
+\hline
+Classificação & Acurácia & Classes aproximadamente balanceadas. Em conjuntos desbalanceados, deve ser comparada ao piso obtido ao prever sempre a classe majoritária \cite{he2009learning}. \\
+\hline
+Classificação & Precisão & Quando o custo de um falso positivo é alto, por exemplo, enviar uma equipe de manutenção a um isolador íntegro. \\
+\hline
+Classificação & Recall & Quando o custo de um falso negativo é alto, como deixar de identificar um isolador defeituoso, situação típica da inspeção de linhas. \\
+\hline
+Classificação & F1-score & Quando precisão e recall importam ao mesmo tempo, sobretudo com classes desbalanceadas \cite{sokolova2009systematic}. \\
+\hline
+Classificação & Acurácia balanceada e F1 macro & Quando há várias classes com suportes muito diferentes, pois dão o mesmo peso a cada classe. \\
+\hline
+Classificação & AUC-ROC & Para comparar a capacidade de separação entre classes independentemente do limiar de decisão. \\
+\hline
+Detecção & IoU & Para medir a sobreposição entre a caixa prevista e a caixa anotada e decidir se uma detecção é correta. \\
+\hline
+Detecção & mAP & Para resumir precisão e recall de todas as classes em diferentes limiares de IoU, padrão em detecção de objetos. \\
+\hline
+Regressão & MAE e RMSE & Para medir o erro na unidade da variável prevista. O RMSE penaliza mais os erros grandes \cite{goodfellow2016deep}. \\
+\hline
+Regressão & R² & Para indicar a fração da variância da variável prevista que é explicada pelo modelo. \\
+\hline
+Todas & Tempo de inferência & Quando o modelo deve operar em tempo real ou em hardware embarcado. \\
+\hline
+\end{tabular}
+\fonte{Autor.}
+\end{table}
+
+A dificuldade dessa etapa é baixa, de caráter essencialmente conceitual e de planejamento. Os principais riscos são a escolha de métricas inadequadas ao problema ou a omissão de métricas relevantes. Nesses casos, os critérios são revistos ao longo do desenvolvimento, mantendo a coerência com os objetivos do estudo. Essa etapa estabelece as bases quantitativas para as comparações realizadas nas fases seguintes.
 
 \subsection{Selecionar dataset com imagens rotuladas}
 A etapa ``Selecionar dataset com imagens rotuladas'' é uma das que mais impactam a qualidade e a confiabilidade dos resultados. Nessa fase escolhe-se um conjunto de dados adequado, com imagens de cadeias de isoladores e anotações que indiquem a presença ou a ausência de falhas. O dataset deve apresentar diversidade suficiente em condições de iluminação, ângulos de captura, tipos de isoladores e variações de falhas, de modo a favorecer a capacidade de generalização dos modelos.
@@ -78,20 +114,22 @@ Esta seção detalha a etapa ``Pré-processamento'' do fluxo geral (Figura \ref{
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_preprocessamento}Fluxograma da etapa de pré-processamento}
+    \caption{\label{fig:fluxograma_preprocessamento}Fluxograma da etapa de pré-processamento.}
     \includegraphics[width=0.85\textwidth]{img/metodologia - 2 - pré-processamento.png}
     \fonte{Autor.}
 \end{figure}
 
 \subsection{Aplicar técnicas básicas: normalização, recorte, ruído}
-No bloco ``Aplicar técnicas básicas: normalização, recorte, ruído'', as imagens passam por processamentos essenciais ao desempenho dos modelos. Entre eles estão a normalização (padronização dos valores de pixel para escalas como [0,1] ou Z-score) \cite{sharma2024deep}, o redimensionamento e o recorte (ajuste das imagens às dimensões de entrada do modelo e extração de regiões de interesse) \cite{sharma2024deep} e a redução de ruído (com filtros como o de mediana ou o gaussiano) \cite{sharma2024deep}.
+No bloco ``Aplicar técnicas básicas: normalização, recorte, ruído'', as imagens passam por processamentos essenciais ao desempenho dos modelos. Entre eles estão a normalização (padronização dos valores de pixel para escalas como [0,1] ou Z-score), o redimensionamento e o recorte (ajuste das imagens às dimensões de entrada do modelo e extração de regiões de interesse) e a redução de ruído (com filtros como o de mediana ou o gaussiano) \cite{sharma2024deep}.
 
-Conforme \citeonline{sharma2024deep}, essas operações ``melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições''. A normalização favorece a convergência estável durante o treinamento, enquanto o recorte adequado direciona a atenção do modelo para as regiões mais relevantes da imagem.
+Recorte e ruído também aparecem entre as transformações de \textit{data augmentation}, mas com outro propósito. Neste bloco, as operações são determinísticas e aplicadas a todas as imagens, inclusive às de validação e de teste, para padronizar a entrada do modelo. No \textit{data augmentation}, tratado no bloco seguinte, as transformações são sorteadas a cada época e aplicadas apenas às imagens de treinamento, para aumentar a variabilidade dos exemplos. Da mesma forma, o item ``ruído'' deste bloco refere-se à redução de ruído, e não à adição de ruído usada como aumento de dados.
 
-A dificuldade dessa etapa é baixa a média, pois são técnicas bem estabelecidas na literatura. Se o desempenho do modelo piorar após a aplicação dessas técnicas, revisam-se os parâmetros ou a ordem de aplicação em busca de um equilíbrio adequado.
+Conforme \citeonline{sharma2024deep}, essas operações ``melhoram a qualidade das imagens, mas também garantem que os modelos sejam mais robustos e capazes de generalizar em diferentes condições''. A normalização favorece a convergência estável durante o treinamento \cite{sharma2024deep}, enquanto o recorte adequado concentra a entrada nas regiões mais relevantes da imagem \cite{sciencedirect2023normalization}.
+
+A dificuldade dessa etapa é baixa a média, pois são técnicas bem estabelecidas na literatura. Se o desempenho do modelo piorar após a aplicação dessas técnicas, revisam-se os parâmetros ou a ordem de aplicação em busca de um equilíbrio adequado. Quando uma técnica melhora o desempenho em um conjunto de dados e o piora em outro, ela é mantida apenas no conjunto em que trouxe ganho, pois a metodologia seleciona o pré-processamento separadamente para cada conjunto. Da mesma forma, quando as métricas divergem, prevalece o F1-score, por ser menos sensível ao desbalanceamento das classes.
 
 \subsection{Aplicar data augmentation}
-O bloco ``Aplicar data augmentation'' expande artificialmente o dataset por meio de transformações que preservam as características essenciais das imagens, mas introduzem variabilidade capaz de melhorar a generalização do modelo. Entre as transformações usuais estão rotações, espelhamentos, ajustes de brilho e contraste, mudanças de escala e translações, que simulam diferentes condições de captura.
+O bloco ``Aplicar data augmentation'' expande artificialmente o dataset por meio de transformações que preservam as características essenciais das imagens, mas introduzem variabilidade capaz de melhorar a generalização do modelo \cite{shorten2019survey}. Entre as transformações usuais estão rotações, espelhamentos, ajustes de brilho e contraste, mudanças de escala e translações, que simulam diferentes condições de captura.
 
 O data augmentation é especialmente útil quando o dataset é limitado ou desbalanceado, por aumentar o número de amostras disponíveis para treinamento. Como aponta \citeonline{shorten2019survey}, técnicas de aumento de dados são importantes para a robustez de modelos de aprendizado profundo.
 
@@ -100,7 +138,7 @@ A dificuldade dessa etapa é baixa a média, mas exige cuidado para não aplicar
 \subsection{Combinar técnicas?}
 O bloco de decisão ``Combinar técnicas?'' define se múltiplas técnicas de processamento serão aplicadas em sequência, formando um pipeline mais elaborado. A decisão é estratégica: combinar técnicas pode produzir ganhos, mas também introduzir complexidade desnecessária ou degradar a qualidade da imagem.
 
-A decisão baseia-se nos resultados preliminares das técnicas aplicadas isoladamente e no conhecimento de domínio sobre quais combinações tendem a ser benéficas. Por exemplo, aplicar redução de ruído seguida de aumento de nitidez pode gerar imagens mais adequadas à detecção de defeitos.
+A decisão baseia-se nos resultados preliminares das técnicas aplicadas isoladamente e segue dois critérios. O primeiro é o desempenho: candidatam-se à combinação as técnicas que, isoladas, igualaram ou superaram a linha de base sem processamento em pelo menos um dos conjuntos de dados. O segundo é a complementaridade: combinam-se técnicas que atuam sobre aspectos diferentes da imagem, como um realce global de contraste seguido de uma equalização local, e evitam-se combinações redundantes ou opostas, como um desfoque seguido de aumento de nitidez. Por exemplo, aplicar redução de ruído seguida de aumento de nitidez pode gerar imagens mais adequadas à detecção de defeitos, desde que a primeira operação não remova os detalhes que a segunda pretende realçar.
 
 A dificuldade dessa etapa é baixa, por se tratar de uma decisão estratégica. Se a decisão for por combinar técnicas, o fluxo segue para a geração dos pipelines combinados; caso contrário, as técnicas são usadas de forma isolada.
 
@@ -109,7 +147,7 @@ O bloco ``Gerar pipeline de técnicas combinadas'' é executado quando se opta p
 
 Um pipeline pode consistir, por exemplo, em: normalização, redução de ruído, ajuste de contraste e aumento de nitidez. A ordem das operações é importante, pois sequências diferentes produzem resultados distintos.
 
-A dificuldade dessa etapa varia de média a alta, sobretudo pela grande quantidade de combinações possíveis e pela necessidade de identificar as sequências mais eficazes. Um risco comum é criar combinações que introduzam artefatos ou degradem a imagem. Se as combinações não trouxerem melhorias, exploram-se outras ordens de aplicação ou revisa-se a seleção de técnicas.
+A dificuldade dessa etapa varia de média a alta, sobretudo pela grande quantidade de combinações possíveis e pela necessidade de identificar as sequências mais eficazes. Um risco comum é criar combinações que introduzam artefatos ou degradem a imagem. Se as combinações não trouxerem melhorias, exploram-se outras ordens de aplicação ou revisa-se a seleção de técnicas. Como as métricas são calculadas sobre todo o conjunto de teste, uma técnica pode ser benéfica para parte das imagens e prejudicial para outra sem que isso apareça no valor agregado. Para identificar esses casos, recomenda-se examinar a matriz de confusão e as imagens classificadas incorretamente com e sem a técnica, o que indica em quais condições de captura ela ajuda ou atrapalha.
 
 \subsection{Usar técnicas isoladas}
 O bloco ``Usar técnicas isoladas'' é executado quando se opta por não combinar técnicas, aplicando e avaliando cada processamento de forma independente. Essa abordagem é mais simples e permite avaliar com clareza o impacto individual de cada técnica, o que facilita identificar quais processamentos são mais eficazes para o problema.
@@ -124,7 +162,7 @@ Esta seção detalha a etapa ``Ajuste de parâmetros'' do fluxo geral (Figura \r
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_ajuste_parametros}Fluxograma da etapa de ajuste de parâmetros}
+    \caption{\label{fig:fluxograma_ajuste_parametros}Fluxograma da etapa de ajuste de parâmetros.}
     \includegraphics[width=0.5\textwidth]{img/metodologia - 3 - ajustes de parâmetros.png}
     \fonte{Autor.}
 \end{figure}
@@ -132,7 +170,7 @@ Esta seção detalha a etapa ``Ajuste de parâmetros'' do fluxo geral (Figura \r
 \subsection{Otimizar parâmetros com busca automática}
 O bloco ``Otimizar parâmetros com busca automática'' substitui a otimização manual, muitas vezes inviável, pelo uso de algoritmos que buscam os valores adequados dos parâmetros das técnicas de processamento avaliadas. Esses parâmetros podem incluir, por exemplo, a intensidade de um filtro de desfoque, o limiar de um ajuste de contraste, os parâmetros de técnicas de redução de ruído ou os fatores de data augmentation.
 
-O objetivo é otimizar os resultados dos processamentos sem exigir intervenção manual extensa. A automação acelera o processo e pode revelar configurações difíceis de identificar de forma heurística. Métodos como busca em grade (grid search), busca aleatória (random search), otimização bayesiana, algoritmos genéticos e otimização por enxame de partículas podem ser empregados conforme a complexidade do espaço de parâmetros.
+O objetivo é otimizar os resultados dos processamentos sem exigir intervenção manual extensa. A automação acelera o processo e pode revelar configurações difíceis de identificar de forma heurística. Métodos como busca em grade (\textit{grid search}), busca aleatória (\textit{random search}) \cite{bergstra2012random}, otimização bayesiana \cite{snoek2012practical}, algoritmos genéticos e otimização por enxame de partículas \cite{kennedy1995particle} podem ser empregados conforme a complexidade do espaço de parâmetros. Bibliotecas como o Optuna \cite{akiba2019optuna} reúnem implementações desses métodos e podem ser usadas diretamente na etapa de ajuste.
 
 A dificuldade dessa etapa pode ser alta, pois envolve a escolha e a implementação de algoritmos de otimização apropriados e a definição de um espaço de busca adequado. Um risco comum é a convergência para ótimos locais ou o tempo computacional proibitivo. Se o ajuste automático não produzir melhorias significativas, pode-se alterar o algoritmo de otimização, redefinir as faixas de valores dos parâmetros ou adotar critérios de parada mais adequados.
 
@@ -144,7 +182,7 @@ Esta seção detalha a etapa ``Escolha e construção do modelo'' do fluxo geral
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_escolha_modelo}Fluxograma da etapa de escolha e construção do modelo}
+    \caption{\label{fig:fluxograma_escolha_modelo}Fluxograma da etapa de escolha e construção do modelo.}
     \includegraphics[width=1\textwidth]{img/metodologia - 4 - escolha e construção do modelo.png}
     \fonte{Autor.}
 \end{figure}
@@ -152,7 +190,7 @@ Esta seção detalha a etapa ``Escolha e construção do modelo'' do fluxo geral
 \subsection{Selecionar modelo: CNN, ResNet, YOLO}
 No bloco ``Selecionar modelo: CNN, ResNet, YOLO'' define-se a arquitetura de rede neural usada para avaliar o impacto das técnicas de processamento. A seleção baseia-se na natureza da tarefa (classificação, detecção ou regressão) e nas características do problema de detecção de falhas em isoladores.
 
-As opções cobrem diferentes abordagens: CNNs convencionais, para classificação básica; ResNet, para problemas que requerem redes mais profundas; e YOLO, para detecção de objetos em tempo real. A escolha da arquitetura é importante, pois diferentes tipos de rede possuem princípios de funcionamento e aplicações distintas.
+As opções cobrem diferentes abordagens: CNNs convencionais, para classificação básica, ResNet, para problemas que requerem redes mais profundas, e YOLO, para detecção de objetos em tempo real. Para a regressão, as mesmas arquiteturas de classificação podem ser usadas como extratoras de características, substituindo-se a camada de saída por neurônios de ativação linear, conforme descrito no bloco ``Montar modelo de regressão''. A escolha da arquitetura é importante, pois diferentes tipos de rede possuem princípios de funcionamento e aplicações distintas. Essa escolha também pode ser automatizada por bibliotecas de aprendizado de máquina automatizado, como o PyCaret \cite{ali2020pycaret}, voltado a dados tabulares, e o AutoKeras \cite{jin2019autokeras}, que busca arquiteturas de redes neurais para imagens. Neste trabalho, optou-se por fixar a arquitetura, para que a variação de desempenho entre as execuções pudesse ser atribuída ao pré-processamento.
 
 A dificuldade dessa etapa é relativamente baixa, por se tratar de uma decisão estratégica baseada nos requisitos do problema. Ainda assim, uma escolha inadequada pode comprometer os resultados. Se a arquitetura selecionada não apresentar o desempenho esperado, reavalia-se a escolha à luz das características dos dados e dos objetivos da aplicação.
 
@@ -168,7 +206,7 @@ O bloco ``Montar modelo de classificação'' é executado quando a tarefa é a c
 
 A configuração inclui a definição das camadas finais com um número de neurônios igual ao número de classes, a escolha de funções de ativação apropriadas (como a softmax, na classificação multiclasse) e a seleção de funções de perda adequadas (como a entropia cruzada). Também envolve a definição das métricas de avaliação relevantes, como acurácia, precisão, recall e F1-score.
 
-Nesse tipo de modelo, a função de perda usualmente adotada é a entropia cruzada categórica, definida pela Equação~\ref{eq:perda_classificacao}:
+Nesse tipo de modelo, a função de perda usualmente adotada é a entropia cruzada categórica, definida por:
 
 \begin{equation}
     L_{\text{class}} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(\hat{y}_{i,c})
@@ -184,7 +222,7 @@ O bloco ``Montar modelo de detecção'' é executado quando a tarefa é a detec�
 
 Essa configuração é mais complexa e envolve arquiteturas especializadas como YOLO e R-CNN. Inclui a definição de hiperparâmetros, a configuração de múltiplas escalas e o equilíbrio entre precisão de localização e de classificação. Entre as métricas de avaliação estão o mAP (mean Average Precision) e o IoU (Intersection over Union).
 
-Nesse tipo de modelo, a função de perda é composta, combinando a perda de localização das bounding boxes, a perda de confiança (presença ou ausência de objeto) e a perda de classificação, conforme a Equação~\ref{eq:perda_deteccao}:
+Nesse tipo de modelo, a função de perda é composta, combinando a perda de localização das bounding boxes, a perda de confiança (presença ou ausência de objeto) e a perda de classificação:
 
 \begin{equation}
     L_{\text{det}} = \lambda_{\text{loc}} L_{\text{loc}} + \lambda_{\text{conf}} L_{\text{conf}} + \lambda_{\text{cls}} L_{\text{cls}}
@@ -200,7 +238,7 @@ O bloco ``Montar modelo de regressão'' é executado quando a tarefa é a regres
 
 A configuração inclui camadas finais com ativação linear (ou outra apropriada a saídas contínuas), funções de perda para regressão (como MSE ou MAE) e métricas de avaliação como R², RMSE ou MAE. Essa abordagem pode ser útil quando se deseja uma avaliação mais detalhada do estado dos isoladores.
 
-Nesse tipo de modelo, a função de perda mais comum é o erro médio quadrático (MSE), definido pela Equação~\ref{eq:perda_regressao}:
+Nesse tipo de modelo, a função de perda mais comum é o erro médio quadrático (MSE), definido por:
 
 \begin{equation}
     L_{\text{reg}} = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2
@@ -217,7 +255,7 @@ Esta seção detalha a etapa ``Treinamento'' do fluxo geral (Figura \ref{fig:flu
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_treinamento}Fluxograma da etapa de treinamento}
+    \caption{\label{fig:fluxograma_treinamento}Fluxograma da etapa de treinamento.}
     \includegraphics[width=0.85\textwidth]{img/metodologia - 5 - treinamento.png}
     \fonte{Autor.}
 \end{figure}
@@ -239,7 +277,7 @@ Esta seção detalha a etapa ``Avaliação e ajustes'' do fluxo geral (Figura \r
 
 \begin{figure}[H]
     \centering
-    \caption{\label{fig:fluxograma_avaliacao}Fluxograma da etapa de avaliação e ajustes}
+    \caption{\label{fig:fluxograma_avaliacao}Fluxograma da etapa de avaliação e ajustes.}
     \includegraphics[width=0.85\textwidth]{img/metodologia - 6 - avaliação.png}
     \fonte{Autor.}
 \end{figure}
@@ -247,7 +285,7 @@ Esta seção detalha a etapa ``Avaliação e ajustes'' do fluxo geral (Figura \r
 \subsection{Avaliar com as métricas definidas}
 No bloco ``Avaliar com as métricas definidas'', o desempenho do sistema é quantificado com as métricas estabelecidas no início da metodologia: acurácia, F1-score e tempo de processamento. Essas métricas são calculadas e analisadas para fornecer uma visão do desempenho do modelo treinado.
 
-A acurácia oferece uma medida geral de correção das predições; o F1-score é particularmente útil em datasets desbalanceados, por combinar precisão e recall; e o tempo de processamento é relevante em aplicações práticas nas quais a eficiência computacional é crítica, como na inspeção automatizada de linhas de transmissão. Em tarefas de detecção de objetos, métricas adicionais como o mAP (mean Average Precision) também podem ser empregadas.
+Os critérios de uso de cada métrica são os apresentados na Tabela \ref{tab:metricas_por_tarefa}. Em tarefas de detecção de objetos, métricas adicionais como o mAP (mean Average Precision) também podem ser empregadas.
 
 A dificuldade dessa etapa é moderada e reside sobretudo na interpretação correta das métricas em diferentes contextos, especialmente diante de datasets desbalanceados. O objetivo é fornecer uma avaliação abrangente da detecção e da classificação das falhas, considerando que falsos negativos (falhas não detectadas) podem ter consequências graves em aplicações industriais.
 

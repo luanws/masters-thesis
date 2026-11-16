@@ -4,59 +4,99 @@
 Este capítulo apresenta os resultados obtidos com a aplicação da metodologia proposta. Inicia-se com a avaliação do impacto de diferentes técnicas de pré-processamento no desempenho de uma CNN e segue com a otimização de parâmetros de pré-processamento por busca em grade e por busca aleatória. Ao final, apresenta-se um experimento adicional em que a mesma varredura de pré-processamentos é repetida com o modelo de classificação da família YOLO, de modo a verificar em que medida os resultados obtidos dependem do modelo empregado.
 
 \section{Avaliação de Técnicas de Pré-Processamento em Redes Neurais Convolucionais para Classificação de Imagens}
+\label{sec:avaliacao_cnn}
 
-Esta seção descreve a avaliação conduzida para medir o impacto de diferentes técnicas de pré-processamento de imagens no desempenho de um modelo baseado em Redes Neurais Convolucionais (CNN). O estudo utilizou dois conjuntos de dados voltados à inspeção de infraestrutura elétrica (CPLID e DRNPW), com o objetivo de avaliar a eficácia de diferentes transformações visuais na classificação de falhas e componentes.
+Esta seção descreve a avaliação conduzida para medir o impacto de diferentes técnicas de pré-processamento de imagens no desempenho de uma CNN. O estudo utilizou dois conjuntos de dados voltados à inspeção de infraestrutura elétrica (CPLID e DRNPW), com o objetivo de avaliar o efeito de diferentes transformações visuais na classificação de falhas e componentes.
 
-A avaliação seguiu uma sequência estruturada: pré-processamento das imagens em resolução de $512 \times 512$ pixels, modelagem por CNN, predição e extração de métricas quantitativas.
+A avaliação seguiu uma sequência estruturada: divisão dos dados, redimensionamento e pré-processamento das imagens, treinamento da CNN, predição sobre o conjunto de teste e extração de métricas quantitativas.
 
 \subsection{Conjuntos de Dados Avaliados}
 A avaliação utilizou dois conjuntos de dados voltados ao monitoramento e à detecção de anomalias em isoladores de redes de transmissão:
 \begin{enumerate}
-    \item \textbf{CPLID (\textit{Chinese Power Line Insulator Dataset}):} conjunto de imagens de isoladores elétricos, anotados como normais ou defeituosos. O desafio consiste em identificar corretamente os isoladores com quebras ou anomalias físicas na estrutura.
-    \item \textbf{DRNPW:} conjunto de dados disponibilizado pela CPFL, composto por imagens capturadas por drones e voltado à identificação de aspectos específicos da infraestrutura. As imagens foram anotadas e categorizadas com base nos recortes visuais de interesse.
+    \item \textbf{CPLID (\textit{Chinese Power Line Insulator Dataset}) \cite{tao2020cplid}:} 848 imagens de cadeias de isoladores de linhas de transmissão capturadas por drone, com $1.152 \times 864$ pixels, das quais 600 mostram isoladores normais e 248 mostram isoladores com defeito. Cada imagem recebe um único rótulo, normal ou defeituoso, definido pela pasta em que está armazenada. As imagens defeituosas trazem ainda anotações no formato Pascal VOC com a caixa delimitadora do defeito, que não foram usadas na classificação. O defeito de interesse é estrutural, associado à ausência de disco (\textit{missing cap}). A Figura \ref{fig:isoladores_cplid}, no Capítulo 1, mostra um exemplo de cada classe.
+    \item \textbf{DRNPW:} 585 imagens de isoladores capturadas por drones em inspeções da CPFL, sobre fundos heterogêneos. As anotações foram geradas de forma automática, com uma categoria e uma caixa delimitadora por imagem. O conjunto declara 70 categorias, e a distribuição entre elas é fortemente desbalanceada, conforme detalhado na Seção \ref{sec:experimentos_yolo}. Como cada imagem tem uma única anotação, a tarefa também foi tratada como classificação da imagem inteira.
 \end{enumerate}
 
+Em ambos os conjuntos, as imagens foram divididas de forma aleatória, por imagem e sem estratificação por classe, em 80\% para treinamento, 15\% para validação e 5\% para teste. No CPLID, essa divisão resultou em 678 imagens de treinamento, 127 de validação e 43 de teste. No DRNPW, em 468, 87 e 30 imagens, respectivamente. O conjunto de validação acompanhou o treinamento, e as métricas reportadas foram calculadas sobre o conjunto de teste.
+
+Antes da aplicação das técnicas, todas as imagens foram redimensionadas para $512 \times 512$ pixels com a biblioteca Pillow \cite{clark2015pillow}, por interpolação bicúbica, sem recorte e sem preservação da proporção original. Esse redimensionamento já constitui um pré-processamento, pois a interpolação altera os valores dos pixels e, no CPLID, a mudança da proporção de 4:3 para 1:1 deforma as cadeias de isoladores. Como foi aplicado da mesma forma a todas as variantes, inclusive à amostra de controle, ele não interfere na comparação entre as técnicas.
+
 \subsection{Arquitetura do Modelo}
-Para garantir uma avaliação uniforme, foi implementada uma CNN clássica padronizada, o que permitiu isolar a variável independente do estudo (o pré-processamento). A arquitetura adotada é a seguinte:
+Para garantir uma avaliação uniforme, foi implementada uma CNN de pequeno porte, definida pelo autor nos moldes das redes convolucionais clássicas \cite{LeCun2015}, o que permitiu isolar a variável independente do estudo (o pré-processamento). A arquitetura adotada é a seguinte:
 \begin{itemize}
-    \item \textbf{Entrada:} tensores com dimensões definidas conforme as imagens processadas.
-    \item \textbf{Camadas de extração de características:} duas camadas convolucionais com 32 filtros (janelas $3 \times 3$) e ativação \textit{Rectified Linear Unit} (ReLU), seguidas por redução espacial com \textit{Max-Pooling} (janelas $4 \times 4$).
+    \item \textbf{Entrada:} tensores de $512 \times 512 \times 3$ para imagens coloridas e de $512 \times 512 \times 1$ para as técnicas que produzem imagens de um único canal.
+    \item \textbf{Camadas de extração de características:} duas camadas convolucionais com 32 filtros (janelas $3 \times 3$) e ativação \textit{Rectified Linear Unit} (ReLU), cada uma seguida por redução espacial com \textit{Max-Pooling} (janelas $4 \times 4$).
     \item \textbf{Camadas densas:} achatamento vetorial (\textit{Flatten}), seguido de uma camada densa com 8 unidades ocultas (ativação ReLU) e uma camada de saída com ativação \textit{Softmax}, dimensionada conforme o número de rótulos de cada \textit{dataset}.
 \end{itemize}
 
-A otimização dos pesos foi feita com o algoritmo Adam, usando a função de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}), por 50 épocas. Para ampliar a robustez e a generalização, aplicou-se \textit{data augmentation} em tempo de treino, com rotações, translações e inversões.
+A otimização dos pesos foi feita com o algoritmo Adam, com a taxa de aprendizado padrão da biblioteca Keras (0,001), lotes de 32 imagens e a função de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}), por 50 épocas. As métricas foram extraídas do modelo ao final da última época. Para ampliar a robustez e a generalização, aplicou-se \textit{data augmentation} em tempo de treino, apenas às imagens de treinamento e nos dois conjuntos de dados, com rotações aleatórias de até 360°, translações horizontais e verticais de até 10\% e inversões horizontais e verticais.
 
 \subsection{Técnicas de Pré-Processamento Avaliadas}
-Como variável independente, foram avaliadas diferentes técnicas de manipulação e filtragem de imagem antes do treinamento. As técnicas, aplicadas isoladamente ou em combinação (híbrida), são:
+Como variável independente, foram avaliadas diferentes técnicas de manipulação e filtragem de imagem antes do treinamento. As técnicas foram implementadas com as bibliotecas OpenCV \cite{bradski2000opencv} e Pillow \cite{clark2015pillow}, com um único conjunto de parâmetros para cada uma, indicado a seguir. Elas foram aplicadas isoladamente ou em combinação (híbrida):
 \begin{itemize}
-    \item \textbf{\textit{Adaptive Threshold}:} binarização adaptativa baseada em vizinhança gaussiana, que isola características a partir de limiares locais.
-    \item \textbf{CLAHE (\textit{Contrast Limited Adaptive Histogram Equalization}):} equalização de histograma adaptativa por regiões locais (\textit{grids}), que realça detalhes finos e o contraste de texturas sem superexposição nas bordas.
+    \item \textbf{\textit{Adaptive Threshold}:} binarização adaptativa da imagem em tons de cinza, em que o limiar de cada pixel é a média ponderada por uma gaussiana de sua vizinhança de $11 \times 11$ pixels, subtraída de uma constante igual a 2 \cite{Gonzalez2008}.
+    \item \textbf{CLAHE (\textit{Contrast Limited Adaptive Histogram Equalization}):} equalização de histograma adaptativa por regiões locais \cite{zuiderveld1994clahe}, aplicada à imagem em tons de cinza com grade de $8 \times 8$ regiões e limite de corte (\textit{clip limit}) igual a 2,0, que realça detalhes finos e o contraste de texturas sem amplificar o ruído em regiões homogêneas.
     \item \textbf{CLAHE e \textit{Contrast Enhancement} (híbrido):} aplicação da equalização adaptativa por blocos, seguida de realce de contraste.
-    \item \textbf{\textit{Contrast Enhancement}:} realce global de contraste, que amplia as diferenças de intensidade por meio de um fator multiplicador aplicado à matriz RGB.
+    \item \textbf{\textit{Contrast Enhancement}:} realce global de contraste da biblioteca Pillow, que afasta cada pixel do nível médio de cinza da imagem, segundo $I' = \bar{I} + k\,(I - \bar{I})$, em que $\bar{I}$ é a média da imagem em tons de cinza e $k$ é o fator de realce (\texttt{factor}), igual a 2,0 nesta avaliação. A operação é aplicada aos três canais RGB.
     \item \textbf{\textit{Contrast Enhancement} e CLAHE (híbrido):} realce global de contraste, seguido da equalização adaptativa por regiões.
-    \item \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram} (híbrido):} realce global de contraste, combinado à equalização do histograma.
-    \item \textbf{\textit{Denoise} (\textit{Fast NL-Means}):} redução de ruído com preservação de contornos, usando o algoritmo de médias não locais.
-    \item \textbf{\textit{Edge Detection}:} detecção e isolamento das bordas da imagem.
-    \item \textbf{\textit{Equalize Histogram}:} equalização do histograma global, redistribuindo as intensidades na faixa dinâmica disponível.
+    \item \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram} (híbrido):} realce global de contraste, seguido da equalização do histograma.
+    \item \textbf{\textit{Denoise} (\textit{Fast NL-Means}):} redução de ruído com preservação de contornos, pelo algoritmo de médias não locais \cite{buades2005nonlocal}, na versão colorida da OpenCV, com intensidade de filtragem igual a 10 para a luminância e para a cor, janela de comparação de $7 \times 7$ pixels e janela de busca de $21 \times 21$ pixels.
+    \item \textbf{\textit{Edge Detection}:} detecção de bordas pelo método de Canny \cite{canny1986computational}, aplicado à imagem em tons de cinza com limiares de histerese iguais a 100 e 200, resultando em uma imagem binária com as bordas.
+    \item \textbf{\textit{Equalize Histogram}:} equalização do histograma global da imagem em tons de cinza \cite{Gonzalez2008}, redistribuindo as intensidades na faixa dinâmica disponível.
     \item \textbf{\textit{Equalize Histogram} e \textit{Contrast Enhancement} (híbrido):} equalização do histograma global, seguida de realce de contraste.
-    \item \textbf{\textit{Gaussian Blur}:} suavização passa-baixa com \textit{kernel} gaussiano.
-    \item \textbf{\textit{Gray Scale}:} conversão para escala de cinza, com supressão da informação de cor.
-    \item \textbf{\textit{Median Blur}:} filtro não linear da mediana da vizinhança de cada \textit{pixel}, que atenua ruídos do tipo \textit{salt and pepper}.
-    \item \textbf{\textit{Original Image}:} amostra de controle, usada como linha de base sem processamento.
+    \item \textbf{\textit{Gaussian Blur}:} suavização passa-baixa com \textit{kernel} gaussiano da biblioteca Pillow, com raio igual a 2 pixels.
+    \item \textbf{\textit{Gray Scale}:} conversão para tons de cinza. Não se trata de um realce, mas de uma mudança de representação, que descarta a informação de cor e mantém apenas a luminância.
+    \item \textbf{\textit{Median Blur}:} filtro não linear que substitui cada \textit{pixel} pela mediana de sua vizinhança de $5 \times 5$ pixels, atenuando ruídos do tipo \textit{salt and pepper}.
+    \item \textbf{\textit{Original Image}:} amostra de controle, usada como linha de base sem processamento além do redimensionamento comum a todas as variantes.
 \end{itemize}
 
-O fluxo de execução incluiu o pré-processamento de todas as imagens (submetidas às variantes listadas e redimensionadas para $512 \times 512$ \textit{pixels}), o treinamento das arquiteturas por 50 épocas com partições de validação e a avaliação por meio do \textit{F1-score}, da acurácia, do recall e da precisão.
+Convém observar que as técnicas \textit{Adaptive Threshold}, CLAHE, \textit{Edge Detection} e \textit{Equalize Histogram}, assim como as quatro combinações híbridas, que incluem CLAHE ou \textit{Equalize Histogram}, convertem a imagem para tons de cinza antes de processá-la. Apenas \textit{Contrast Enhancement}, \textit{Denoise}, \textit{Gaussian Blur}, \textit{Median Blur} e \textit{Original Image} preservam a informação de cor.
+
+Para cada técnica, o fluxo de execução incluiu o pré-processamento de todas as imagens, o treinamento da CNN por 50 épocas e a avaliação sobre o conjunto de teste por meio do \textit{F1-score}, da acurácia, do recall e da precisão.
 
 \subsection{Resultados e Discussões da Avaliação}
-As métricas obtidas evidenciam comportamentos distintos conforme o tipo de elemento elétrico inspecionado e a natureza do defeito de cada conjunto de dados. A seguir, os resultados são organizados por cenário de aplicação: a classificação de defeitos estruturais em isoladores de linhas de transmissão (CPLID) e a inspeção aérea de isoladores em ambiente operacional real (DRNPW).
+As métricas obtidas evidenciam comportamentos distintos conforme o tipo de elemento elétrico inspecionado e a natureza do defeito de cada conjunto de dados. A Tabela \ref{tab:cnn_resultados} reúne a acurácia e o \textit{F1-score} da CNN para as 14 técnicas nos dois conjuntos, e as figuras desta seção apresentam também a precisão e o recall. Em seguida, os resultados são discutidos por cenário de aplicação: a classificação de defeitos estruturais em isoladores de linhas de transmissão (CPLID) e a inspeção aérea de isoladores em ambiente operacional real (DRNPW).
+
+\begin{table}[H]
+    \centering
+    \caption{\label{tab:cnn_resultados}Desempenho da CNN por técnica de pré-processamento nos dois conjuntos de dados.}
+    \vspace{0.2cm}
+    \small
+    \begin{tabular}{lcccc}
+        \hline
+        \textbf{Pré-processamento} & \multicolumn{2}{c}{\textbf{CPLID (43 imagens de teste)}} & \multicolumn{2}{c}{\textbf{DRNPW (30 imagens de teste)}} \\
+        & Acurácia (\%) & F1 (\%) & Acurácia (\%) & F1 (\%) \\
+        \hline
+        \textit{Adaptive Threshold} & 67,44 & 80,56 & 73,33 & 62,05 \\
+        CLAHE & 90,70 & 94,12 & 80,00 & 71,11 \\
+        CLAHE e \textit{Contrast Enh.} & \textbf{95,35} & 95,35 & 70,00 & 57,65 \\
+        \textit{Contrast Enhancement} & \textbf{95,35} & \textbf{96,55} & 63,33 & 49,12 \\
+        \textit{Contrast Enh.} e CLAHE & 93,02 & 92,94 & 80,00 & 71,11 \\
+        \textit{Contrast Enh.} e \textit{Eq. Hist.} & \textbf{95,35} & 95,16 & \textbf{83,33} & \textbf{75,76} \\
+        \textit{Denoise} & 67,44 & 80,56 & 76,67 & 66,54 \\
+        \textit{Edge Detection} & 74,42 & 85,33 & 66,67 & 53,33 \\
+        \textit{Equalize Histogram} & 88,37 & 92,54 & 80,00 & 71,11 \\
+        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 93,02 & 93,08 & 76,67 & 66,54 \\
+        \textit{Gaussian Blur} & 67,44 & 80,56 & 76,67 & 66,54 \\
+        \textit{Gray Scale} & 76,74 & 85,29 & 63,33 & 49,12 \\
+        \textit{Median Blur} & 86,05 & 88,46 & 80,00 & 71,11 \\
+        \textit{Original Image} & 93,02 & 95,08 & 63,33 & 49,12 \\
+        \hline
+        Média & 84,55 & 89,68 & 73,81 & 62,87 \\
+        \hline
+    \end{tabular}
+    \fonte{Autor.}
+\end{table}
 
 \subsubsection{Desempenho na Classificação de Defeitos Estruturais em Isoladores de Linhas de Transmissão (CPLID)}
 
-O CPLID (\textit{Chinese Power Line Insulator Dataset}) reúne imagens de cadeias de isoladores de linhas de transmissão aéreas, majoritariamente cerâmicos, capturadas por drones. Nesse conjunto, o defeito de interesse é de natureza estrutural, associado à ausência de disco (\textit{missing cap}) e a fraturas no corpo do isolador, condições que comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
+No CPLID, o defeito de interesse é de natureza estrutural, associado à ausência de disco (\textit{missing cap}) e a fraturas no corpo do isolador, condições que comprometem a rigidez dielétrica da cadeia e podem evoluir para falhas de isolamento na linha.
 
-Para esse tipo de defeito estrutural, as métricas indicam que as estratégias baseadas no aumento do intervalo tonal obtiveram bom desempenho na classificação das fraturas em isoladores de resina e cerâmica. O \textbf{\textit{Contrast Enhancement} simples} apresentou o melhor resultado neste conjunto (acurácia de 95,35\% e \textit{F1-score} de 96,55\%). Resultados próximos foram obtidos por combinações híbridas: \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (acurácia de 95,35\% e \textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (acurácia de 95,35\%), ambas empatadas com o realce de contraste simples em acurácia.
+Para esse tipo de defeito, as estratégias baseadas no aumento do intervalo tonal obtiveram os melhores resultados. O \textbf{\textit{Contrast Enhancement} simples} alcançou acurácia de 95,35\% e o maior \textit{F1-score} do conjunto (96,55\%). Duas combinações híbridas empataram com ele em acurácia: \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} (\textit{F1-score} de 95,16\%) e \textbf{CLAHE e \textit{Contrast Enhancement}} (\textit{F1-score} de 95,35\%). As outras duas combinações e o CLAHE isolado ficaram entre 90,70\% e 93,02\% de acurácia, seguidos pelo \textit{Equalize Histogram} (88,37\%) e pelo \textit{Median Blur} (86,05\%).
 
-Em contrapartida, as técnicas baseadas em suavização e desfoque reduziram consideravelmente o desempenho: o \textbf{\textit{Gaussian Blur}}, por exemplo, alcançou apenas 67,44\% de acurácia, abaixo inclusive do resultado obtido com as imagens originais sem tratamento (93,02\%).
+Em contrapartida, as técnicas que suavizam a imagem, que a reduzem a bordas ou regiões binárias ou que descartam a cor tiveram os piores resultados. \textit{Gray Scale} e \textit{Edge Detection} ficaram em 76,74\% e 74,42\% de acurácia, e \textit{Adaptive Threshold}, \textit{Denoise} e \textbf{\textit{Gaussian Blur}} alcançaram apenas 67,44\%, abaixo do resultado obtido com as imagens originais sem tratamento (93,02\%). Nessas três técnicas, a acurácia e o \textit{F1-score} são idênticos (67,44\% e 80,56\%). Esse par de valores é o que se obtém quando o modelo atribui a mesma classe a todas as imagens de teste, com precisão igual à acurácia e recall de 100\%, o que indica que a rede não extraiu informação útil das imagens assim processadas.
+
+Os resultados devem ser lidos à luz do tamanho do conjunto de teste. Com 43 imagens, cada acerto equivale a 2,33 pontos percentuais. O melhor resultado (41 acertos) e a amostra de controle (40 acertos) diferem por uma única imagem, e seus intervalos de confiança de 95\% calculados pelo método de Wilson \cite{wilson1927probable}, de 84,5\% a 98,7\% e de 81,4\% a 97,6\%, respectivamente, se sobrepõem quase por completo. A vantagem do realce de contraste sobre a imagem original não é, portanto, estatisticamente conclusiva. A diferença entre esse grupo e as técnicas com 67,44\% (intervalo de 52,5\% a 79,5\%) é, por outro lado, maior que a incerteza da medida.
 
 Os valores obtidos são apresentados da Figura \ref{fig:cplid_acc} à Figura \ref{fig:cplid_recall}.
 
@@ -91,11 +131,13 @@ Os valores obtidos são apresentados da Figura \ref{fig:cplid_acc} à Figura \re
 
 \subsubsection{Desempenho na Inspeção Aérea de Isoladores em Ambiente Operacional Real (DRNPW)}
 
-O DRNPW reúne imagens de isoladores capturadas por drones em condições operacionais reais de inspeção de infraestrutura elétrica, disponibilizadas pela CPFL. Diferentemente do CPLID, os isoladores aparecem sobre fundos heterogêneos e com forte poluição visual, cenário que reproduz a dificuldade de campo em distinguir o componente elétrico do ambiente ao seu redor.
+No DRNPW, os isoladores aparecem sobre fundos heterogêneos e com forte poluição visual, cenário que reproduz a dificuldade de campo em distinguir o componente elétrico do ambiente ao seu redor.
 
-Nesse cenário, cujas imagens apresentam fundos com forte poluição visual, os melhores resultados vieram das combinações que ampliam o contraste. A abordagem \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}} apresentou o melhor desempenho, com 83,33\% de acurácia e 75,76\% de \textit{F1-score}. Filtros como o \textbf{\textit{Median Blur}} e técnicas adaptativas (\textbf{CLAHE} e suas combinações) mantiveram desempenho aceitável, com acurácia em torno de 80,00\% e \textit{F1-score} próximo de 71,11\%.
+Nesse cenário, o melhor resultado veio da combinação \textbf{\textit{Contrast Enhancement} e \textit{Equalize Histogram}}, com 83,33\% de acurácia e 75,76\% de \textit{F1-score}. Um grupo de quatro técnicas ficou logo abaixo, com 80,00\% de acurácia e 71,11\% de \textit{F1-score}: \textbf{CLAHE}, \textbf{\textit{Contrast Enhancement} e CLAHE}, \textbf{\textit{Equalize Histogram}} e \textbf{\textit{Median Blur}}. \textit{Denoise}, \textit{Gaussian Blur} e \textit{Equalize Histogram} e \textit{Contrast Enhancement} alcançaram 76,67\%, \textit{Adaptive Threshold} 73,33\% e CLAHE e \textit{Contrast Enhancement} 70,00\%.
 
-A técnica \textbf{\textit{Gray Scale}}, que suprime a informação de cor, apresentou os piores resultados neste conjunto, com 63,33\% de acurácia e 49,12\% de \textit{F1-score} na validação.
+Os piores resultados, com 63,33\% de acurácia e 49,12\% de \textit{F1-score}, foram compartilhados por três variantes: a conversão para tons de cinza (\textbf{\textit{Gray Scale}}), o \textit{Contrast Enhancement} simples e a própria imagem original, seguidas por \textit{Edge Detection} (66,67\%). A presença da imagem original nesse grupo mostra que, neste conjunto, quase todas as técnicas melhoraram o desempenho em relação à linha de base. A perda da informação de cor, por si só, não explica o resultado do \textit{Gray Scale}, pois a melhor combinação e as quatro técnicas do segundo grupo, com exceção do \textit{Median Blur}, também produzem imagens em tons de cinza.
+
+Com 30 imagens de teste, cada acerto equivale a 3,33 pontos percentuais. O melhor resultado corresponde a 25 acertos, com intervalo de confiança de 95\% de 66,4\% a 92,7\%, e o pior, a 19 acertos, com intervalo de 45,5\% a 78,1\%. As diferenças entre técnicas vizinhas na ordem de mérito correspondem, em geral, a uma ou duas imagens.
 
 Os valores obtidos são apresentados da Figura \ref{fig:drnpw_acc} à Figura \ref{fig:drnpw_recall}.
 
@@ -129,65 +171,43 @@ Os valores obtidos são apresentados da Figura \ref{fig:drnpw_acc} à Figura \re
 
 \subsection{Conclusão da Avaliação Analítica}
 
-Os resultados indicam que as operações baseadas na ampliação do contraste contribuem de forma consistente para o desempenho da CNN nos cenários elétricos avaliados, embora a técnica mais adequada dependa do tipo de elemento inspecionado e da natureza do defeito.
+Os resultados indicam que as operações baseadas na ampliação do contraste estiveram entre as de melhor desempenho da CNN nos dois cenários elétricos avaliados, embora a técnica mais adequada dependa do tipo de elemento inspecionado e da natureza do defeito.
 
-Para a triagem de defeitos estruturais em cadeias de isoladores de linhas de transmissão (disco ausente e fraturas, no CPLID), o realce de contraste simples (\textit{Contrast Enhancement}) foi a estratégia de maior êxito, superando inclusive a amostra de controle sem tratamento. Esse resultado é coerente com a natureza do defeito, cujas assinaturas visuais se concentram na estrutura física do isolador e são realçadas pela ampliação do intervalo tonal.
+Para a triagem de defeitos estruturais em cadeias de isoladores de linhas de transmissão (disco ausente e fraturas, no CPLID), o realce de contraste simples (\textit{Contrast Enhancement}) obteve o maior \textit{F1-score}, uma imagem de teste acima da amostra de controle sem tratamento. Esse resultado é coerente com a natureza do defeito, cujas assinaturas visuais se concentram na estrutura física do isolador e são realçadas pela ampliação do intervalo tonal. As técnicas de suavização e de binarização, por outro lado, levaram a rede a responder sempre a mesma classe.
 
-Já para a inspeção aérea de isoladores em ambiente operacional real, com fundos heterogêneos e poluídos (DRNPW), as abordagens híbridas que combinam realce de contraste e equalização de histograma mostraram-se mais eficazes, por reforçarem o contraste entre o componente e o fundo. Nesse cenário, as técnicas que suprimem a informação de cor (\textit{Gray Scale}) ou que suavizam as texturas (\textit{Gaussian Blur} e demais desfoques) apresentaram os piores resultados, por descartarem informação relevante à identificação do defeito.
+Já para a inspeção aérea de isoladores em ambiente operacional real, com fundos heterogêneos e poluídos (DRNPW), a combinação de realce de contraste e equalização de histograma obteve o melhor resultado, por reforçar o contraste entre o componente e o fundo. Nesse cenário, a imagem original, o realce de contraste simples e a conversão para tons de cinza ficaram com os piores resultados.
 
-Em síntese, o método mostrou-se mais promissor na classificação de defeitos estruturais em isoladores cerâmicos de linhas de transmissão captados por drone, cenário em que atingiu as maiores métricas (acurácia de 95,35\% e \textit{F1-score} de 96,55\% no CPLID), enquanto a inspeção em ambiente com forte poluição visual permanece como o caso mais desafiador.
+Em síntese, o método mostrou-se mais promissor na classificação de defeitos estruturais em isoladores cerâmicos de linhas de transmissão captados por drone, cenário em que atingiu as maiores métricas (acurácia de 95,35\% e \textit{F1-score} de 96,55\% no CPLID), enquanto a inspeção em ambiente com forte poluição visual permanece como o caso mais desafiador. Nos dois conjuntos, o tamanho reduzido dos conjuntos de teste limita a separação estatística entre as técnicas de melhor desempenho.
 
 \section{Otimização de Parâmetros de Pré-Processamento em Visão Computacional}
 
-Nesta etapa, realiza-se a otimização de parâmetros de pré-processamento em um \textit{pipeline} de aprendizado de máquina aplicado à visão computacional. O objetivo foi identificar o valor ótimo do parâmetro de realce de contraste, de modo a maximizar o desempenho de uma CNN em tarefas de classificação. O estudo empregou uma busca em grade (\textit{grid search}), testando diferentes valores do parâmetro em um conjunto de imagens de isoladores de linhas de transmissão.
+Nesta etapa, realiza-se a otimização de parâmetros de pré-processamento em um \textit{pipeline} de aprendizado de máquina aplicado à visão computacional. O objetivo foi identificar, entre os valores avaliados, o fator de realce de contraste que maximiza o desempenho da CNN na classificação. O estudo empregou uma busca em grade (\textit{grid search}) sobre esse parâmetro, com imagens de isoladores de linhas de transmissão.
 
-\subsection{Metodologia Experimental}
+\subsection{Configuração do Experimento}
 
-\subsubsection{Conjunto de Dados}
-Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), composto por imagens de isoladores de linhas de transmissão. O acervo inclui anotações automáticas para detecção de objetos, totalizando 585 imagens processadas. Após o pré-processamento e o redimensionamento para $640 \times 640$ pixels, as imagens foram divididas em conjuntos de treinamento (468 imagens), validação (87 imagens) e teste (30 imagens). O \textit{dataset} é voltado à detecção e à classificação de defeitos estruturais em isoladores, sendo adequado ao contexto de manutenção preditiva em infraestrutura elétrica.
+Utilizou-se o conjunto de dados DRNPW (\textit{Dataset for Recognition of Non-ceramic Pollution on Windings}), com as mesmas 585 imagens e a mesma proporção de divisão da Seção \ref{sec:avaliacao_cnn}: 468 imagens de treinamento, 87 de validação e 30 de teste. Diferentemente da avaliação anterior, as imagens foram redimensionadas para $640 \times 640$ pixels.
 
-\subsubsection{Estratégia de Pré-Processamento}
-A técnica de pré-processamento selecionada foi o \textit{ContrastEnhancement}, que utiliza a biblioteca PIL (\textit{Python Imaging Library}) para ajustar o contraste das imagens. A intensidade da transformação é controlada por uma variável: valores de \texttt{factor} menores que 1,0 reduzem o contraste, enquanto valores maiores que 1,0 o aumentam. O hiperparâmetro otimizado foi exclusivamente o \texttt{factor}, definido na faixa de 0,5 a 1,611.
+A técnica de pré-processamento otimizada foi o \textit{Contrast Enhancement}, descrito na Seção \ref{sec:avaliacao_cnn}, que utiliza a classe \texttt{ImageEnhance.Contrast} da biblioteca Pillow \cite{clark2015pillow}. A intensidade da transformação é controlada pelo fator $k$ (\texttt{factor}): valores menores que 1,0 reduzem o contraste, o valor 1,0 preserva a imagem e valores maiores que 1,0 o aumentam. O \texttt{factor} foi o único parâmetro otimizado.
 
-\subsubsection{Modelo de Aprendizado de Máquina}
-A avaliação baseou-se em uma CNN simples, implementada com o \textit{framework} TensorFlow/Keras. A arquitetura adotada é a seguinte:
-\begin{itemize}
-    \item camada de entrada com dimensões $(640, 640, 3)$, correspondente a imagens RGB;
-    \item duas camadas convolucionais com 32 filtros cada (\textit{kernels} de $3 \times 3$ e ativação ReLU), seguidas de \textit{max-pooling} (janelas de $4 \times 4$);
-    \item camada de achatamento (\textit{Flatten});
-    \item camada densa com 8 neurônios e ativação ReLU;
-    \item camada de saída com número de neurônios igual ao número de classes e ativação \textit{softmax}.
-\end{itemize}
+O modelo é a mesma CNN de pequeno porte da Seção \ref{sec:avaliacao_cnn}, com entrada de $640 \times 640 \times 3$, otimizador Adam, função de perda \texttt{sparse\_categorical\_crossentropy}, lotes de 32 imagens e o mesmo \textit{data augmentation}. A única diferença de treinamento é o número de épocas, limitado a 5. As métricas de acurácia, precisão, \textit{recall} e \textit{F1-score} foram calculadas sobre o conjunto de teste com o modelo obtido ao final da quinta época.
 
-A compilação utilizou o otimizador Adam com a função de entropia cruzada categórica esparsa (\texttt{sparse\_categorical\_crossentropy}) e a acurácia como métrica de monitoramento. O treinamento foi limitado a 5 épocas. A avaliação do modelo foi feita sobre o conjunto de teste, extraindo-se as métricas de acurácia, precisão, \textit{recall} e \textit{F1-score}.
-
-\subsubsection{Estratégia de Otimização Paramétrica}
-A otimização baseou-se em busca em grade (\textit{grid search}), técnica que avalia valores uniformemente distribuídos do hiperparâmetro de interesse. Foram definidas 5 instâncias para o \texttt{factor}: 0,5; 0,778; 1,056; 1,333 e 1,611, espaçadas com a função \texttt{numpy.linspace}.
-
-Para cada valor do \texttt{factor}, o fluxo executou os seguintes passos:
+Como há um único parâmetro, a busca em grade reduz-se a uma varredura uniforme do intervalo, sem combinação entre parâmetros. Foram avaliados 5 valores do \texttt{factor} entre 0,5 e 1,611, igualmente espaçados com a função \texttt{numpy.linspace}: 0,5, 0,778, 1,056, 1,333 e 1,611. Para cada valor, o fluxo executou os seguintes passos:
 \begin{enumerate}
     \item pré-processamento das imagens com o valor avaliado;
-    \item treinamento do modelo CNN por 5 épocas;
+    \item treinamento da CNN por 5 épocas, a partir de pesos iniciais aleatórios;
     \item extração das métricas sobre o conjunto de teste;
     \item registro do valor que produziu a maior acurácia.
 \end{enumerate}
 
-\subsection{Fundamentação Teórica do Método Selecionado}
-
-A busca em grade é um método consolidado na literatura para o ajuste de parâmetros em espaços discretos e de dimensão reduzida. Seus principais aspectos são:
-\begin{itemize}
-    \item \textbf{Espaço de busca:} a busca foi realizada de forma uniforme, testando valores entre 0,5 e 1,611 em 5 etapas.
-    \item \textbf{Custo computacional:} embora a busca em grade seja ineficiente em cenários com muitas variáveis, essa limitação não é relevante neste caso, em que há apenas uma variável.
-    \item \textbf{Reprodutibilidade:} por ser determinística, a técnica oferece maior reprodutibilidade do que métodos como o \textit{random search} ou a otimização bayesiana.
-\end{itemize}
+A busca em grade é um método consolidado para o ajuste de parâmetros em espaços discretos e de dimensão reduzida \cite{bergstra2012random}. Seu custo cresce de forma multiplicativa com o número de parâmetros, limitação que não se aplica a este caso, com uma única variável. A lista de valores avaliados é fixa e, portanto, reprodutível. O treinamento da CNN, porém, não é determinístico, pois depende da inicialização aleatória dos pesos, do embaralhamento dos lotes e do sorteio das transformações de \textit{data augmentation}. Assim, repetir a avaliação de um mesmo valor do \texttt{factor} pode produzir métricas diferentes, e a reprodutibilidade do método não se estende ao resultado de cada avaliação.
 
 \subsection{Resultados e Análise}
 
-O ciclo de otimização avaliou os 5 valores do \texttt{factor} definidos, com os resultados de acurácia apresentados na Tabela \ref{tab:resultados_grid_search}.
+Os resultados obtidos para os 5 valores do \texttt{factor} são apresentados na Tabela \ref{tab:resultados_grid_search}.
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:resultados_grid_search}Resultados da otimização por busca em grade do parâmetro de contraste (\texttt{factor})}
+    \caption{\label{tab:resultados_grid_search}Resultados da otimização por busca em grade do parâmetro de contraste (\texttt{factor}).}
     \vspace{0.2cm}
     \begin{tabular}{ccccc}
         \hline
@@ -205,55 +225,42 @@ O ciclo de otimização avaliou os 5 valores do \texttt{factor} definidos, com o
 
 \indent A análise dos resultados permite as seguintes observações:
 \begin{itemize}
-    \item \textbf{Ponto ótimo:} o melhor resultado ocorreu com o fator de 1,333, que alcançou 90,0\% de acurácia, 81,0\% de precisão e 85,3\% de \textit{F1-score}. Isso indica que um aumento moderado de contraste favoreceu a detecção das características relevantes ao problema.
-    \item \textbf{Estabilidade nos valores adjacentes:} os fatores 0,778 e 1,611 mantiveram bom desempenho, com acurácia de 83,3\% e \textit{F1-score} em torno de 75,8\%, o que aponta para certa robustez do modelo a pequenas variações de contraste ao redor do ponto ótimo.
-    \item \textbf{Comportamento em forma de pico:} o desempenho em função do fator de contraste descreve uma curva com um máximo bem definido; reduções excessivas de contraste (fator de 0,5) prejudicam a predição, resultando na menor acurácia observada (76,7\%).
+    \item \textbf{Melhor valor avaliado:} o melhor resultado ocorreu com o fator de 1,333, com 90,0\% de acurácia (27 das 30 imagens de teste), 81,0\% de precisão e 85,3\% de \textit{F1-score}. Esse valor é o melhor entre os cinco testados e sob treinamento de apenas 5 épocas. Não se pode afirmar que seja o ótimo do parâmetro, nem que a ordem entre os valores se manteria com o treinamento completo de 50 épocas.
+    \item \textbf{Valores adjacentes:} os fatores 0,778 e 1,611 alcançaram 83,3\% de acurácia (25 acertos), e o fator 1,056 alcançou 80,0\% (24 acertos). A diferença para o melhor valor é de duas ou três imagens de teste.
+    \item \textbf{Contraste reduzido:} a menor acurácia (76,7\%, 23 acertos) ocorreu com o fator de 0,5, que reduz o contraste à metade.
 \end{itemize}
 
 As medições foram registradas no arquivo \texttt{optimization\_factor\_results.json} para fins de reprodutibilidade.
 
 \subsection{Síntese da Etapa}
 
-Os resultados confirmam a utilidade da busca em grade no ajuste dos parâmetros de pré-processamento. O melhor valor do \texttt{factor} foi 1,333, com desempenho expressivo na detecção sobre o DRNPW (90,0\% de acurácia).
+A busca em grade mostrou-se aplicável ao ajuste dos parâmetros de pré-processamento. O melhor valor do \texttt{factor} entre os avaliados foi 1,333, com 90,0\% de acurácia no DRNPW, resultado obtido com 5 épocas de treinamento e 30 imagens de teste.
 
-A partir das variações observadas nos índices sob diferentes níveis de contraste, sugerem-se os seguintes encaminhamentos para as próximas etapas:
+Como trabalhos futuros, sugerem-se os seguintes encaminhamentos:
 \begin{itemize}
-    \item avaliar a otimização bayesiana, que permite explorar de forma mais eficiente múltiplos hiperparâmetros;
-    \item ampliar a amostragem em torno da região favorável já identificada, refinando a busca próximo ao valor ótimo do fator de contraste;
-    \item analisar o comportamento interno do modelo por meio de \textit{logs} e \textit{checkpoints}, a fim de diagnosticar eventuais instabilidades;
+    \item repetir a varredura com o treinamento completo de 50 épocas e com várias execuções por valor, para separar o efeito do \texttt{factor} da variação entre treinamentos;
+    \item ampliar a amostragem em torno da região favorável já identificada, refinando a busca próximo ao melhor valor do fator de contraste;
+    \item incluir outros parâmetros na busca, como o limite de corte e o tamanho da grade do CLAHE, caso em que a otimização bayesiana \cite{snoek2012practical} passa a ser mais vantajosa que a busca em grade;
     \item estender essas simulações à validação do sistema em condições de operação em infraestrutura elétrica.
 \end{itemize}
 
 \section{Avaliação de Busca Aleatória na Otimização de Parâmetros}
 
-Como complemento à análise anterior, conduziu-se um experimento com busca aleatória (\textit{random search}). O objetivo foi determinar o valor do fator de realce de contraste que maximiza o desempenho da CNN, avaliando instâncias geradas aleatoriamente em um intervalo contínuo. A avaliação manteve o uso do conjunto de dados DRNPW.
+Como complemento à análise anterior, conduziu-se um experimento com busca aleatória (\textit{random search}). O objetivo foi determinar o valor do fator de realce de contraste que maximiza o desempenho da CNN, avaliando valores sorteados em um intervalo contínuo. A avaliação manteve o uso do conjunto de dados DRNPW.
 
-\subsection{Ajustes Metodológicos}
+\subsection{Configuração do Experimento}
 
-O experimento preservou as características da abordagem em grade: o redimensionamento das imagens para $640 \times 640$ pixels, a transformação global \textit{ContrastEnhancement} controlada pelo hiperparâmetro \texttt{factor} e a mesma arquitetura de modelo.
+O experimento preservou a configuração da busca em grade: o redimensionamento das imagens para $640 \times 640$ pixels, a transformação \textit{Contrast Enhancement} controlada pelo \texttt{factor}, a mesma CNN e o treinamento por 5 épocas. O intervalo do parâmetro foi ampliado para 0,5 a 3,0, e os valores foram sorteados com distribuição uniforme nesse intervalo, a partir de uma semente fixa. Foram realizadas 5 tentativas (\textit{trials}) independentes. Diferentemente da busca em grade, o desempenho foi medido sobre o conjunto de validação, com 87 imagens.
 
-\subsubsection{Estratégia de Otimização Estocástica}
-
-Diferentemente da busca em grade, com valores espaçados de forma regular, este experimento empregou a busca aleatória. O método consiste em definir o intervalo do parâmetro (0,5 a 3,0) e selecionar valores por amostragem aleatória nesse intervalo. Foram realizadas 5 tentativas (\textit{trials}) independentes.
-
-\subsection{Fundamentação Teórica do Método de Busca Estocástica}
-
-A busca aleatória contrapõe-se à enumeração rígida da busca em grade, ao explorar valores fora de pontos predefinidos. Seus principais aspectos são:
-\begin{itemize}
-    \item \textbf{Espaço de busca e amostragem:} considera todo o intervalo do domínio e testa valores que não se limitam a passos discretos regulares.
-    \item \textbf{Vantagens:} apresenta boa eficiência e flexibilidade na busca por máximos globais, sobretudo quando os parâmetros contínuos têm efeitos difíceis de prever com passos rígidos.
-    \item \textbf{Limitações:} não garante cobertura uniforme do espaço, o que aumenta o risco de resultados subótimos quando o número de avaliações é pequeno.
-\end{itemize}
-
-Em comparação com a busca em grade, a busca aleatória pode cobrir melhor regiões intermediárias do espaço de parâmetros, relevantes em modelos profundos.
+Com um único parâmetro, a busca aleatória difere da busca em grade apenas na forma de escolher os valores: em vez de pontos igualmente espaçados, os valores são sorteados no intervalo. A vantagem da busca aleatória descrita por \citeonline{bergstra2012random} aparece quando há vários parâmetros e apenas alguns influenciam o resultado, pois, com o mesmo número de avaliações, ela testa mais valores distintos de cada parâmetro do que a grade. Com um parâmetro e cinco tentativas, essa vantagem não se aplica, e a busca aleatória não garante cobertura uniforme do intervalo, o que aumenta o risco de deixar regiões sem amostra.
 
 \subsection{Resultados da Busca Aleatória}
 
-A partir dos valores amostrados do hiperparâmetro \texttt{factor}, avaliou-se o desempenho sobre o conjunto de validação, com os resultados apresentados na Tabela \ref{tab:resultados_random_search}.
+Os resultados obtidos para os valores sorteados do \texttt{factor} são apresentados na Tabela \ref{tab:resultados_random_search}.
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:resultados_random_search}Resumo experimental das tentativas de busca aleatória sobre o fator de contraste}
+    \caption{\label{tab:resultados_random_search}Resumo experimental das tentativas de busca aleatória sobre o fator de contraste.}
     \vspace{0.2cm}
     \begin{tabular}{ccc}
         \hline
@@ -271,15 +278,14 @@ A partir dos valores amostrados do hiperparâmetro \texttt{factor}, avaliou-se o
 
 \indent A análise dos resultados, em comparação com o experimento anterior, permite as seguintes observações:
 \begin{itemize}
-    \item \textbf{Ponto ótimo:} o melhor desempenho foi obtido com o fator de 1,4364 (Tentativa 1), com 85,06\% de acurácia, a maior entre as tentativas. Esse resultado reforça a indicação anterior de que valores um pouco acima de 1,0 favorecem o desempenho do modelo.
-    \item \textbf{Sensibilidade a contrastes elevados:} valores de contraste muito altos degradaram o desempenho, com queda para 71,26\% no fator 2,3300 (o menor da análise) e para 79,31\% no fator 2,8768. Contrastes excessivos introduzem distorções que dificultam a classificação.
-    \item \textbf{Comportamento em contrastes reduzidos:} com fator de 0,8900, inferior a 1,0, o modelo manteve desempenho razoável (78,16\%), o que indica estabilidade da arquitetura mesmo com atenuação parcial das texturas.
-    \item \textbf{Robustez computacional:} todos os ensaios foram concluídos sem instabilidades numéricas ou interrupções no treinamento.
+    \item \textbf{Melhor valor avaliado:} o melhor desempenho foi obtido com o fator de 1,4364 (Tentativa 1), com 85,06\% de acurácia, a maior entre as tentativas. Esse resultado é coerente com a indicação anterior de que valores um pouco acima de 1,0 favorecem o desempenho do modelo.
+    \item \textbf{Contrastes elevados:} os fatores mais altos tiveram desempenho inferior, com 71,26\% no fator 2,3300 (o menor da análise) e 79,31\% no fator 2,8768. A relação não é monotônica, pois o maior fator superou o fator 2,3300.
+    \item \textbf{Contraste reduzido:} com fator de 0,8900, inferior a 1,0, o modelo alcançou 78,16\%.
 \end{itemize}
 
 \subsection{Síntese da Etapa}
 
-Os resultados confirmam a viabilidade da busca aleatória no ajuste de parâmetros para visão computacional. O melhor valor obtido, 1,4364, apresentou desempenho de validação compatível com o da busca em grade, cujo fator ótimo ficou próximo de 1,33.
+A busca aleatória também se mostrou aplicável ao ajuste do parâmetro de contraste. O melhor valor obtido, 1,4364, ficou próximo do melhor valor da busca em grade, 1,333. A comparação entre as acurácias das duas buscas, porém, deve ser feita com reserva, pois foram medidas sobre conjuntos diferentes, o de teste na busca em grade e o de validação na busca aleatória.
 
 Para trabalhos futuros, sugerem-se os seguintes encaminhamentos:
 \begin{itemize}
@@ -291,17 +297,17 @@ Para trabalhos futuros, sugerem-se os seguintes encaminhamentos:
 \section{Experimento Adicional com a Arquitetura YOLOv8n-cls}
 \label{sec:experimentos_yolo}
 
-As avaliações apresentadas nas seções anteriores empregaram uma única arquitetura de modelagem, a CNN clássica descrita no início deste capítulo. Essa escolha é adequada ao propósito de isolar o pré-processamento como variável independente, mas deixa em aberto uma questão pertinente: os efeitos observados decorrem das características das imagens ou da arquitetura utilizada para avaliá-las. Como a metodologia proposta trata a etapa de modelagem como um bloco substituível, é possível repetir a varredura de pré-processamentos trocando apenas esse bloco e verificar se o comportamento se mantém.
+As avaliações apresentadas nas seções anteriores empregaram uma única arquitetura de modelagem, a CNN de pequeno porte descrita no início deste capítulo. Essa escolha é adequada ao propósito de isolar o pré-processamento como variável independente, mas deixa em aberto uma questão pertinente: os efeitos observados decorrem das características das imagens ou da arquitetura utilizada para avaliá-las. Como a metodologia proposta trata a etapa de modelagem como um bloco substituível, é possível repetir a varredura de pré-processamentos trocando apenas esse bloco e verificar se o comportamento se mantém.
 
 Esta seção apresenta o experimento adicional conduzido com esse objetivo, utilizando o modelo de classificação da família YOLO (\textit{You Only Look Once}), em sua versão v8 \cite{jocher2023yolov8}. Os resultados aqui reportados complementam, e não substituem, as análises anteriores: os conjuntos de dados, as 14 técnicas de pré-processamento e o número de épocas de treinamento foram mantidos, de modo que a única variável alterada em relação à avaliação inicial é o modelo.
 
 \subsection{Modelo Avaliado}
 
-O modelo avaliado é o YOLOv8n-cls, variante da família YOLO dedicada à classificação de imagens, sem predição de caixas delimitadoras. Sua escolha permite confrontar uma arquitetura consolidada e pré-treinada com a CNN construída no âmbito deste trabalho, preservando exatamente a mesma tarefa e o mesmo protocolo de avaliação, de forma que a comparação incida sobre a arquitetura e não sobre o objetivo de aprendizado. Os pesos iniciais provêm do conjunto COCO \cite{lin2014microsoft}, prática usual de transferência de aprendizado nessa família de modelos. A Tabela \ref{tab:yolo_config} resume a configuração adotada.
+O modelo avaliado é o YOLOv8n-cls, variante da família YOLO dedicada à classificação de imagens. Ao contrário das variantes de detecção da família, que localizam e classificam cada objeto da imagem, o YOLOv8n-cls atribui um único rótulo à imagem inteira e não prevê caixas delimitadoras. Foram usados os mesmos rótulos da CNN: normal ou defeituoso no CPLID e a categoria da anotação no DRNPW. Sua escolha permite confrontar uma arquitetura consolidada e pré-treinada com a CNN construída no âmbito deste trabalho, preservando exatamente a mesma tarefa e o mesmo protocolo de avaliação, de forma que a comparação incida sobre a arquitetura e não sobre o objetivo de aprendizado. Os pesos iniciais provêm do treinamento no conjunto ImageNet \cite{deng2009imagenet}, distribuído pela Ultralytics para os modelos de classificação da família, prática usual de \textit{transfer learning}. A Tabela \ref{tab:yolo_config} resume a configuração adotada.
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:yolo_config}Configuração do modelo adicional avaliado}
+    \caption{\label{tab:yolo_config}Configuração do modelo adicional avaliado.}
     \vspace{0.2cm}
     \small
     \begin{tabular}{lc}
@@ -326,9 +332,9 @@ Cabe registrar que os dois conjuntos de dados possuem exatamente uma anotação 
 
 \subsection{Critério de Referência e Definição das Métricas}
 
-Ambos os conjuntos de teste são desbalanceados, o que torna necessária a adoção de um critério de referência para interpretar os valores absolutos de acurácia. Adota-se aqui o piso majoritário, definido como a acurácia obtida ao responder sempre a classe mais frequente do conjunto de teste, sem observar a imagem. No CPLID, 32 das 43 imagens de teste pertencem à classe \textit{Normal Insulators}, resultando em um piso de 74,42\%. No DRNPW, 22 das 30 imagens de teste pertencem a uma única categoria, o que estabelece um piso de 73,33\%. Modelos com desempenho abaixo desse valor não extraem informação útil das imagens.
+Ambos os conjuntos de teste são pequenos e desbalanceados, o que torna necessária a adoção de um critério de referência para interpretar os valores absolutos de acurácia. Adota-se aqui o piso majoritário, definido como a acurácia obtida ao responder sempre a classe mais frequente do conjunto de teste, sem observar a imagem. No CPLID, 32 das 43 imagens de teste pertencem à classe \textit{Normal Insulators}, resultando em um piso de 74,42\%. No DRNPW, 22 das 30 imagens de teste pertencem a uma única categoria, o que estabelece um piso de 73,33\%. Modelos com desempenho abaixo desse valor não extraem informação útil das imagens.
 
-As métricas foram calculadas com média ponderada pelo suporte de cada classe, critério mantido em relação às avaliações anteriores. Convém observar que, sob essa definição, o \textit{recall} ponderado é numericamente igual à acurácia, razão pela qual as duas colunas coincidem nas tabelas a seguir.
+As métricas foram calculadas com média ponderada pelo suporte de cada classe. Convém observar que, sob essa definição, o \textit{recall} ponderado é numericamente igual à acurácia, razão pela qual as duas colunas coincidem nas tabelas a seguir.
 
 \subsection{Resultados no CPLID}
 
@@ -336,7 +342,7 @@ A Tabela \ref{tab:cplid_yolocls} apresenta os resultados obtidos pelo YOLOv8n-cl
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:cplid_yolocls}Desempenho do YOLOv8n-cls por técnica de pré-processamento - CPLID}
+    \caption{\label{tab:cplid_yolocls}Desempenho do YOLOv8n-cls por técnica de pré-processamento - CPLID.}
     \vspace{0.2cm}
     \small
     \begin{tabular}{lcccc}
@@ -367,38 +373,8 @@ A Tabela \ref{tab:cplid_yolocls} apresenta os resultados obtidos pelo YOLOv8n-cl
 
 No CPLID, o YOLOv8n-cls obteve acurácia média de 66,28\%, valor inferior tanto ao piso majoritário de 74,42\% quanto à média de 84,55\% registrada pela CNN. O modelo superou o piso em apenas 1 das 14 técnicas avaliadas. O melhor resultado individual ocorreu com o \textit{Gray Scale}, com 81,40\% de acurácia e 74,93\% de \textit{F1-score}, ainda assim distante dos 95,35\% alcançados pela CNN com o realce simples de contraste.
 
-Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \textit{Gray Scale} ocupava a quinta pior posição neste conjunto, com 76,74\% de acurácia, bem abaixo da amostra de controle sem tratamento. Para o YOLOv8n-cls, foi a técnica de melhor desempenho. De forma simétrica, as combinações de realce de contraste que lideraram a avaliação com a CNN ficaram entre as piores para o YOLOv8n-cls, caso de CLAHE e \textit{Contrast Enhancement}, com 51,16\%. A Tabela \ref{tab:cplid_comparativo} consolida a comparação entre as duas arquiteturas.
+Chama atenção a inversão na ordem de mérito das técnicas. Para a CNN, o \textit{Gray Scale} ocupava a quinta pior posição neste conjunto, com 76,74\% de acurácia, bem abaixo da amostra de controle sem tratamento. Para o YOLOv8n-cls, foi a técnica de melhor desempenho. De forma simétrica, as combinações de realce de contraste que lideraram a avaliação com a CNN ficaram entre as piores para o YOLOv8n-cls, caso de CLAHE e \textit{Contrast Enhancement}, com 51,16\%. A comparação entre as duas arquiteturas nos dois conjuntos é consolidada na Tabela \ref{tab:comparativo_arquiteturas}, apresentada após os resultados do DRNPW.
 
-\begin{table}[H]
-    \centering
-    \caption{\label{tab:cplid_comparativo}Comparação entre as arquiteturas avaliadas - CPLID}
-    \vspace{0.2cm}
-    \small
-    \begin{tabular}{lcccc}
-        \hline
-        \textbf{Pré-processamento} & \multicolumn{2}{c}{\textbf{Acurácia (\%)}} & \multicolumn{2}{c}{\textbf{F1-score (\%)}} \\
-        & CNN & YOLOv8n-cls & CNN & YOLOv8n-cls \\
-        \hline
-        \textit{Adaptive Threshold} & 67,44 & 55,81 & 80,56 & 46,65 \\
-        CLAHE & 90,70 & 60,47 & 94,12 & 49,07 \\
-        CLAHE e \textit{Contrast Enh.} & 95,35 & 51,16 & 95,35 & 43,67 \\
-        \textit{Contrast Enhancement} & 95,35 & 58,14 & 96,55 & 57,07 \\
-        \textit{Contrast Enh.} e CLAHE & 93,02 & 69,77 & 92,94 & 65,08 \\
-        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 95,35 & 62,79 & 95,16 & 58,35 \\
-        \textit{Denoise} & 67,44 & 72,09 & 80,56 & 60,40 \\
-        \textit{Edge Detection} & 74,42 & 67,44 & 85,33 & 54,33 \\
-        \textit{Equalize Histogram} & 88,37 & 72,09 & 92,54 & 66,25 \\
-        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 93,02 & 74,42 & 93,08 & 68,76 \\
-        \textit{Gaussian Blur} & 67,44 & 74,42 & 80,56 & 71,06 \\
-        \textit{Gray Scale} & 76,74 & 81,40 & 85,29 & 74,93 \\
-        \textit{Median Blur} & 86,05 & 67,44 & 88,46 & 64,78 \\
-        \textit{Original Image} & 93,02 & 60,47 & 95,08 & 49,07 \\
-        \hline
-        Média & 84,55 & 66,28 & 89,68 & 59,25 \\
-        \hline
-    \end{tabular}
-    \fonte{Autor.}
-\end{table}
 
 Os valores obtidos são apresentados da Figura \ref{fig:cplid_yolocls_acc} à Figura \ref{fig:cplid_yolocls_recall}, com as técnicas ordenadas de forma crescente conforme a métrica correspondente.
 
@@ -436,7 +412,7 @@ A Tabela \ref{tab:drnpw_yolocls} apresenta os resultados obtidos no DRNPW.
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:drnpw_yolocls}Desempenho do YOLOv8n-cls por técnica de pré-processamento - DRNPW}
+    \caption{\label{tab:drnpw_yolocls}Desempenho do YOLOv8n-cls por técnica de pré-processamento - DRNPW.}
     \vspace{0.2cm}
     \small
     \begin{tabular}{lcccc}
@@ -467,34 +443,36 @@ A Tabela \ref{tab:drnpw_yolocls} apresenta os resultados obtidos no DRNPW.
 
 No DRNPW, o YOLOv8n-cls obteve acurácia média de 71,43\%, ante 73,81\% da CNN e um piso majoritário de 73,33\%. As duas arquiteturas permaneceram, portanto, na vizinhança imediata do piso, e a vantagem média da CNN, de 2,38 pontos percentuais, corresponde a menos de uma imagem por combinação em um conjunto de teste de 30 imagens. O melhor resultado individual, 83,33\% de acurácia e 75,76\% de \textit{F1-score} com \textit{Adaptive Threshold}, iguala numericamente o melhor resultado da CNN neste conjunto, obtido com a combinação de realce de contraste e equalização de histograma. Trata-se, contudo, de uma coincidência de valores que reflete o mesmo número de acertos em um conjunto de teste reduzido.
 
-Repete-se aqui a inversão observada no CPLID, de forma ainda mais acentuada: a combinação \textit{Contrast Enhancement} e \textit{Equalize Histogram}, que foi a de melhor desempenho para a CNN neste conjunto, foi a de pior desempenho para o YOLOv8n-cls, com 53,33\% de acurácia. A Tabela \ref{tab:drnpw_comparativo} consolida a comparação.
+Repete-se aqui a inversão observada no CPLID, de forma ainda mais acentuada: a combinação \textit{Contrast Enhancement} e \textit{Equalize Histogram}, que foi a de melhor desempenho para a CNN neste conjunto, foi a de pior desempenho para o YOLOv8n-cls, com 53,33\% de acurácia. A Tabela \ref{tab:comparativo_arquiteturas} consolida a comparação entre as duas arquiteturas nos dois conjuntos.
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:drnpw_comparativo}Comparação entre as arquiteturas avaliadas - DRNPW}
+    \caption{\label{tab:comparativo_arquiteturas}Comparação entre a CNN e o YOLOv8n-cls nos dois conjuntos de dados.}
     \vspace{0.2cm}
-    \small
-    \begin{tabular}{lcccc}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{lcccccccc}
         \hline
-        \textbf{Pré-processamento} & \multicolumn{2}{c}{\textbf{Acurácia (\%)}} & \multicolumn{2}{c}{\textbf{F1-score (\%)}} \\
-        & CNN & YOLOv8n-cls & CNN & YOLOv8n-cls \\
+        & \multicolumn{4}{c}{\textbf{CPLID}} & \multicolumn{4}{c}{\textbf{DRNPW}} \\
+        \textbf{Pré-processamento} & \multicolumn{2}{c}{\textbf{Acurácia (\%)}} & \multicolumn{2}{c}{\textbf{F1 (\%)}} & \multicolumn{2}{c}{\textbf{Acurácia (\%)}} & \multicolumn{2}{c}{\textbf{F1 (\%)}} \\
+        & CNN & YOLO & CNN & YOLO & CNN & YOLO & CNN & YOLO \\
         \hline
-        \textit{Adaptive Threshold} & 73,33 & 83,33 & 62,05 & 75,76 \\
-        CLAHE & 80,00 & 73,33 & 71,11 & 62,05 \\
-        CLAHE e \textit{Contrast Enh.} & 70,00 & 80,00 & 57,65 & 71,11 \\
-        \textit{Contrast Enhancement} & 63,33 & 76,67 & 49,12 & 66,54 \\
-        \textit{Contrast Enh.} e CLAHE & 80,00 & 76,67 & 71,11 & 66,54 \\
-        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 83,33 & 53,33 & 75,76 & 37,10 \\
-        \textit{Denoise} & 76,67 & 63,33 & 66,54 & 51,70 \\
-        \textit{Edge Detection} & 66,67 & 73,33 & 53,33 & 62,05 \\
-        \textit{Equalize Histogram} & 80,00 & 70,00 & 71,11 & 57,65 \\
-        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 76,67 & 66,67 & 66,54 & 53,33 \\
-        \textit{Gaussian Blur} & 76,67 & 63,33 & 66,54 & 51,70 \\
-        \textit{Gray Scale} & 63,33 & 80,00 & 49,12 & 71,11 \\
-        \textit{Median Blur} & 80,00 & 73,33 & 71,11 & 62,05 \\
-        \textit{Original Image} & 63,33 & 66,67 & 49,12 & 58,67 \\
+        \textit{Adaptive Threshold} & 67,44 & 55,81 & 80,56 & 46,65 & 73,33 & 83,33 & 62,05 & 75,76 \\
+        CLAHE & 90,70 & 60,47 & 94,12 & 49,07 & 80,00 & 73,33 & 71,11 & 62,05 \\
+        CLAHE e \textit{Contrast Enh.} & 95,35 & 51,16 & 95,35 & 43,67 & 70,00 & 80,00 & 57,65 & 71,11 \\
+        \textit{Contrast Enhancement} & 95,35 & 58,14 & 96,55 & 57,07 & 63,33 & 76,67 & 49,12 & 66,54 \\
+        \textit{Contrast Enh.} e CLAHE & 93,02 & 69,77 & 92,94 & 65,08 & 80,00 & 76,67 & 71,11 & 66,54 \\
+        \textit{Contrast Enh.} e \textit{Eq. Hist.} & 95,35 & 62,79 & 95,16 & 58,35 & 83,33 & 53,33 & 75,76 & 37,10 \\
+        \textit{Denoise} & 67,44 & 72,09 & 80,56 & 60,40 & 76,67 & 63,33 & 66,54 & 51,70 \\
+        \textit{Edge Detection} & 74,42 & 67,44 & 85,33 & 54,33 & 66,67 & 73,33 & 53,33 & 62,05 \\
+        \textit{Equalize Histogram} & 88,37 & 72,09 & 92,54 & 66,25 & 80,00 & 70,00 & 71,11 & 57,65 \\
+        \textit{Eq. Hist.} e \textit{Contrast Enh.} & 93,02 & 74,42 & 93,08 & 68,76 & 76,67 & 66,67 & 66,54 & 53,33 \\
+        \textit{Gaussian Blur} & 67,44 & 74,42 & 80,56 & 71,06 & 76,67 & 63,33 & 66,54 & 51,70 \\
+        \textit{Gray Scale} & 76,74 & 81,40 & 85,29 & 74,93 & 63,33 & 80,00 & 49,12 & 71,11 \\
+        \textit{Median Blur} & 86,05 & 67,44 & 88,46 & 64,78 & 80,00 & 73,33 & 71,11 & 62,05 \\
+        \textit{Original Image} & 93,02 & 60,47 & 95,08 & 49,07 & 63,33 & 66,67 & 49,12 & 58,67 \\
         \hline
-        Média & 73,81 & 71,43 & 62,87 & 60,53 \\
+        Média & 84,55 & 66,28 & 89,68 & 59,25 & 73,81 & 71,43 & 62,87 & 60,53 \\
         \hline
     \end{tabular}
     \fonte{Autor.}
@@ -536,7 +514,7 @@ A comparação entre as duas arquiteturas, resumida na Tabela \ref{tab:resumo_mo
 
 \begin{table}[H]
     \centering
-    \caption{\label{tab:resumo_modelos}Acurácia média e número de técnicas acima do piso majoritário}
+    \caption{\label{tab:resumo_modelos}Acurácia média e número de técnicas acima do piso majoritário.}
     \vspace{0.2cm}
     \small
     \begin{tabular}{llcc}
@@ -555,15 +533,15 @@ A comparação entre as duas arquiteturas, resumida na Tabela \ref{tab:resumo_mo
     \fonte{Autor.}
 \end{table}
 
-A primeira observação diz respeito ao DRNPW, no qual nenhuma das duas arquiteturas se distanciou do piso majoritário. As duas médias situam-se na vizinhança imediata desse valor, 1,91 ponto percentual abaixo dele no caso do YOLOv8n-cls e 0,48 ponto acima no caso da CNN, o que indica limitação de dados, e não de arquitetura. O conjunto declara 70 categorias, das quais apenas 59 aparecem no treinamento. Das 468 imagens de treino, 335 pertencem a uma única categoria, e diversas classes contam com um ou dois exemplos. Sob esse grau de desbalanceamento, nenhuma escolha de modelo é capaz de compensar a ausência de amostras nas classes menos representadas.
+A primeira observação diz respeito ao DRNPW, no qual nenhuma das duas arquiteturas se distanciou do piso majoritário. As duas médias situam-se na vizinhança imediata desse valor, 1,91 ponto percentual abaixo dele no caso do YOLOv8n-cls e 0,48 ponto acima no caso da CNN, o que indica limitação de dados, e não de arquitetura, e compromete as conclusões que podem ser extraídas deste conjunto. O conjunto declara 70 categorias, das quais apenas 59 aparecem no treinamento. Das 468 imagens de treino, 335 pertencem a uma única categoria, e diversas classes contam com um ou dois exemplos. Sob esse grau de desbalanceamento, nenhuma escolha de modelo é capaz de compensar a ausência de amostras nas classes menos representadas.
 
-A segunda observação refere-se ao CPLID, no qual apenas a CNN superou o piso majoritário de forma consistente. Uma explicação plausível está na relação entre a capacidade do modelo e o volume de dados disponível: com 678 imagens de treinamento e duas classes, a CNN clássica, com apenas duas camadas convolucionais e uma camada densa de 8 unidades, dispõe de capacidade compatível com o problema, ao passo que uma arquitetura com mais de um milhão de parâmetros, ainda que pré-treinada, tende a convergir para soluções degeneradas nesse regime de poucos dados. Reforça essa leitura o fato de a acurácia do YOLOv8n-cls coincidir exatamente com o piso majoritário em duas das 14 técnicas do CPLID e em três das 14 do DRNPW, o que é compatível com a predição sistemática da classe mais frequente.
+A segunda observação refere-se ao CPLID, no qual apenas a CNN superou o piso majoritário de forma consistente. Uma explicação plausível está na relação entre a capacidade do modelo e o volume de dados disponível: com 678 imagens de treinamento e duas classes, a CNN de pequeno porte, com apenas duas camadas convolucionais e uma camada densa de 8 unidades, dispõe de capacidade compatível com o problema, ao passo que uma arquitetura com mais de um milhão de parâmetros, ainda que pré-treinada, tende a convergir para soluções degeneradas nesse regime de poucos dados. Reforça essa leitura o fato de a acurácia do YOLOv8n-cls coincidir exatamente com o piso majoritário em duas das 14 técnicas do CPLID e em três das 14 do DRNPW, o que é compatível com a predição sistemática da classe mais frequente.
 
-A terceira observação diz respeito à inversão na ordem de mérito das técnicas de pré-processamento, verificada nos dois conjuntos. Agrupando as 14 técnicas em simples e híbridas, a CNN obteve com as híbridas média de acurácia 13,49 pontos percentuais superior à das simples no CPLID e 5,17 pontos superior no DRNPW. Com o YOLOv8n-cls o sinal se inverte nos dois conjuntos, com as híbridas ficando 2,44 e 3,16 pontos abaixo das simples. Esse comportamento é coerente com o fato de o modelo partir de pesos pré-treinados no COCO, cujas estatísticas de cor e contraste são as de fotografias naturais: transformações que se afastam dessa distribuição, como o realce agressivo de contraste, tendem a degradar a utilidade dos filtros já aprendidos, ao passo que a CNN, treinada a partir de pesos aleatórios, ajusta seus filtros à distribuição efetivamente apresentada. A escolha do pré-processamento, portanto, não é independente do modelo e do seu regime de inicialização, o que reforça a necessidade de tratá-los conjuntamente, conforme prevê a estrutura iterativa da metodologia proposta.
+A terceira observação diz respeito à inversão na ordem de mérito das técnicas de pré-processamento, verificada nos dois conjuntos. Agrupando as 14 técnicas em simples e híbridas, a CNN obteve com as híbridas média de acurácia 13,49 pontos percentuais superior à das simples no CPLID e 5,17 pontos superior no DRNPW. Com o YOLOv8n-cls o sinal se inverte nos dois conjuntos, com as híbridas ficando 2,44 e 3,16 pontos abaixo das simples. Uma hipótese para esse comportamento, não verificada neste trabalho, está no fato de o modelo partir de pesos pré-treinados no ImageNet, cujas estatísticas de cor e contraste são as de fotografias naturais. Sabe-se que a utilidade das características aprendidas diminui à medida que os dados da nova tarefa se afastam dos dados de pré-treinamento \cite{yosinski2014transferable}. Transformações que se afastam dessa distribuição, como o realce agressivo de contraste, tenderiam a degradar a utilidade dos filtros já aprendidos, ao passo que a CNN, treinada a partir de pesos aleatórios, ajusta seus filtros à distribuição efetivamente apresentada. A escolha do pré-processamento, portanto, não é independente do modelo e do seu regime de inicialização, o que reforça a necessidade de tratá-los conjuntamente, conforme prevê a estrutura iterativa da metodologia proposta.
 
 \subsection{Síntese da Etapa}
 
-O experimento adicional cumpriu a função de verificar a generalidade das conclusões obtidas com a CNN. Nos dois conjuntos avaliados, o YOLOv8n-cls não superou a CNN clássica. No CPLID, a diferença é expressiva, com 84,55\% de acurácia média contra 66,28\%. No DRNPW, as duas arquiteturas permanecem estatisticamente indistinguíveis do piso majoritário.
+O experimento adicional cumpriu a função de verificar a generalidade das conclusões obtidas com a CNN. Nos dois conjuntos avaliados, o YOLOv8n-cls não superou a CNN de pequeno porte. No CPLID, a diferença é expressiva, com 84,55\% de acurácia média contra 66,28\%. No DRNPW, as duas arquiteturas permanecem próximas do piso majoritário, a uma distância menor que a incerteza associada a um conjunto de teste de 30 imagens.
 
 Dois resultados desta etapa têm valor metodológico. O primeiro é a constatação de que, em regime de poucos dados e forte desbalanceamento, o aumento da capacidade do modelo não compensa as limitações do conjunto de dados, o que confirma o diagnóstico de que a escassez de amostras anotadas é o fator mais restritivo nesse domínio. O segundo é a evidência de que a ordem de mérito das técnicas de pré-processamento depende da arquitetura e da forma de inicialização dos pesos, de modo que a seleção do pré-processamento deve ser conduzida em conjunto com a escolha do modelo, e não como etapa independente.
 
