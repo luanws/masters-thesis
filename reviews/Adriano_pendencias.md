@@ -2,7 +2,7 @@
 
 Item = número usado na conversa. Coment. = número do comentário no `reviews/Adriano.pdf`. Pág. = página desse PDF. A coluna "Onde está" tem links clicáveis para a linha do texto ou do código. Os links do código dos experimentos apontam para `E:\GitHub\drones-ia-cpfl\learn-datasets`.
 
-Status: ✅ resolvido · ⏳ falta fazer · ❌ exige trabalho pesado (retreinar, reavaliar ou refazer experimentos) · 🖥️ dá para resolver com acesso ao servidor
+Status: ✅ resolvido · ⏳ falta fazer · ❌ não será feito (exige retreinar ou refazer experimentos, ou não pede ajuste) · 🖥️ dá para resolver com acesso ao servidor
 
 ## Falta você avaliar
 
