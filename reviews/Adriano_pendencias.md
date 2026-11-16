@@ -1,33 +1,43 @@
-# Comentários do Prof. Adriano: status
+# Comentários do Prof. Adriano: pendências e itens conferidos
 
-Página = página do `reviews/Adriano.pdf`. Status: ✅ resolvido no texto · 🟡 resolvido, mas confira · ⏳ falta você avaliar.
+Item = número usado na conversa. Coment. = número do comentário no `reviews/Adriano.pdf`. Pág. = página desse PDF. A coluna "Onde está" tem links clicáveis para a linha do texto ou do código. Os links do código dos experimentos apontam para `E:\GitHub\drones-ia-cpfl\learn-datasets`.
 
-## Pendências (⏳)
+Status: ✅ resolvido · ⏳ falta fazer
 
-| # | Pág. | Comentário | O que falta decidir ou fazer |
+## Falta você avaliar
+
+| Status | Item | Coment. | Pág. | Comentário | O que falta | Onde está |
+|---|---|---|---|---|---|---|
+| ⏳ | 1 | 0 | 1 | Título "Análise de técnicas de pré-processamento" | Decidir com o orientador se troca o título | [main.tex:91](../documents/main.tex#L91) |
+| ⏳ | 2 | 11 | 20 | "de íris mesmo? ver" | Conferir no artigo de Sharma et al. (2024) | [revisao_bibliografica.tex:56](../documents/chapters/revisao_bibliografica.tex#L56) |
+| ⏳ | 3 | 21 | 40 | Dataset do Wang et al. (2023) | Conferir no artigo qual conjunto deu os 85,3% | [revisao_bibliografica.tex:444](../documents/chapters/revisao_bibliografica.tex#L444) |
+| ⏳ | 4 | 26, 28 | 42, 44 | Poucos trabalhos, revisão fraca | Pesquisar e incluir mais trabalhos de pré-processamento, inclusive de outras áreas | [revisao_bibliografica.tex:442](../documents/chapters/revisao_bibliografica.tex#L442), [:468](../documents/chapters/revisao_bibliografica.tex#L468) |
+| ⏳ | 5 | 39, 46 | 57, 67 | Destaques sem texto | Ver no PDF se ele quis apontar algo | [Adriano.pdf](Adriano.pdf) |
+| ⏳ | 6 | 64 | 72 | Gráficos de treinamento por época | Precisa dos logs de treino ou de um retreino salvando o histórico. O `fit` não guarda o histórico | [coleta_e_analise_de_resultados.tex:101](../documents/chapters/coleta_e_analise_de_resultados.tex#L101), [CNN.py:144](../../../drones-ia-cpfl/learn-datasets/src/modules/models/CNN.py#L144) |
+| ⏳ | 7 | 65 | 75 | Por que 640×640, se antes era 512? | Justificar ou refazer com 512. O 640 é o padrão do script de otimização | [coleta_e_analise_de_resultados.tex:188](../documents/chapters/coleta_e_analise_de_resultados.tex#L188), [optimize_preprocessing_parameter.py:111](../../../drones-ia-cpfl/learn-datasets/scripts/optimize_preprocessing_parameter.py#L111) |
+| ⏳ | 8 | 72, 77 | 76, 77 | Por que só 5 épocas? | Justificar ou refazer com 50 | [coleta_e_analise_de_resultados.tex:192](../documents/chapters/coleta_e_analise_de_resultados.tex#L192) |
+| ⏳ | 9 | 78 | 77 | Onde está o `optimization_factor_results.json`? | Indicar onde está ou tirar a frase | [coleta_e_analise_de_resultados.tex:233](../documents/chapters/coleta_e_analise_de_resultados.tex#L233) |
+| ⏳ | 10 | 85 | 82 | Por que não calcular métricas por classe? | Reavaliar os modelos guardando as predições | [coleta_e_analise_de_resultados.tex:337](../documents/chapters/coleta_e_analise_de_resultados.tex#L337), [metrics.py:37](../../../drones-ia-cpfl/learn-datasets/src/utils/metrics.py#L37) |
+| ⏳ | 11 | 86 | 82 | Gray Scale ajudar o YOLO é estranho | Interpretar o resultado (ver o item 22) | [coleta_e_analise_de_resultados.tex:376](../documents/chapters/coleta_e_analise_de_resultados.tex#L376), [:540](../documents/chapters/coleta_e_analise_de_resultados.tex#L540) |
+
+## Resolvidos no texto, para conferir
+
+| Status | Item | Coment. | Pág. | Comentário | Situação | Onde está |
+|---|---|---|---|---|---|---|
+| ⏳ | 12 | 3 | 12 | Uma imagem por problema | A figura tem só o disco ausente. Faltam fotos de trinca e contaminação. Usar as fotos da CPFL depende de autorização | [introducao.tex:5](../documents/chapters/introducao.tex#L5) |
+| ✅ | 13 | 35 | 56 | Como decide se combina ou não? | Critério escrito (desempenho isolado e complementaridade) | [metodologia.tex:141](../documents/chapters/metodologia.tex#L141) |
+| ✅ | 14 | 47 | 68 | Destaque em "(CNN)" sem texto | Redefinição da sigla retirada | [coleta_e_analise_de_resultados.tex:9](../documents/chapters/coleta_e_analise_de_resultados.tex#L9) |
+| ⏳ | 15 | 48, 60, 94 | 68–92 | Tamanho original, exemplos, quantidades e anotação | CPLID completo. Do DRNPW faltam o tamanho original das imagens, uma imagem de exemplo e as 70 categorias | [coleta_e_analise_de_resultados.tex:17](../documents/chapters/coleta_e_analise_de_resultados.tex#L17) |
+| ⏳ | 16 | 66, 83 | 75, 81 | Testes com 30 e 43 imagens | Entraram como limitação, com intervalos de confiança. Resolver de fato exige refazer os experimentos | [coleta_e_analise_de_resultados.tex:99](../documents/chapters/coleta_e_analise_de_resultados.tex#L99), [:140](../documents/chapters/coleta_e_analise_de_resultados.tex#L140), [conclusao.tex:24](../documents/chapters/conclusao.tex#L24) |
+| ✅ | 17 | 67 | 75 | "um modelo ideal?" | Seção renomeada para "Configuração do Experimento" e "valor ótimo" trocado por "melhor entre os avaliados" | [coleta_e_analise_de_resultados.tex:184](../documents/chapters/coleta_e_analise_de_resultados.tex#L184), [:186](../documents/chapters/coleta_e_analise_de_resultados.tex#L186), [:251](../documents/chapters/coleta_e_analise_de_resultados.tex#L251) |
+| ⏳ | 18 | 88 | 88 | Overfitting, mesmo isolador em duas imagens | Entrou como limitação. Falta confirmar se as imagens defeituosas do CPLID foram geradas por aumento de dados | [conclusao.tex:24](../documents/chapters/conclusao.tex#L24) |
+| ✅ | 19 | 95–98 | 94–95 | Data de acesso das referências | Medium, Pillow e PyCaret com acesso em 16 nov. 2026 | [references.bib:149](../documents/references.bib#L149), [:859](../documents/references.bib#L859), [:909](../documents/references.bib#L909) |
+
+## Problemas nos experimentos (prioridade)
+
+| Status | Item | Problema | Onde está |
 |---|---|---|---|
-| 0 | 1 | Título: "Análise de técnicas de pré-processamento" | Trocar o título é decisão sua e do orientador (afeta capa, resumo, ficha). Sugestão: "Análise de técnicas de pré-processamento de imagens aplicadas à classificação de falhas em cadeias de isoladores". |
-| 3 | 12 | Uma imagem por problema na introdução | Entrou figura com isolador normal e com disco ausente (CPLID). Faltam fotos de trinca, contaminação e perfuração. Há fotos de corrosão/oxidação da CPFL em `presentation/assets`, mas usar na dissertação depende de autorização. |
-| 11 | 20 | "melhorar imagens de íris, mesmo?" | Conferir no artigo de Sharma et al. (2024) se o exemplo é mesmo de íris. |
-| 21 | 40 | Dataset do Wang et al. (2023) | Conferir no artigo qual conjunto gerou os 85,3%. |
-| 26, 28 | 42, 44 | Poucos trabalhos e related works fraco | A seção foi reorganizada por critério, mas faltam mais trabalhos de pré-processamento, inclusive de outros domínios. Precisa de pesquisa bibliográfica. |
-| 39, 46, 47 | 57, 67, 68 | Destaques sem texto | Sem comentário escrito. No 47 assumi "CNN redefinida" e tirei a redefinição. Nos outros dois não mexi. |
-| 48 | 68 | Tamanho original das imagens | CPLID (1152×864) entrou. Falta o tamanho original das imagens do DRNPW (o servidor estava fora do ar). |
-| 60, 94 | 71, 92 | Exemplos e quantidades por classe, como foi anotado | CPLID entrou (600/248, VOC). Faltam exemplo de imagem do DRNPW e a lista/quantidade das 70 categorias (o que é cada categoria). |
-| 64 | 72 | Gráficos de treinamento por época | Precisa dos logs de treino (histórico de loss/acurácia). Se não houver, retreinar salvando o histórico. |
-| 65 | 75 | Por que 640×640 na busca, se antes era 512? | O código usa 640 como padrão do script de otimização. Precisa de justificativa sua ou de refazer com 512. |
-| 66, 83 | 75, 81 | Testes muito pequenos (30 e 43 imagens) | Texto agora assume a limitação e traz intervalos de confiança. Resolver de fato exige refazer com validação cruzada. |
-| 72, 77 | 76, 77 | Por que só 5 épocas? | Precisa de justificativa sua ou de refazer a busca com 50 épocas. |
-| 78 | 77 | Onde está `optimization_factor_results.json`? | Indicar o local (repositório público, apêndice) ou remover a frase. |
-| 85 | 82 | Por que não métricas por classe? | Exige rodar a avaliação de novo guardando as predições. |
-| 86 | 82 | Gray Scale ajudar o YOLO é estranho | Ver os achados abaixo. A explicação depende de você. |
-| 88 | 88 | Overfitting e mesmo isolador em duas imagens | Entrou como limitação. Ver o achado sobre o CPLID abaixo. |
-
-## Achados no código dos experimentos (`drones-ia-cpfl/learn-datasets`)
-
-1. **A divisão treino/validação/teste é refeita a cada técnica.** `scripts/preprocess.py` chama `random.shuffle` sem semente em `split_train_val_test`, e o pré-processamento roda uma vez por técnica. Assim, cada técnica foi testada em um conjunto de teste diferente. Isso enfraquece a comparação entre técnicas e o "piso majoritário".
-2. **As métricas da CNN no CPLID parecem binárias, não ponderadas.** O F1 maior que a acurácia (ex.: 67,44% / 80,56%) só fecha com precisão = 67,44% e recall = 100%, isto é, F1 binário com o modelo respondendo uma classe só. O texto da Seção do YOLO dizia que o critério ponderado era "mantido em relação às avaliações anteriores". Tirei essa frase, mas convém confirmar como a CNN calculou as métricas.
-3. **Oito das 14 técnicas convertem a imagem para tons de cinza** (Adaptive Threshold, CLAHE, Edge Detection, Equalize Histogram e as quatro híbridas). Isso agora está no texto e derruba a explicação de que o Gray Scale foi mal "por perder a cor": a melhor técnica do DRNPW também é em tons de cinza.
-4. **Pesos do YOLOv8n-cls**: o texto dizia COCO, mas os modelos `-cls` da Ultralytics são pré-treinados no ImageNet. Corrigido.
-5. **Busca aleatória**: o relatório `reports/relatorio_otimizacao_2.md` fala em 10 tentativas, a dissertação em 5. Conferir.
-6. **CPLID**: pela descrição do conjunto, as imagens defeituosas foram geradas por aumento de dados a partir de poucos isoladores reais. Se confirmado, o mesmo isolador pode estar no treino e no teste (comentário 88).
+| ⏳ | 20 | A divisão treino/teste é refeita a cada técnica. `split_train_val_test` chama `random.shuffle` sem semente, então cada técnica parece ter sido testada em um conjunto de teste diferente. | [preprocess.py:260](../../../drones-ia-cpfl/learn-datasets/scripts/preprocess.py#L260), [:275](../../../drones-ia-cpfl/learn-datasets/scripts/preprocess.py#L275) |
+| ⏳ | 21 | No CPLID, três técnicas têm o mesmo par acurácia 67,44% / F1 80,56%. Esse par é o que dá um F1 binário com o modelo respondendo sempre a mesma classe. Mas o código atual calcula as métricas com média ponderada, que nesse caso daria cerca de 54%. Falta descobrir como esses números foram gerados. | [coleta_e_analise_de_resultados.tex:97](../documents/chapters/coleta_e_analise_de_resultados.tex#L97), [metrics.py:37](../../../drones-ia-cpfl/learn-datasets/src/utils/metrics.py#L37) |
+| ⏳ | 22 | 8 das 14 técnicas convertem a imagem para tons de cinza (Adaptive Threshold, CLAHE, Edge Detection, Equalize Histogram e as quatro híbridas), inclusive a melhor do DRNPW. Por isso, "perder a cor" não explica o resultado ruim do Gray Scale. | [coleta_e_analise_de_resultados.tex:138](../documents/chapters/coleta_e_analise_de_resultados.tex#L138), [clahe.py:18](../../../drones-ia-cpfl/learn-datasets/src/modules/preprocessing/clahe.py#L18), [equalize.py:19](../../../drones-ia-cpfl/learn-datasets/src/modules/preprocessing/equalize.py#L19) |
+| ⏳ | 23 | Busca aleatória: o relatório do repositório fala em 10 tentativas e a dissertação em 5. | [coleta_e_analise_de_resultados.tex:253](../documents/chapters/coleta_e_analise_de_resultados.tex#L253), [relatorio_otimizacao_2.md:23](../../../drones-ia-cpfl/learn-datasets/reports/relatorio_otimizacao_2.md#L23) |
