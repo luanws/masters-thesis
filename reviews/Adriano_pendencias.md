@@ -24,7 +24,7 @@ Status: ✅ resolvido · ⏳ falta fazer · ❌ exige trabalho pesado (retreinar
 
 | Status | Item | Coment. | Pág. | Comentário | Situação | Onde está |
 |---|---|---|---|---|---|---|
-| ⏳ | 12 | 3 | 12 | Uma imagem por problema | A figura tem só o disco ausente. Faltam fotos de trinca e contaminação. Usar as fotos da CPFL depende de autorização | [introducao.tex:5](../documents/chapters/introducao.tex#L5) |
+| ✅ | 12 | 3 | 12 | Uma imagem por problema | Figura 2×2: normal e disco ausente (CPLID), corrosão e oxidação (fotos da CPFL), com o efeito de cada defeito no texto | [introducao.tex:5](../documents/chapters/introducao.tex#L5) |
 | ✅ | 13 | 35 | 56 | Como decide se combina ou não? | Critério escrito (desempenho isolado e complementaridade) | [metodologia.tex:141](../documents/chapters/metodologia.tex#L141) |
 | ✅ | 14 | 47 | 68 | Destaque em "(CNN)" sem texto | Redefinição da sigla retirada | [coleta_e_analise_de_resultados.tex:9](../documents/chapters/coleta_e_analise_de_resultados.tex#L9) |
 | ⏳ | 15 | 48, 60, 94 | 68–92 | Tamanho original, exemplos, quantidades e anotação | CPLID completo. Do DRNPW faltam o tamanho original das imagens, uma imagem de exemplo e as 70 categorias | [coleta_e_analise_de_resultados.tex:17](../documents/chapters/coleta_e_analise_de_resultados.tex#L17) |
