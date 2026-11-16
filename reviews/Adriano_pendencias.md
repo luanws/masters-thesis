@@ -8,7 +8,7 @@ Status: ✅ resolvido · ⏳ falta fazer
 
 | Status | Item | Coment. | Pág. | Comentário | O que falta | Onde está |
 |---|---|---|---|---|---|---|
-| ⏳ | 1 | 0 | 1 | Título "Análise de técnicas de pré-processamento" | Decidir com o orientador se troca o título | [main.tex:91](../documents/main.tex#L91) |
+| ✅ | 1 | 0 | 1 | Título "Análise de técnicas de pré-processamento" | Título trocado para "Análise de técnicas de pré-processamento de imagens aplicadas à detecção e classificação de falhas em cadeias de isoladores" | [main.tex:91](../documents/main.tex#L91) |
 | ⏳ | 2 | 11 | 20 | "de íris mesmo? ver" | Conferir no artigo de Sharma et al. (2024) | [revisao_bibliografica.tex:56](../documents/chapters/revisao_bibliografica.tex#L56) |
 | ⏳ | 3 | 21 | 40 | Dataset do Wang et al. (2023) | Conferir no artigo qual conjunto deu os 85,3% | [revisao_bibliografica.tex:444](../documents/chapters/revisao_bibliografica.tex#L444) |
 | ⏳ | 4 | 26, 28 | 42, 44 | Poucos trabalhos, revisão fraca | Pesquisar e incluir mais trabalhos de pré-processamento, inclusive de outras áreas | [revisao_bibliografica.tex:442](../documents/chapters/revisao_bibliografica.tex#L442), [:468](../documents/chapters/revisao_bibliografica.tex#L468) |
