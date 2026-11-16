@@ -18,7 +18,7 @@ Status: ✅ resolvido · ⏳ falta fazer · ❌ exige trabalho pesado (retreinar
 | ❌ | 8 | 72, 77 | 76, 77 | Por que só 5 épocas? | Justificar ou refazer com 50 | [coleta_e_analise_de_resultados.tex:192](../documents/chapters/coleta_e_analise_de_resultados.tex#L192) |
 | ✅ | 9 | 78 | 77 | Onde está o `optimization_factor_results.json`? | Frase retirada | [coleta_e_analise_de_resultados.tex:233](../documents/chapters/coleta_e_analise_de_resultados.tex#L233) |
 | ❌ | 10 | 85 | 82 | Por que não calcular métricas por classe? | Reavaliar os modelos guardando as predições | [coleta_e_analise_de_resultados.tex:337](../documents/chapters/coleta_e_analise_de_resultados.tex#L337), [metrics.py:37](../../../drones-ia-cpfl/learn-datasets/src/utils/metrics.py#L37) |
-| ⏳ | 11 | 86 | 82 | Gray Scale ajudar o YOLO é estranho | Interpretar o resultado (ver o item 22) | [coleta_e_analise_de_resultados.tex:376](../documents/chapters/coleta_e_analise_de_resultados.tex#L376), [:540](../documents/chapters/coleta_e_analise_de_resultados.tex#L540) |
+| ❌ | 11 | 86 | 82 | Gray Scale ajudar o YOLO é estranho | Não será ajustado: é só uma observação. Resposta para a defesa: só 3 imagens acima do piso, intervalos sobrepostos e testes diferentes por técnica | [coleta_e_analise_de_resultados.tex:376](../documents/chapters/coleta_e_analise_de_resultados.tex#L376), [:540](../documents/chapters/coleta_e_analise_de_resultados.tex#L540) |
 
 ## Resolvidos no texto, para conferir
 
