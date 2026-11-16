@@ -437,7 +437,7 @@ A utilização de ferramentas de inteligência artificial para diagnósticos em 
 
 No setor elétrico, particularmente no sistema elétrico de potência, essas soluções têm ganhado relevância devido à criticidade dos ativos e ao impacto direto na continuidade do fornecimento de energia. A detecção precoce de falhas em componentes como isoladores, transformadores e linhas de transmissão é fundamental para evitar interrupções e reduzir custos de manutenção \cite{wang2023}. O uso de inteligência artificial permite analisar grandes volumes de dados e identificar padrões complexos, superando limitações das abordagens tradicionais.
 
-Diante desse cenário, diversos pesquisadores têm buscado aprimorar os métodos de diagnóstico automatizado. Os trabalhos selecionados são apresentados em dois grupos, conforme o papel que atribuem ao pré-processamento. O primeiro reúne estudos de detecção de falhas em isoladores, nos quais a contribuição está na arquitetura do modelo e o pré-processamento se limita, em geral, ao redimensionamento e à normalização. O segundo reúne estudos que tomam o pré-processamento como objeto de investigação. Como esse tipo de comparação ainda é raro no domínio de isoladores, o segundo grupo recorre a trabalhos de imagens médicas, área em que a questão foi estudada de forma direta. Em cada grupo, os trabalhos são comparados pelo modelo empregado, pelo conjunto de dados, pela métrica reportada e pelo tratamento dado às imagens.
+Diante desse cenário, diversos pesquisadores têm buscado aprimorar os métodos de diagnóstico automatizado. Os trabalhos selecionados são apresentados em dois grupos, conforme o papel que atribuem ao pré-processamento. O primeiro reúne estudos de detecção de falhas em isoladores, nos quais a contribuição está, na maior parte dos casos, na arquitetura do modelo, e o pré-processamento aparece como uma etapa do \textit{pipeline}, e não como variável de estudo. O segundo reúne estudos que tomam o pré-processamento como objeto de investigação. Como esse tipo de comparação ainda é raro no domínio de isoladores, o segundo grupo recorre a trabalhos de outras áreas, sobretudo de imagens médicas, em que a questão foi estudada de forma direta. Em cada grupo, os trabalhos são comparados pelo modelo empregado, pelo conjunto de dados, pela métrica reportada e pelo tratamento dado às imagens.
 
 \subsection{Detecção de falhas em isoladores com aprendizado profundo}
 
@@ -465,9 +465,15 @@ O modelo modificado alcança mAP de 93,8\% e é eficaz na detecção de defeitos
 
 Comparados entre si, os quatro trabalhos compartilham o mesmo tipo de imagem, a inspeção aérea de isoladores, mas não o mesmo conjunto de dados nem a mesma métrica: \citeonline{wang2023} reportam acurácia, enquanto os demais reportam AP ou mAP, o que impede a comparação direta dos valores. Em \citeonline{wang2023} e \citeonline{liu2021}, o tratamento das imagens se limita ao redimensionamento e à normalização. \citeonline{zhang2022} usam a segmentação como etapa auxiliar da detecção, e \citeonline{zheng2022improved} concentram os ganhos na arquitetura e na função de perda. Em nenhum deles o efeito do pré-processamento é medido de forma isolada.
 
+Outros trabalhos do mesmo domínio incluem uma etapa explícita de tratamento das imagens antes do modelo, e alguns medem o seu efeito. No realce de contraste, \citeonline{jiskani2024improving} aplicaram realce no espaço HSV e CLAHE a 608 imagens aéreas de uma linha de 500~kV, ampliadas para 3.618 por aumento de dados, e relataram que a acurácia de detecção do YOLOv8s passou de 88\% para 95\%. Na filtragem de ruído, \citeonline{hasan2024image} combinaram um borramento gaussiano a um realce de nitidez pelo laplaciano antes do YOLOv8x. O sistema alcança mAP de 98,4\% em imagens sem ruído, e, no pior cenário de ruído, o filtro elevou o mAP de 93,3\% para 96,7\%. Para imagens com neblina, \citeonline{xin2022insulator} propuseram uma etapa de desembaçamento, ajustada com perdas baseadas no canal escuro, no canal claro e no CLAHE, seguida de um detector SSD modificado, e obtiveram precisão de 0,925 e revocação de 0,841 na detecção da perda de discos. Nesse caso, porém, o ganho reportado mistura o efeito do desembaçamento com o das mudanças no detector.
+
+A segmentação e a remoção do fundo também aparecem como pré-processamento. \citeonline{chen2024research} segmentam o isolador com uma U-Net (Dice de 93,67\%) e removem as regiões conexas pequenas da máscara antes de detectar defeitos com o YOLOv7, em um cenário de poucas amostras aéreas. \citeonline{zhang2026detection} localizam a cadeia com um Faster R-CNN, segmentam-na com uma U-Net, alinham e binarizam a cadeia com limiar adaptativo e identificam a falta de discos a partir de uma curva de defeitos, com AP@0,5 de 99,85\% na detecção em imagens de uma linha de 330~kV. Em um trabalho nacional, \citeonline{stefenon2022classification} compararam extratores de características baseados em bordas (Sobel e Canny) e em limiarização (fixa, adaptativa, Otsu e Riddler-Calvard) para classificar isoladores contaminados com uma rede neural, e alcançaram acurácia de até 97,50\%, acima de SVM, k-NN e de métodos de \textit{ensemble}.
+
+Nesses trabalhos, o pré-processamento é avaliado, quando muito, com e sem a técnica proposta. Nenhum dos trabalhos compara de forma sistemática várias técnicas sobre a mesma rede e os mesmos dados de inspeção, nem ajusta os seus parâmetros, que é o ponto examinado nesta dissertação.
+
 \subsection{Efeito do pré-processamento sobre redes neurais convolucionais}
 
-A pergunta deixada em aberto pelo grupo anterior, isto é, quanto o pré-processamento altera o desempenho de uma CNN, foi estudada de forma direta em imagens médicas, cujas dificuldades (pouca disponibilidade de amostras rotuladas, variação de iluminação e de contraste e ruído de aquisição) são semelhantes às das imagens de inspeção.
+A pergunta deixada em aberto pelo grupo anterior, isto é, quanto o pré-processamento altera o desempenho de uma CNN, foi estudada de forma direta em outras áreas, sobretudo em imagens médicas, cujas dificuldades (pouca disponibilidade de amostras rotuladas, variação de iluminação e de contraste e ruído de aquisição) são semelhantes às das imagens de inspeção.
 
 \citeonline{rodrigues2020comparing} compararam seis estratégias de pré-processamento e cinco arquiteturas de CNN na classificação de células HEp-2 em imagens de imunofluorescência. Foram testados redimensionamento, alongamento de contraste, equalização de histograma e subtração da média, além de aumento de dados, ajuste fino e otimização de hiperparâmetros. O melhor resultado, 98,28\% de precisão, foi obtido pelo Inception-V3 treinado do zero, com aumento de dados e sem pré-processamento adicional. A Figura \ref{fig:preprocessing_rodrigues2020comparing} apresenta os métodos e as combinações avaliados.
 
@@ -482,7 +488,11 @@ A pergunta deixada em aberto pelo grupo anterior, isto é, quanto o pré-process
 
 \citeonline{Salvi2021}, em uma revisão sobre patologia digital, analisam técnicas de pré-processamento e de pós-processamento, como redução de ruído, correção de iluminação, normalização de cor, remoção de artefatos, seleção de \textit{patches} e refinamento de contornos, em tarefas de classificação, detecção e segmentação. A conclusão é favorável ao uso dessas técnicas, que melhoram a precisão e a robustez dos modelos e reduzem o tempo computacional.
 
-Os três trabalhos chegam, portanto, a conclusões distintas sobre a mesma questão: o pré-processamento foi dispensável em \citeonline{rodrigues2020comparing}, útil apenas em dose moderada em \citeonline{ozturk2018histopathological} e recomendado em \citeonline{Salvi2021}. A divergência indica que o efeito depende do tipo de imagem, da técnica e do modelo, e que não pode ser transferido de um domínio para outro sem uma avaliação própria.
+Outros estudos comparativos também registram ganhos. \citeonline{rahman2021exploring} avaliaram cinco técnicas de realce (equalização de histograma, CLAHE, complemento da imagem, correção gama e BCET) em várias CNNs, com 18.479 radiografias de tórax para detecção de COVID-19, e a correção gama obteve o melhor resultado. O efeito, portanto, variou de uma técnica de realce para outra. \citeonline{gielczyk2022preprocessing} usaram uma CNN pequena, de 12 camadas, em radiografias de tórax e compararam a imagem sem tratamento com cinco variantes que combinam equalização de histograma, borramento gaussiano, filtro bilateral e máscara adaptativa. A melhor combinação, máscara adaptativa seguida de equalização e borramento gaussiano, elevou a acurácia média de 0,9551 para 0,9831. \citeonline{yoshimi2024image} mostraram que o CLAHE melhorou de forma significativa a segmentação do disco articular da articulação temporomandibular em imagens de ressonância magnética vindas de dois equipamentos, sobretudo nas imagens do equipamento que produzia imagens mais escuras. \citeonline{pal2016preprocessing}, no conjunto CIFAR-10, compararam normalização pela média, padronização e branqueamento ZCA em três variações de CNN, e o ZCA superou as demais.
+
+Há, por outro lado, resultados nulos ou negativos. \citeonline{marciniak2024influence} não encontraram impacto significativo da equalização de histograma e do CLAHE na classificação de doenças da retina em imagens de tomografia de coerência óptica com a VGG16. Em um estudo seguinte, os mesmos autores obtiveram ganho de até 4,75\% de acurácia com o CLAHE combinado à remoção de regiões brancas espúrias, mas o ganho variou com a arquitetura e com o otimizador \cite{marciniak2024impact}. \citeonline{mohanty2016using}, na detecção de doenças de plantas com 54.306 imagens, compararam imagens coloridas, em tons de cinza e segmentadas, sem fundo. A versão em tons de cinza foi sempre a pior, e a remoção do fundo não superou a imagem colorida original. Mesmo em \citeonline{gielczyk2022preprocessing}, algumas técnicas reduziram as métricas de classes específicas, como a acurácia da classe normal, que caiu de 0,9754 para 0,9566 com a variante que inclui o filtro bilateral. Uma explicação para as quedas é dada por \citeonline{dodge2016understanding}, que mostraram que redes profundas de classificação são sensíveis sobretudo ao borramento e ao ruído, o que indica que filtros de suavização intensos podem remover detalhes de alta frequência usados pela rede.
+
+Esses trabalhos chegam, portanto, a conclusões distintas sobre a mesma questão. O pré-processamento foi dispensável em \citeonline{rodrigues2020comparing} e em \citeonline{marciniak2024influence}, útil apenas em dose moderada em \citeonline{ozturk2018histopathological}, prejudicial para a conversão em tons de cinza em \citeonline{mohanty2016using} e benéfico em \citeonline{Salvi2021}, \citeonline{rahman2021exploring}, \citeonline{gielczyk2022preprocessing} e \citeonline{yoshimi2024image}. A divergência indica que o efeito depende do tipo de imagem, da técnica e do modelo, e que não pode ser transferido de um domínio para outro sem uma avaliação própria.
 
 \subsection{Síntese e lacuna}
 
@@ -512,12 +522,40 @@ A Tabela \ref{tab:comparacao_de_trabalhos_relacionados} resume o efeito do pré-
 \hline
 \citeonline{zou2024bolt} & \textit{Transfer learning} eficaz para defeitos em parafusos \\
 \hline
+\citeonline{jiskani2024improving} & Realce em HSV e CLAHE elevaram a acurácia de detecção de isoladores \\
+\hline
+\citeonline{hasan2024image} & Filtragem recuperou parte do desempenho perdido com ruído \\
+\hline
+\citeonline{xin2022insulator} & Desembaçamento melhorou a detecção sob neblina \\
+\hline
+\citeonline{chen2024research} & Segmentação usada para remover o fundo, sem comparação com e sem a etapa \\
+\hline
+\citeonline{zhang2026detection} & Segmentação e binarização adaptativa como etapas do \textit{pipeline} \\
+\hline
+\citeonline{stefenon2022classification} & Bordas e limiarização como extratores de características \\
+\hline
+\citeonline{rahman2021exploring} & O efeito variou entre técnicas de realce, e a correção gama foi a melhor \\
+\hline
+\citeonline{gielczyk2022preprocessing} & Combinação de realce e suavização melhorou a média, com quedas em classes específicas \\
+\hline
+\citeonline{yoshimi2024image} & CLAHE melhorou a segmentação com imagens de equipamentos diferentes \\
+\hline
+\citeonline{pal2016preprocessing} & Branqueamento ZCA superou normalização e padronização \\
+\hline
+\citeonline{marciniak2024influence} & Equalização sem impacto significativo \\
+\hline
+\citeonline{marciniak2024impact} & Ganho com CLAHE dependente da arquitetura e do otimizador \\
+\hline
+\citeonline{mohanty2016using} & Tons de cinza sempre pior e remoção do fundo sem ganho \\
+\hline
+\citeonline{dodge2016understanding} & Redes sensíveis a borramento e ruído \\
+\hline
 \end{tabular}
 }
 \fonte{Autor.}
 \end{table}
 
-Os estudos variam de melhorias no desempenho a riscos de sobre-processamento, o que mostra a falta de consenso sobre o tema. Nos trabalhos voltados a isoladores, o pré-processamento não é tratado como variável de estudo. Nos trabalhos que o tratam como variável, o domínio é outro e a escolha das técnicas é feita uma única vez, sem ajuste de parâmetros. A metodologia proposta nesta dissertação busca ocupar esse espaço, ao definir um procedimento para comparar, selecionar e combinar técnicas de pré-processamento e para ajustar seus parâmetros de forma automática, aplicado à detecção de falhas em cadeias de isoladores.
+Os estudos variam de melhorias no desempenho a riscos de sobre-processamento, o que mostra a falta de consenso sobre o tema. Nos trabalhos voltados a isoladores, o pré-processamento é tratado como uma etapa fixa do \textit{pipeline} e, quando avaliado, é comparado apenas com a sua ausência. Nos trabalhos que comparam várias técnicas, o domínio é outro e os parâmetros de cada técnica são fixados previamente ou variados de forma manual, sem um procedimento de ajuste automático. A metodologia proposta nesta dissertação busca ocupar esse espaço, ao definir um procedimento para comparar, selecionar e combinar técnicas de pré-processamento e para ajustar seus parâmetros de forma automática, aplicado à detecção de falhas em cadeias de isoladores.
 
 \section{Considerações finais do capítulo}
 
