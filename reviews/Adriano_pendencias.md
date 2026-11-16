@@ -9,7 +9,7 @@ Status: ✅ resolvido · ⏳ falta fazer
 | Status | Item | Coment. | Pág. | Comentário | O que falta | Onde está |
 |---|---|---|---|---|---|---|
 | ✅ | 1 | 0 | 1 | Título "Análise de técnicas de pré-processamento" | Título trocado para "Análise de técnicas de pré-processamento de imagens aplicadas à detecção e classificação de falhas em cadeias de isoladores" | [main.tex:91](../documents/main.tex#L91) |
-| ⏳ | 2 | 11 | 20 | "de íris mesmo? ver" | Conferir no artigo de Sharma et al. (2024) | [revisao_bibliografica.tex:56](../documents/chapters/revisao_bibliografica.tex#L56) |
+| ✅ | 2 | 11 | 20 | "de íris mesmo? ver" | É íris mesmo, mas a acurácia era 89,2% e não 97%. A frase do RetinexDIP também estava errada. Ambas corrigidas | [revisao_bibliografica.tex:56](../documents/chapters/revisao_bibliografica.tex#L56) |
 | ✅ | 3 | 21 | 40 | Dataset do Wang et al. (2023) | O artigo não identifica o conjunto. O texto agora diz isso, informa a divisão 6:3:1 e o mAP de 58,6% | [revisao_bibliografica.tex:444](../documents/chapters/revisao_bibliografica.tex#L444) |
 | ⏳ | 4 | 26, 28 | 42, 44 | Poucos trabalhos, revisão fraca | Pesquisar e incluir mais trabalhos de pré-processamento, inclusive de outras áreas | [revisao_bibliografica.tex:442](../documents/chapters/revisao_bibliografica.tex#L442), [:468](../documents/chapters/revisao_bibliografica.tex#L468) |
 | ✅ | 5 | 39, 46 | 57, 67 | Destaques sem texto | Considerado resolvido, sem alteração no texto | [Adriano.pdf](Adriano.pdf) |
